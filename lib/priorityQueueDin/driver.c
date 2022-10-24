@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "prioqueuetime.h"
+#include "prioqueuedin.h"
 
 int main () {
     PrioQueueTime q, q1;

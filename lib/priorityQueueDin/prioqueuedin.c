@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "prioqueuetime.h"
+#include "prioqueuedin.h"
 
 /* ********* Prototype ********* */
 boolean isEmpty (PrioQueueTime Q)
@@ -186,4 +186,54 @@ void delIdFromQ(PrioQueueTime *Q, int id)
         Elmt(*Q, i) = Elmt(*Q, i+1);
     }
     Tail(*Q)--;
+}
+
+void timePass(PrioQueueTime *Q, int mnt)
+// time berkurang sebanyak mnt menit pada semua elmt di Q
+{
+    for (int i = 0; i<=Tail(*Q); i++) {
+        Time(Elmt(*Q, i)) = Time(Elmt(*Q, i)) - mnt;
+    }
+}
+
+int keepPosTime(PrioQueueTime *Q)
+// menyimpan elmt yang memiliki time bernilai positif (menghapus elmt yang <= 0)
+// mengembalikan list of int yang berisi id apa saja yang dihapus
+{
+    int listId[100], idx=0;
+    for (int i = 0; i<100; i++) {
+        listId[i] = Nil;
+    }
+
+    for (int i = 0; i<Tail(*Q); i++) {
+        if (Time(Elmt(*Q, i))<=0) {
+            listId[idx] = Id(Elmt(*Q, i));
+            delIdFromQ(Q, Id(Elmt(*Q, i)));
+            i = 0;           
+        }
+    }
+
+    return listId;
+}
+
+void notif(int listId[], boolean inventory)
+// mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai
+// argumen inventory bernilai true untuk list bahan/makanan kadaluarsa dan 
+// bernilai negatif untuk list delivery bahan sampai   
+{
+    printf("Notifikasi: ");
+    if (listId[0]==Nil) {
+        printf("-\n");
+    } 
+    else {
+        printf("\n");
+        for (int i = 0; i<100 && listId[i]!= Nil; i++) {
+            if (inventory) {
+                printf("    %d. <%d> kadaluwarsa :(\n", i+1, listId[i]);
+            }
+            else {
+                printf("    %d. <%d> sudah diterima BNMO! :D\n", i+1, listId[i]);
+            }
+        }
+    }
 }

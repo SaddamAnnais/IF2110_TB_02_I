@@ -96,4 +96,17 @@ boolean isIdInQ(PrioQueueTime Q, int id);
 
 void delIdFromQ(PrioQueueTime *Q, int id);
 // Id makanan/bahan ada di Q. Menghapus elemen id pertama yang muncul dari Q
+
+void timePass(PrioQueueTime *Q, int mnt);
+// time berkurang sebanyak mnt menit pada semua elmt di Q
+
+int keepPosTime(PrioQueueTime *Q);
+// menyimpan elmt yang memiliki time bernilai positif (menghapus elmt yang <= 0)
+// mengembalikan list of int yang berisi id apa saja yang dihapus
+
+void notif(int listId[], boolean inventory);
+// mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai
+// argumen inventory bernilai true untuk list bahan/makanan kadaluarsa dan 
+// bernilai negatif untuk list delivery bahan sampai   
+
 #endif
