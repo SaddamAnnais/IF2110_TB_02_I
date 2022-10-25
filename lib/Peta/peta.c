@@ -1,5 +1,5 @@
 #include "peta.h"
-#include "../parser/wordmachine.h"
+#include <stdio.h>
 
 /* Konstruktor pembentuk peta */
 void createPeta(Peta* p, int nRow, int nCol)
@@ -10,18 +10,18 @@ void createPeta(Peta* p, int nRow, int nCol)
   IdxType i, j;
 
   /* ALGORITMA */
-  createMatrix(nRow+2, nCol+2, &MATRIX(*p));
-  for(i = 0; i < ROW_EFF(MATRIX(*p)); i++) {
-    for(j = 0; j < COL_EFF(MATRIX(*p)); j++) {
+  createMatrix(nRow+2, nCol+2, p);
+  for(i = 0; i < ROW_EFF(*p); i++) {
+    for(j = 0; j < COL_EFF(*p); j++) {
       if(isBatas(*p, i, j)) {
-        ELMT(MATRIX(*p), i, j) = '*';
+        ELMT(*p, i, j) = '*';
       }
     }
   }
 }
 
 /* Membaca peta */
-void readPeta(Peta* p, char* filename)
+void readPeta(Peta* p, char* filename, Simulator* s)
 // I.S. Peta p sembarang
 // F.S. Peta p sesuai dengan konfigurasi
 {
@@ -47,13 +47,13 @@ void readPeta(Peta* p, char* filename)
     } else {
       for(i = 0; i < currentWord.Length; i++) {
         if(currentWord.TabWord[i] == '#') {
-          ELMT(MATRIX(*p), count-1, i+1) = ' ';
+          ELMT(*p, count-1, i+1) = ' ';
         } else if(currentWord.TabWord[i] == 'S') {
-          ELMT(MATRIX(*p), count-1, i+1) = 'S';
-          //TODO : Sesuaikan dengan ADT Simulator
-          createPoint(&POSISI(*p), i+1, count-1);
+          ELMT(*p, count-1, i+1) = 'S';
+          ABSIS(Lokasi(*s)) = i;
+          ORDINAT(Lokasi(*s)) = count-2; 
         } else {
-          ELMT(MATRIX(*p), count-1, i+1) = currentWord.TabWord[i];
+          ELMT(*p, count-1, i+1) = currentWord.TabWord[i];
         }
       }
     }
@@ -70,7 +70,7 @@ void displayPeta(Peta p)
   /* KAMUS LOKAL */
 
   /* ALGORITMA */
-  displayMatrix(MATRIX(p));
+  displayMatrix(p);
 }
 
 /* Operasi-operasi pada peta */
@@ -81,7 +81,7 @@ boolean isBatas(Peta p, IdxType i, IdxType j)
   /* KAMUS LOKAL */
 
   /* ALGORITMA */
-  return i == 0 || j == 0 || i == (ROW_EFF(MATRIX(p))-1) || j == (COL_EFF(MATRIX(p))-1);
+  return i == 0 || j == 0 || i == (ROW_EFF(p)-1) || j == (COL_EFF(p)-1);
 }
 
 /* Menghasilkan true jika index i dan j merupakan koordinat yang valid untuk simulator */
@@ -91,12 +91,12 @@ boolean isCoordSimValid(Peta p, IdxType i, IdxType j)
   char element;
 
   /* ALGORITMA */
-  element = ELMT(MATRIX(p), i, j);
+  element = ELMT(p, i, j);
   return element == ' ';
 }
 
 /* Menggerakkan simulator ke arah utara */
-void moveNorth(Peta* p)
+void moveNorth(Peta* p, Simulator* s)
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi (x, y-1)
 {
@@ -104,21 +104,20 @@ void moveNorth(Peta* p)
   int newX, newY;
 
   /* ALGORITMA */
-  // TODO: Sesuaikan dengan ADT Simulator
-  newX = ABSIS(POSISI(*p));
-  newY = ORDINAT(POSISI(*p)) - 1;
+  newX = ABSIS(Lokasi(*s)) + 1;
+  newY = ORDINAT(Lokasi(*s));
   if(isCoordSimValid(*p, newY, newX)) {
-    ELMT(MATRIX(*p), ORDINAT(POSISI(*p)), ABSIS(POSISI(*p))) = ' ';
-    ELMT(MATRIX(*p), newY, newX) = 'S';
-    ABSIS(POSISI(*p)) = newX;
-    ORDINAT(POSISI(*p)) = newY;
+    ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
+    ELMT(*p, newY, newX) = 'S';
+    ABSIS(Lokasi(*s)) = newX-1;
+    ORDINAT(Lokasi(*s)) = newY-1;
   } else {
     printf("Pergerakkan tidak valid karena terdapat rintangan\n");
   }
 }
 
 /* Menggerakkan simulator ke arah timur */
-void moveEast(Peta* p)
+void moveEast(Peta* p, Simulator* s)
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi (x+1, y)
 {
@@ -126,21 +125,20 @@ void moveEast(Peta* p)
   int newX, newY;
 
   /* ALGORITMA */
-  // TODO: Sesuaikan dengan ADT Simulator
-  newX = ABSIS(POSISI(*p)) + 1;
-  newY = ORDINAT(POSISI(*p));
+  newX = ABSIS(Lokasi(*s)) + 2;
+  newY = ORDINAT(Lokasi(*s)) + 1;
   if(isCoordSimValid(*p, newY, newX)) {
-    ELMT(MATRIX(*p), ORDINAT(POSISI(*p)), ABSIS(POSISI(*p))) = ' ';
-    ELMT(MATRIX(*p), newY, newX) = 'S';
-    ABSIS(POSISI(*p)) = newX;
-    ORDINAT(POSISI(*p)) = newY;
+    ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
+    ELMT(*p, newY, newX) = 'S';
+    ABSIS(Lokasi(*s)) = newX-1;
+    ORDINAT(Lokasi(*s)) = newY-1;
   } else {
     printf("Pergerakkan tidak valid karena terdapat rintangan\n");
   }
 }
 
 /* Menggerakkan simulator ke arah selatan */
-void moveSouth(Peta* p)
+void moveSouth(Peta* p, Simulator* s)
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi (x, y+1)
 {
@@ -149,20 +147,20 @@ void moveSouth(Peta* p)
 
   /* ALGORITMA */
   // TODO: Sesuaikan dengan ADT Simulator
-  newX = ABSIS(POSISI(*p));
-  newY = ORDINAT(POSISI(*p)) + 1;
+  newX = ABSIS(Lokasi(*s)) + 1;
+  newY = ORDINAT(Lokasi(*s)) + 2;
   if(isCoordSimValid(*p, newY, newX)) {
-    ELMT(MATRIX(*p), ORDINAT(POSISI(*p)), ABSIS(POSISI(*p))) = ' ';
-    ELMT(MATRIX(*p), newY, newX) = 'S';
-    ABSIS(POSISI(*p)) = newX;
-    ORDINAT(POSISI(*p)) = newY;
+    ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
+    ELMT(*p, newY, newX) = 'S';
+    ABSIS(Lokasi(*s)) = newX-1;
+    ORDINAT(Lokasi(*s)) = newY-1;
   } else {
     printf("Pergerakkan tidak valid karena terdapat rintangan\n");
   }
 }
 
 /* Menggerakkan simulator ke arah barat */
-void moveWest(Peta* p)
+void moveWest(Peta* p, Simulator* s)
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi (x-1, y)
 {
@@ -171,14 +169,83 @@ void moveWest(Peta* p)
 
   /* ALGORITMA */
   // TODO: Sesuaikan dengan ADT Simulator
-  newX = ABSIS(POSISI(*p)) - 1;
-  newY = ORDINAT(POSISI(*p));
+  newX = ABSIS(Lokasi(*s));
+  newY = ORDINAT(Lokasi(*s)) + 1;
   if(isCoordSimValid(*p, newY, newX)) {
-    ELMT(MATRIX(*p), ORDINAT(POSISI(*p)), ABSIS(POSISI(*p))) = ' ';
-    ELMT(MATRIX(*p), newY, newX) = 'S';
-    ABSIS(POSISI(*p)) = newX;
-    ORDINAT(POSISI(*p)) = newY;
+    ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
+    ELMT(*p, newY, newX) = 'S';
+    ABSIS(Lokasi(*s)) = newX-1;
+    ORDINAT(Lokasi(*s)) = newY-1;
   } else {
     printf("Pergerakkan tidak valid karena terdapat rintangan\n");
   }
 }
+
+/* Menghasilkan true jika simulator berada di dekat x */
+boolean isNear(Peta p, Simulator s, char c)
+{
+  /* KAMUS LOKAL */
+  IdxType i, j;
+  int x, y;
+
+  /* ALGORITMA */
+  x = ABSIS(Lokasi(s)) + 1;
+  y = ORDINAT(Lokasi(s)) + 1;
+  for(i = y-1; i <= y+1; i++) {
+    for(j = x-1; j <= x+1; j++) {
+      if(ELMT(p, i, j) == c) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/* Menghasilkan true jika simulator berada di dekat telepon */
+boolean isNearTelepon(Peta p, Simulator s)
+{
+  /* KAMUS LOKAL */
+
+  /* ALGORITMA */
+  return isNear(p, s, 'T');
+}
+
+/* Menghasilkan true jika simulator berada di dekat tempat mixing */
+boolean isNearMixing(Peta p, Simulator s)
+{
+  /* KAMUS LOKAL */
+
+  /* ALGORITMA */
+  return isNear(p, s, 'M');
+}
+
+
+/* Menghasilkan true jika simulator berada di dekat tempat memotong */
+boolean isNearMemotong(Peta p, Simulator s)
+{
+  /* KAMUS LOKAL */
+
+  /* ALGORITMA */
+  return isNear(p, s, 'C');
+}
+
+
+/* Menghasilkan true jika simulator berada di dekat tempat menggoreng */
+boolean isNearMenggoreng(Peta p, Simulator s)
+{
+  /* KAMUS LOKAL */
+
+  /* ALGORITMA */
+  return isNear(p, s, 'F');
+}
+
+
+/* Menghasilkan true jika simulator berada di dekat tempat merebus */
+boolean isNearMerebus(Peta p, Simulator s)
+{
+  /* KAMUS LOKAL */
+
+  /* ALGORITMA */
+  return isNear(p, s, 'B');
+}
+
