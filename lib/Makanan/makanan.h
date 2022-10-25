@@ -5,8 +5,8 @@
 
 #include "../utility/boolean.h"
 #include "../Time/time.h"
-#include "../ListDinamis/listdin.h"
 #include "../parser/wordmachine.h"
+#include "../ListStatik/liststatik.h"
 //#include "../lokasi.h" (yg ini tgg nanti file lokasinya jadi)
 #include <stdio.h>
 
@@ -37,20 +37,15 @@ Makanan CreateMakanan(int id, Word nama, Lokasi aksi, TIME kadaluarsa, int pengi
 
 
 /* BACA/TULIS */
-void BacaMakanan(Makanan *M, ListDin daftarLokasi);
+void BacaMakanan(Makanan *M);
 /* Membaca ID, lokasi aksi, serta waktu kadaluarsa
    dan membentuk Makanan M berdasarkan nilai tersebut */
 /* Semua komponen ditulis dalam 1 baris, dipisahkan 1 spasi */
 /* I.S. : M sembarang */
 /* F.S. : M terdefinisi */
 
-void TulisMakanan(Makanan M);
+void DisplayMakanan(Makanan M);
 /* I.S. : M terdefinisi */
 /* F.S. : M tertulis di layar sesuai dengan format */
-
-void WriteMakanan(Makanan M);
-/* I.S. : M terdefinisi */
-/* F.S. : M tertulis di layar sesuai dengan format */
-
 
 #endif

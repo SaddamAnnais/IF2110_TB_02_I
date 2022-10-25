@@ -17,7 +17,7 @@ Makanan CreateMakanan(int id, Word nama, Lokasi aksi, TIME kadaluarsa, int pengi
 }
 
 /* BACA/TULIS */
-void BacaMakanan(Makanan *M, ListDin daftarLokasi)
+void BacaMakanan(Makanan *M)
 /* Membaca ID, lokasi aksi, serta waktu kadaluarsa
    dan membentuk Makanan M berdasarkan nilai tersebut */
 /* Semua komponen ditulis dalam 1 baris, dipisahkan 1 spasi */
