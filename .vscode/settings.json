@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "boolean.h": "c",
-    "peta.h": "c"
+    "peta.h": "c",
+    "stdio.h": "c"
   }
 }
