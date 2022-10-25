@@ -17,10 +17,7 @@ int main() {
     
     while (!EndWord) {
         printf("%d ", isWordEq(w2, currentWord));
-        printWord(currentWord);
-
-        ADVWORD();
-    } 
+        printf("%d\n", wordToInt(currentWord));
 
     return 0;
 }

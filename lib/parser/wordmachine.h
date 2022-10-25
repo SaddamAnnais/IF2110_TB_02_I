@@ -20,19 +20,24 @@ typedef struct
 extern boolean EndWord;
 extern Word currentWord;
 
-void IgnoreBlanks();
-/* Mengabaikan satu atau beberapa BLANK
+void IgnoreBlanksNewLine();
+/* Mengabaikan BLANK atau NEWLINE
    I.S. : currentChar sembarang
    F.S. : currentChar ≠ BLANK atau currentChar = MARK */
 
 void STARTWORD();
-/* I.S. : currentChar sembarang
-   F.S. : EndWord = true, dan currentChar = MARK;
-          atau EndWord = false, currentWord adalah kata yang sudah diakuisisi,
-          currentChar karakter pertama sesudah karakter terakhir kata */
+/* Proses : membaca dari terminal
+   I.S.  currentChar sembarang
+   F.S.  EndWord = true, dan currentChar = MARK;
+         atau EndWord = false, currentWord adalah kata yang sudah diakuisisi,
+         currentChar karakter pertama sesudah karakter terakhir kata */
 
 void STARTWORDFILE(char *filename);
-// Memulai membaca string dari file menjadi word
+/* Proses : membaca dari file txt
+   I.S.  currentChar sembarang
+   F.S.  EndWord = true, dan currentChar = MARK;
+         atau EndWord = false, currentWord adalah kata yang sudah diakuisisi,
+         currentChar karakter pertama sesudah karakter terakhir kata */
 
 void ADVWORD();
 /* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi
@@ -50,9 +55,12 @@ void CopyWord();
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
 boolean isWordEq(Word w1, Word w2);
-// Apakah word sama atau tidak. Mengembalikan true jika word sama        
+/* Mengembalikan nilai true jika w1 dan w2 adalah sama */        
 
 void printWord(Word w);
-// meng output word  
+/* Mengoutput w ke layar*/
+
+int wordToInt(Word w);
+/* Merubah sebuah word menjadi integer kemudian mengembalikannya */
 
 #endif
