@@ -3,8 +3,7 @@
 
 #include <stdio.h>
 #include "simulator.h"
-#include "../parser/charmachine.c"
-#include "../parser/wordmachine.c"
+#include "../parser/wordmachine.h"
 
 int main(){
     STARTWORD();

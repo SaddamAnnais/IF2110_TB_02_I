@@ -6,17 +6,18 @@
 
 #include "../ADT Point/point.h"
 #include "../parser/wordmachine.h"
+#include "../Inventory/inventory.h"
 
 typedef struct {
     Word namaPengguna; /* nama pengguna Simulator */
     Point Lokasi; /* lokasi Simulator di peta saat ini */
-    //Inventory I; /* inventory makanan yang disimpan */
+    Inventory I; /* inventory makanan yang disimpan */
 } Simulator;
 
 /* Definisi akses dengan Selektor : Set dan Get */
 #define Nama(S) (S).namaPengguna
 #define Lokasi(S) (S).Lokasi
-//#define Inventory(S) (S).I
+#define Inventory(S) (S).I
 
 /* ************ Prototype ************ */
 /* *** KONSTRUKTOR *** */
