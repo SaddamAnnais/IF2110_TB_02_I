@@ -14,50 +14,46 @@
 /* Definisi elemen dan address */
 typedef struct {
     int time;  /* dalam satuan menit */
-    int id;  /* elemen makanan sementara berupa char, akan diganti dengan ADT Makanan*/
+    int id;    /* elemen makanan sementara berupa char, akan diganti dengan ADT Makanan*/
 } infotype;
 
-typedef int address;   /* indeks tabel */
-/* Contoh deklarasi variabel bertype PrioQueueTime : */
 /* Versi I : tabel dinamik, Head dan Tail eksplisit, ukuran disimpan */
 typedef struct {
     infotype * T;   /* tabel penyimpan elemen */
-    address HEAD;  /* alamat elemen pertama */
-    address TAIL;  /* alamat elemen terakhir */
+    int HEAD;  /* alamat elemen pertama */
+    int TAIL;  /* alamat elemen terakhir */
     int MaxEl;     /* Max elemen queue */
 } PrioQueueTime;
 /* Definisi PrioQueueTime kosong: HEAD=Nil; TAIL=Nil. */
-/* Catatan implementasi: T[0] tidak pernah dipakai */
 
 /* ********* AKSES (Selektor) ********* */
 /* Jika e adalah infotype dan Q adalah PrioQueueTime, maka akses elemen : */
 #define Time(e)     (e).time    // time infoType
 #define Id(e)       (e).id      // id infoType
-#define Head(Q)     (Q).HEAD    // index head
-#define Tail(Q)     (Q).TAIL    // index tail
-#define InfoHead(Q) (Q).T[(Q).HEAD]     // info head
-#define InfoTail(Q) (Q).T[(Q).TAIL]     // info tail
-#define MaxEl(Q)    (Q).MaxEl   // max elemen yang ditampung
-#define Elmt(Q,i)   (Q).T[(i)]  // get Elmt index i dari q
-#define Buffer(Q)   (Q).T       // buffer dari Q (tipe data InfoType)
+#define HeadQ(Q)     (Q).HEAD    // index head
+#define TailQ(Q)     (Q).TAIL    // index tail
+#define InfoHeadQ(Q) (Q).T[(Q).HEAD]     // info head
+#define InfoTailQ(Q) (Q).T[(Q).TAIL]     // info tail
+#define MaxElQ(Q)    (Q).MaxEl   // max elemen yang ditampung
+#define ElmtQ(Q,i)   (Q).T[(i)]  // get Elmt index i dari q
+#define BufferQ(Q)   (Q).T       // buffer dari Q (tipe data InfoType)
 
 /* ********* Prototype ********* */
-boolean isEmpty (PrioQueueTime Q);
-/* Mengirim true jika Q kosong: lihat definisi di atas */
-boolean isFull (PrioQueueTime Q);
+boolean isEmptyQ (PrioQueueTime Q);
+/* Mengirim true jika Q kosong. Head = Nil dan Tail = Nil */
+boolean isFullQ (PrioQueueTime Q);
 /* Mengirim true jika tabel penampung elemen Q sudah penuh */
 /* yaitu mengandung elemen sebanyak MaxEl */
-int NBElmt (PrioQueueTime Q);
+int NBElmtQ (PrioQueueTime Q);
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika Q kosong. */
 
 /* *** Kreator *** */
-void makeEmpty (PrioQueueTime * Q, int Max);
+void makeEmptyQ (PrioQueueTime * Q, int Max);
 /* I.S. sembarang */
-/* F.S. Sebuah Q kosong terbentuk dan salah satu kondisi sbb: */
-/* Jika alokasi berhasil, Tabel memori dialokasi berukuran Max */
+/* F.S. Sebuah Q kosong terbentuk. Tabel memori dialokasi berukuran Max */
 
 /* *** Destruktor *** */
-void deAlokasi(PrioQueueTime * Q);
+void deAlokasiQ(PrioQueueTime * Q);
 /* Proses: Mengembalikan memori Q */
 /* I.S. Q pernah dialokasi */
 /* F.S. Q menjadi tidak terdefinisi lagi, MaxEl(Q) diset 0 */
@@ -75,38 +71,53 @@ void dequeue (PrioQueueTime * Q, infotype * X);
 Index head tetap di 0 dan index tail = tail - 1. Mungkin menjadi Q kosong*/
 
 /* Operasi Tambahan */
-void printPrioQueue (PrioQueueTime Q);
+void printPrioQ (PrioQueueTime Q);
 /* Mencetak isi queue Q ke layar */
 /* I.S. Q terdefinisi, mungkin kosong */
 /* F.S. Q tercetak ke layar dengan format:
 <id-0, time-0>; <id-1, time-1>; ... 
 */
 
-void setInfotype(infotype *val, int id, int time);
-// set elemen infotype
+void setInfotypeQ(infotype *val, int id, int time);
+/* I.S. val sembarang*/
+/* F.S. val terdefinisi dengan id dan time sesuai input*/
+
 
 void growPrioQueue(PrioQueueTime *Q, int num);
-// ruang penyimpanan pada Q bertambah sebesar num
+/* Proses: Ruang penyimpanan pada Q bertambah sebesar num */
+/* I.S. Q terdefinisi dengan ukuran tabel penyimpanan sebesar MaxEl*/
+/* F.S. Q terdefinisi dengan ukuran tabel penyimpanan sebesar MaxEl + num*/
+
 
 void shrinkPrioQueue(PrioQueueTime *Q, int num);
-// ruang penyimpanan pada Q berkurang sebesar num
+/* Proses: Ruang penyimpanan pada Q berkurang sebesar num */
+/* I.S. Q terdefinisi dengan ukuran tabel penyimpanan sebesar MaxEl*/
+/* F.S. Q terdefinisi dengan ukuran tabel penyimpanan sebesar MaxEl - num*/
 
 boolean isIdInQ(PrioQueueTime Q, int id);
-// menghasilkan true jika suatu id makanan/bahan berada di Q 
+/* Menghasilkan true jika suatu id makanan/bahan berada di Q */ 
 
 void delIdFromQ(PrioQueueTime *Q, int id);
-// Id makanan/bahan ada di Q. Menghapus elemen id pertama yang muncul dari Q
+/* Proses: elemen pertama yang memiliki id adalah id akan dihapus */
+/* I.S. Q terdefinisi, terdapat elemen yang memiliki id adalah id*/
+/* F.S. elemen pertama yang memiliki id adalah id dihapus dari Q*/
 
-void timePass(PrioQueueTime *Q, int mnt);
-// time berkurang sebanyak mnt menit pada semua elmt di Q
+void timePassQ(PrioQueueTime *Q, int mnt);
+/* Proses: setiap elemen time akan berkurang sebesar mnt */
+/* I.S. Q terdefinisi*/
+/* F.S. semua time elemen berkurang sebesar mnt*/
 
-int keepPosTime(PrioQueueTime *Q);
-// menyimpan elmt yang memiliki time bernilai positif (menghapus elmt yang <= 0)
-// mengembalikan list of int yang berisi id apa saja yang dihapus
+int *listIdNotPos(PrioQueueTime Q);
+/* Mengembalikan array yang berisi list dari elemen yang memiliki time <=0*/
 
-void notif(int listId[], boolean inventory);
-// mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai
-// argumen inventory bernilai true untuk list bahan/makanan kadaluarsa dan 
-// bernilai negatif untuk list delivery bahan sampai   
+void keepPosTimeQ(PrioQueueTime *Q);
+/* Proses: setiap elemen time <= 0 akan dihapus */
+/* I.S. Q terdefinisi*/
+/* F.S. semua elemen time lebih besar dari 0*/
+
+void notifQ(int listId[], boolean inventory);
+/* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
+/* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
+/* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/
 
 #endif

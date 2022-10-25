@@ -5,14 +5,15 @@ int main () {
     PrioQueueTime q, q1;
     infotype val1, val2, val3, val4, val5;
     infotype dump;
-    setInfotype(&val1, 20, 1);setInfotype(&val2, 21, 2);
-    setInfotype(&val3, 22, 1);setInfotype(&val4, 23, 3);
-    setInfotype(&val5, 19, 7);
+    int *arr1, *arr2;
+    setInfotypeQ(&val1, 20, 1);setInfotypeQ(&val2, 21, 2);
+    setInfotypeQ(&val3, 22, 1);setInfotypeQ(&val4, 23, 3);
+    setInfotypeQ(&val5, 19, 7);
 
     int nEl = 3;
 
-    makeEmpty(&q, nEl);
-    printf("Kosong?: %d\n", isEmpty(q));
+    makeEmptyQ(&q, nEl);
+    printf("Kosong?: %d\n", isEmptyQ(q));
 
     //printPrioQueue(q);
     for (int i = 0; i<5; i++) {
@@ -21,20 +22,42 @@ int main () {
         enqueue(&q, val3);
         enqueue(&q, val4);
     }
-    printPrioQueue(q);
-    printf("%d\n", MaxEl(q));
-    printf("%d\n", NBElmt(q));
+    printPrioQ(q);
+    printf("%d\n", MaxElQ(q));
+    printf("%d\n", NBElmtQ(q));
     printf("%d\n", isIdInQ(q, 21));
     
-    for (int i = 0; i<10; i++) {
+    for (int i = 0; i<4; i++) {
         dequeue(&q, &dump);
     }
 
-    printf("%d\n", MaxEl(q));
-    printf("%d\n", NBElmt(q));
+    printf("%d\n", MaxElQ(q));
+    printf("%d\n", NBElmtQ(q));
 
     enqueue(&q, val5);
-    printPrioQueue(q);
+    printPrioQ(q);
     delIdFromQ(&q, 19);
-    printPrioQueue(q);
+    printPrioQ(q);
+
+    timePassQ(&q, 2);
+    printPrioQ(q);
+
+    arr1 = listIdNotPos(q);
+    keepPosTimeQ(&q);
+    printPrioQ(q);
+
+    for (int i = 0; (i < 100) && arr1[i]!=Nil; i++)
+    {
+        printf("%d;", arr1[i]);
+    }
+    printf("\n");
+
+    notifQ(arr1, true);
+    notifQ(arr1, false);
+
+    makeEmptyQ(&q1, nEl);
+    enqueue(&q1, val1);
+    arr2 = listIdNotPos(q1); 
+    keepPosTimeQ(&q1);
+    notifQ(arr2, true);
 }

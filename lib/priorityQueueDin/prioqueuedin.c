@@ -3,52 +3,51 @@
 #include "prioqueuedin.h"
 
 /* ********* Prototype ********* */
-boolean isEmpty (PrioQueueTime Q)
+boolean isEmptyQ (PrioQueueTime Q)
 /* Mengirim true jika Q kosong, Q kosong memiliki index head Nil dan index tail Nil */
 {
-    return (Head(Q) == Nil && Tail(Q) == Nil);
+    return (HeadQ(Q) == Nil && TailQ(Q) == Nil);
 }
 
-boolean isFull (PrioQueueTime Q)
+boolean isFullQ (PrioQueueTime Q)
 /* Mengirim true jika tabel penampung elemen Q sudah penuh */
 /* yaitu mengandung elemen sebanyak MaxEl */
 {
-    return (NBElmt(Q) == MaxEl(Q));
+    return (NBElmtQ(Q) == MaxElQ(Q));
 }
 
-int NBElmt (PrioQueueTime Q)
+int NBElmtQ (PrioQueueTime Q)
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika Q kosong. */
 {
-    if (isEmpty(Q)) {
+    if (isEmptyQ(Q)) {
         return 0;
     }
     else {
-        return Tail(Q) - Head(Q) + 1;
+        return TailQ(Q) - HeadQ(Q) + 1;
     }
 }
 
 /* *** Kreator *** */
-void makeEmpty (PrioQueueTime * Q, int Max)
+void makeEmptyQ (PrioQueueTime * Q, int Max)
 /* I.S. sembarang */
-/* F.S. Sebuah Q kosong terbentuk dan salah satu kondisi sbb: */
-/* Jika alokasi berhasil, Tabel memori dialokasi berukuran Max */
+/* F.S. Sebuah Q kosong terbentuk. Tabel memori dialokasi berukuran Max */
 {
-    Head(*Q) = Nil;
-    Tail(*Q) = Nil;
-    Buffer(*Q) = (infotype*)malloc(Max * sizeof(infotype)); // Alokasi buffer
-    MaxEl(*Q) = Max;
+    HeadQ(*Q) = Nil;
+    TailQ(*Q) = Nil;
+    BufferQ(*Q) = (infotype*)malloc(Max * sizeof(infotype)); // Alokasi buffer
+    MaxElQ(*Q) = Max;
 }
 
 /* *** Destruktor *** */
-void deAlokasi(PrioQueueTime * Q)
+void deAlokasiQ(PrioQueueTime * Q)
 /* Proses: Mengembalikan memori Q */
 /* I.S. Q pernah dialokasi */
 /* F.S. Q menjadi tidak terdefinisi lagi, MaxEl(Q) diset 0 */
 {
-    MaxEl(*Q) = 0;
-    Head(*Q) = Nil;
-    Tail(*Q) = Nil;
-    free(Buffer(*Q));   // Dealokasi buffer
+    MaxElQ(*Q) = 0;
+    HeadQ(*Q) = Nil;
+    TailQ(*Q) = Nil;
+    free(BufferQ(*Q));   // Dealokasi buffer
 }
 
 /* *** Primitif Add/Delete *** */
@@ -58,24 +57,24 @@ void enqueue (PrioQueueTime * Q, infotype X)
 /* F.S. X disisipkan pada posisi yang tepat sesuai dengan prioritas */
 {
     int idxInsert = 0;
-    if (isEmpty(*Q)) {
-        Head(*Q) = 0;
-        Tail(*Q) = 0;
-        Elmt(*Q, 0) = X;
+    if (isEmptyQ(*Q)) {
+        HeadQ(*Q) = 0;
+        TailQ(*Q) = 0;
+        ElmtQ(*Q, 0) = X;
     }
     else {
-        if ((MaxEl(*Q)-NBElmt(*Q))<20) {
+        if ((MaxElQ(*Q)-NBElmtQ(*Q))<20) {
             growPrioQueue(Q, 20);
         }
 
-        while (idxInsert<=Tail(*Q) && Time(Elmt(*Q, idxInsert))<=Time(X)) {       // mendapatkan index untuk disisipkan
+        while (idxInsert<=TailQ(*Q) && Time(ElmtQ(*Q, idxInsert))<=Time(X)) {       // mendapatkan index untuk disisipkan
             idxInsert++;
         }
-        for (int i = Tail(*Q); i>=idxInsert; i--) {  // menggeser elemen ke kanan sebanyak 1 dari idxInsert
-            Elmt(*Q, i+1) = Elmt(*Q, i);
+        for (int i = TailQ(*Q); i>=idxInsert; i--) {  // menggeser elemen ke kanan sebanyak 1 dari idxInsert
+            ElmtQ(*Q, i+1) = ElmtQ(*Q, i);
         }
-        Elmt(*Q, idxInsert) = X; // memasukkan X di idxInsert
-        Tail(*Q)++;
+        ElmtQ(*Q, idxInsert) = X; // memasukkan X di idxInsert
+        TailQ(*Q)++;
     }
 }
 
@@ -85,83 +84,88 @@ void dequeue (PrioQueueTime * Q, infotype * X)
 /* F.S. Elemen head di keluarkan, semua elemen bergeser ke kiri 1. 
 Index head tetap di 0 dan index tail = tail - 1. Mungkin menjadi Q kosong*/
 {
-    *X = InfoHead(*Q);
-    if (NBElmt(*Q)==1) {
-        Head(*Q) = Nil;
-        Tail(*Q) = Nil;
+    *X = InfoHeadQ(*Q);
+    if (NBElmtQ(*Q)==1) {
+        HeadQ(*Q) = Nil;
+        TailQ(*Q) = Nil;
     }
     else {
-        if ((MaxEl(*Q)-NBElmt(*Q))>40) {
+        if ((MaxElQ(*Q)-NBElmtQ(*Q))>40) {
             shrinkPrioQueue(Q, 20);
         }
 
-        for (int i = 0; i<Tail(*Q); i++) {
-           Elmt(*Q, i) = Elmt(*Q, i+1);
+        for (int i = 0; i<TailQ(*Q); i++) {
+           ElmtQ(*Q, i) = ElmtQ(*Q, i+1);
         }
-        Tail(*Q)--;
+        TailQ(*Q)--;
     }
     
 }
 
 /* Operasi Tambahan */
-void printPrioQueue (PrioQueueTime Q)
+void printPrioQ (PrioQueueTime Q)
 /* Mencetak isi queue Q ke layar */
 /* I.S. Q terdefinisi, mungkin kosong */
 /* F.S. Q tercetak ke layar dengan format:
 <id-0, time-0>; <id-1, time-1>; ... 
 */
 {
-    if (!isEmpty(Q)) {
-        printf("<%d, %d>", Id(Elmt(Q, 0)), Time(Elmt(Q, 0)));
-        for (int i = 1; i<=Tail(Q); i++) {
-            printf("; <%d, %d>", Id(Elmt(Q, i)), Time(Elmt(Q, i)));
+    if (!isEmptyQ(Q)) {
+        printf("<%d, %d>", Id(ElmtQ(Q, 0)), Time(ElmtQ(Q, 0)));
+        for (int i = 1; i<=TailQ(Q); i++) {
+            printf("; <%d, %d>", Id(ElmtQ(Q, i)), Time(ElmtQ(Q, i)));
         }
     }
     printf("\n");
 }
 
-void setInfotype(infotype *val, int id, int time)
-// set elemen infotype
+void setInfotypeQ(infotype *val, int id, int time)
+/* I.S. val sembarang*/
+/* F.S. val terdefinisi dengan id dan time sesuai input*/
 {
     Time(*val) = time;
     Id(*val) = id;
 }
 
 void growPrioQueue(PrioQueueTime *Q, int num)
-// ruang penyimpanan pada Q bertambah sebesar num 
+/* Proses: Ruang penyimpanan pada Q bertambah sebesar num */
+/* I.S. Q terdefinisi dengan ukuran tabel penyimpanan sebesar MaxEl*/
+/* F.S. Q terdefinisi dengan ukuran tabel penyimpanan sebesar MaxEl + num*/
 {
     int i;
     PrioQueueTime tempQ;
 
     //printPrioQueue(*Q);
-    makeEmpty(&tempQ, MaxEl(*Q)+num);
+    makeEmptyQ(&tempQ, MaxElQ(*Q)+num);
     //printPrioQueue(*Q);
-    Head(tempQ) = Head(*Q);
-    Tail(tempQ) = (Tail(*Q)>MaxEl(tempQ)-1)?  MaxEl(tempQ)-1 :  Tail(*Q);
-    for (int i = 0; i<=Tail(tempQ); i++) {
-        Elmt(tempQ, i) = Elmt(*Q, i);
+    HeadQ(tempQ) = HeadQ(*Q);
+    TailQ(tempQ) = (TailQ(*Q)>MaxElQ(tempQ)-1)?  MaxElQ(tempQ)-1 :  TailQ(*Q);
+    for (int i = 0; i<=TailQ(tempQ); i++) {
+        ElmtQ(tempQ, i) = ElmtQ(*Q, i);
     }
 
-    deAlokasi(Q);
-    Buffer(*Q) = Buffer(tempQ);
-    MaxEl(*Q) = MaxEl(tempQ);
-    Head(*Q) = Head(tempQ);
-    Tail(*Q) = Tail(tempQ);
+    deAlokasiQ(Q);
+    BufferQ(*Q) = BufferQ(tempQ);
+    MaxElQ(*Q) = MaxElQ(tempQ);
+    HeadQ(*Q) = HeadQ(tempQ);
+    TailQ(*Q) = TailQ(tempQ);
 }
 
 void shrinkPrioQueue(PrioQueueTime *Q, int num)
-// ruang penyimpanan pada Q berkurang sebesar num 
+/* Proses: Ruang penyimpanan pada Q berkurang sebesar num */
+/* I.S. Q terdefinisi dengan ukuran tabel penyimpanan sebesar MaxEl*/
+/* F.S. Q terdefinisi dengan ukuran tabel penyimpanan sebesar MaxEl - num*/
 {
     growPrioQueue(Q, num*(-1));
 }
 
 boolean isIdInQ(PrioQueueTime Q, int id)
-// menghasilkan true jika suatu id makanan/bahan berada di Q
+/* Menghasilkan true jika suatu id makanan/bahan berada di Q */ 
 {
-    if (!isEmpty(Q)) {
-        for (int i = 0; i<=Tail(Q); i++) {
+    if (!isEmptyQ(Q)) {
+        for (int i = 0; i<=TailQ(Q); i++) {
             //printf("%d", Id(Elmt(Q, i)));
-            if (Id(Elmt(Q, i))==id) {
+            if (Id(ElmtQ(Q, i))==id) {
                 return true;
             }
         }
@@ -174,52 +178,73 @@ boolean isIdInQ(PrioQueueTime Q, int id)
 
 
 void delIdFromQ(PrioQueueTime *Q, int id)
-// Id makanan/bahan ada di Q. Menghapus elemen id pertama yang muncul dari Q
+/* Proses: elemen pertama yang memiliki id adalah id akan dihapus */
+/* I.S. Q terdefinisi, terdapat elemen yang memiliki id adalah id*/
+/* F.S. elemen pertama yang memiliki id adalah id dihapus dari Q*/
 {
     int idx=0;
-    while (id != Id(Elmt(*Q, idx))) {     // mendapatkan index dari id dalam Q
+    while (id != Id(ElmtQ(*Q, idx))) {     // mendapatkan index dari id dalam Q
         idx++;
     }
     //printf("%d", idx);
 
-    for (int i = idx; i<Tail(*Q); i++) {
-        Elmt(*Q, i) = Elmt(*Q, i+1);
+    for (int i = idx; i<TailQ(*Q); i++) {
+        ElmtQ(*Q, i) = ElmtQ(*Q, i+1);
     }
-    Tail(*Q)--;
+    TailQ(*Q)--;
 }
 
-void timePass(PrioQueueTime *Q, int mnt)
-// time berkurang sebanyak mnt menit pada semua elmt di Q
+void timePassQ(PrioQueueTime *Q, int mnt)
+/* Proses: setiap elemen time akan berkurang sebesar mnt */
+/* I.S. Q terdefinisi*/
+/* F.S. semua time elemen berkurang sebesar mnt*/
 {
-    for (int i = 0; i<=Tail(*Q); i++) {
-        Time(Elmt(*Q, i)) = Time(Elmt(*Q, i)) - mnt;
+    for (int i = 0; i<=TailQ(*Q); i++) {
+        Time(ElmtQ(*Q, i)) = Time(ElmtQ(*Q, i)) - mnt;
     }
 }
 
-int keepPosTime(PrioQueueTime *Q)
-// menyimpan elmt yang memiliki time bernilai positif (menghapus elmt yang <= 0)
-// mengembalikan list of int yang berisi id apa saja yang dihapus
+int *listIdNotPos(PrioQueueTime Q)
+/* Mengembalikan array yang berisi list dari elemen yang memiliki time <=0*/
 {
-    int listId[100], idx=0;
+    static int listId[100], idx=0;
+
     for (int i = 0; i<100; i++) {
         listId[i] = Nil;
     }
 
-    for (int i = 0; i<Tail(*Q); i++) {
-        if (Time(Elmt(*Q, i))<=0) {
-            listId[idx] = Id(Elmt(*Q, i));
-            delIdFromQ(Q, Id(Elmt(*Q, i)));
-            i = 0;           
+    for (int i = 0; i<=TailQ(Q); i++) {
+        if (Time(ElmtQ(Q, i)) <= 0) {
+            listId[idx] = Id(ElmtQ(Q, i));
+            idx++;
         }
     }
-
     return listId;
 }
 
-void notif(int listId[], boolean inventory)
-// mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai
-// argumen inventory bernilai true untuk list bahan/makanan kadaluarsa dan 
-// bernilai negatif untuk list delivery bahan sampai   
+void keepPosTimeQ(PrioQueueTime *Q)
+/* Proses: setiap elemen time <= 0 akan dihapus */
+/* I.S. Q terdefinisi*/
+/* F.S. semua elemen time lebih besar dari 0*/
+{
+    static int listId[100], i=0;
+    for (int i = 0; i<100; i++) {
+        listId[i] = Nil;
+    }
+
+    do {
+        if(Time(ElmtQ(*Q, i))<=0) {
+            delIdFromQ(Q, Id(ElmtQ(*Q, i)));
+            i = -1;               
+        }
+        i++;
+    } while (i<=TailQ(*Q));
+}
+
+void notifQ(int listId[], boolean inventory)
+/* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
+/* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
+/* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/
 {
     printf("Notifikasi: ");
     if (listId[0]==Nil) {

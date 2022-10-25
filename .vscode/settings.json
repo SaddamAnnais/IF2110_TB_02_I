@@ -2,6 +2,7 @@
   "files.associations": {
     "boolean.h": "c",
     "peta.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "inventory.h": "c"
   }
 }
