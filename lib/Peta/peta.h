@@ -2,14 +2,16 @@
 #ifndef PETA_H
 #define PETA_H
 
-#include "matrix.h"
-#include "point.h"
-#include "boolean.h"
+#include "../ADT Matrix/matrix.h"
+#include "../ADT Point/point.h"
+#include "../utility/boolean.h"
 
 /* ADT Peta berupa matriks of char */
 typedef struct peta 
 {
   Matrix mem;     // Matrix tempat menyimpan peta
+
+  // TODO: Sesuaikan dengan ADT Simulator
   Point posisi;   // Posisi simulator yang sekarang
 } Peta;
 
@@ -20,10 +22,12 @@ void createPeta(Peta* p, int nRow, int nCol);
 
 /* Selektor */
 #define MATRIX(p) (p).mem       // Matrix tempat menyimpan peta
+
+// TODO: Sesuaikan dengan ADT Simulator
 #define POSISI(p) (p).posisi    // Posisi simulator yang sekarang
 
 /* Membaca peta */
-void readPeta(Peta* p);
+void readPeta(Peta* p, char* filename);
 // I.S. Peta p terdefinisi
 // F.S. Peta p sesuai dengan konfigurasi
 
@@ -32,8 +36,13 @@ void displayPeta(Peta p);
 // I.S. Peta p terdefinisi
 // F.S. Peta p ditampilkan di layar
 
+/* Operasi-operasi pada peta */
+
 /* Menghasilkan true jika index i dan j merupakan batas pada peta */
 boolean isBatas(Peta p, int i, int j);
+
+/* Menghasilkan true jika koordinat i dan j merupakan koordinat yang valid untuk simulator */
+boolean isCoordSimValid(Peta p, int i, int j);
 
 /* Menggerakkan simulator ke arah utara */
 void moveNorth(Peta* p);
