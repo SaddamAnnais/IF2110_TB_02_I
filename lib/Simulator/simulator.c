@@ -14,7 +14,7 @@ void CreateSimulator(Simulator *S, Word nama){
     Nama(*S) = nama;
     Lokasi(*S).x = -1;
     Lokasi(*S).y = -1;
-    Inventory(*S) = NULL; //CreateEmptyInventory
+    //Inventory(*S) = NULL; //CreateEmptyInventory
 }
 
 /* *** Kelompok Baca/Tulis *** */
