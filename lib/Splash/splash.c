@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-int main(void)
-{
+int splash(void){
+    // SPLASH SCREEN
     FILE *fptr = NULL;
  
-    if((fptr = fopen("image.txt","r")) == NULL){
-        printf("error opening image.txt\n");
+    if((fptr = fopen("./lib/Splash/splash.txt","r")) == NULL){
+        printf("error opening splash.txt\n");
         return 1;
     }
     
