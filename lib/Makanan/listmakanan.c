@@ -6,44 +6,12 @@
 void CreateListMakanan(ListMakanan *l)
 /* I.S. l sembarang */
 /* F.S. Terbentuk List l kosong dengan kapasitas CAPACITY */
-/* Proses: Inisialisasi semua ID makanan UNDEF_ID */
 {
-    /*KAMUS LOKAL*/
-    int i;
-    /*ALGORITMA*/
-    for (i = IDX_MIN; i < CAPACITY; i++){
-        ELMT(*l, i) = UNDEF_ID;
-    }
+    lenListMakanan(*l) = 0;
 }
-int listLength(ListMakanan l)
-/* Mengirimkan banyaknya elemen efektif List */
-/* Mengirimkan nol jika List kosong */  
-{
-    /*KAMUS LOKAL*/
-    int i = 0;
-    /*ALGORITMA*/
- 
-    while (ELMT(l, i) != MARK) {
-        i++;
-    }
-    return i;
-}
-
 /* ********** TEST KOSONG/PENUH ********** */
-/* *** Test List kosong *** */
-boolean isEmpty(ListStatik l)
-/* Mengirimkan true jika List l kosong, mengirimkan false jika tidak */
-{
-    return (listLength(l) == 0);
-}
-/* *** Test List penuh *** */
-boolean isFull(ListMakanan l)
-/* Mengirimkan true jika List l penuh, mengirimkan false jika tidak */
-{
-    return (ListMakanan(l) == CAPACITY);
-}
 
-void printList(ListStatik l)
+void printListMakanan(ListMakanan l)
 /* Proses : Menuliskan isi List dengan traversal, List ditulis di antara kurung 
    siku; antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan 
    karakter di depan, di tengah, atau di belakang, termasuk spasi dan enter */
@@ -52,14 +20,69 @@ void printList(ListStatik l)
 /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
 /* Jika List kosong : menulis [] */
 {
-    int i;
-    printf("[");
-    for (i = 0; i <= listLength(l) - 1; i++)
+    printf("List Makanan:\n");
+    printf("nama   -   durasi kadaluwarsa   -   aksi yang diperlukan   -   delivery time\n");
+
+    for (int i = 0; i <= lenListMakanan(l) - 1; i++)
     {
-        printf(ELMT(l, i));
-        if (i != listLength(l) - 1){
-            printf(",");
-        }
+        printf("       %d. ", i+1);
+        DisplayMakanan(ElmtListMakanan(l, i));
+        printf("\n");
     }
-    printf("]");
+}
+
+/* BACA/TULIS */
+void BacaMakanan(ListMakanan *l, char *filename)
+/* Membaca ID, lokasi aksi, serta waktu kadaluarsa
+   dan membentuk Makanan M berdasarkan nilai tersebut */
+/* Semua komponen ditulis dalam 1 baris, dipisahkan 1 spasi */
+/* I.S. : M sembarang */
+/* F.S. : M terdefinisi */
+{
+    /* KAMUS */
+    Makanan m;
+
+    CreateListMakanan(l);
+
+    Time kadaluarsa, pengiriman;
+    int hari = 0, jam = 0, menit = 0;
+
+    STARTWORDFILE(filename);
+    int N = wordToInt(currentWord);
+    ADVWORD();
+    /* ALGORITMA */
+
+    for (int i = 0; i<N; i++) {
+        ID(m) = wordToInt(currentWord);
+        ADVLINE();
+        
+        NAMA_MAKANAN(m) = currentWord;
+
+        ADVWORD();
+        hari = wordToInt(currentWord);
+        ADVWORD();
+        jam =  wordToInt(currentWord);
+        ADVWORD();
+        menit = wordToInt(currentWord);
+
+        createTime(&kadaluarsa, hari, jam, menit);
+        WAKTU_KADALUARSA(m) = kadaluarsa;
+
+        ADVWORD();
+        hari = wordToInt(currentWord);
+        ADVWORD();
+        jam =  wordToInt(currentWord);
+        ADVWORD();
+        menit = wordToInt(currentWord);
+
+        createTime(&pengiriman, hari, jam, menit);
+        LAMA_PENGIRIMAN(m) = pengiriman;
+
+        ADVWORD();
+        AKSI_MAKANAN(m) = currentWord;
+
+        ElmtListMakanan(*l, i) = m;
+        lenListMakanan(*l)++;
+        ADVWORD();
+    }
 }

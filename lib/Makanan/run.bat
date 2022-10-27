@@ -1,0 +1,1 @@
+gcc .\listmakanan.c .\makanan.c .\driver.c ..\parser\wordmachine.c ..\parser\charmachine.c ..\Time\time.c -o test

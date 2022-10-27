@@ -2,52 +2,18 @@
 #include "makanan.h"
 
 /*KONSTRUKTOR*/
-Makanan CreateMakanan(int id, Word nama, Lokasi aksi, TIME kadaluarsa, int pengiriman)
+Makanan CreateMakanan(int id, Word nama, Word aksi, Time kadaluarsa, Time pengiriman)
 /* Membentuk sebuah Makanan dari komponen-komponennya */
 {
     /*KAMUS*/
     Makanan M;
 
     /*ALGORITMA*/
-    ID(M) = UNDEF_ID;
+    ID(M) = id;
     NAMA_MAKANAN(M) = nama;
-    WAKTU_KADALUARSA(M) = UNDEF_TIME;
+    WAKTU_KADALUARSA(M) = kadaluarsa;
     AKSI_MAKANAN(M) = aksi;
-    LAMA_PENGIRIMAN(M) = UNDEF_TIME;  
-}
-
-/* BACA/TULIS */
-void BacaMakanan(Makanan *M)
-/* Membaca ID, lokasi aksi, serta waktu kadaluarsa
-   dan membentuk Makanan M berdasarkan nilai tersebut */
-/* Semua komponen ditulis dalam 1 baris, dipisahkan 1 spasi */
-/* I.S. : M sembarang */
-/* F.S. : M terdefinisi */
-{
-    /* KAMUS */
-    int i;
-
-    /* ALGORITMA */
-    advWordFile();
-    ID(*M) = wordToInt(currentWord);
-
-    advWordFile();
-    NAMA_MAKANAN(*M) = currentWord;
-
-    advWordFile();
-    WAKTU_KADALUARSA(*M) = wordToInt(currentWordFile);
-
-    advWordFile();
-    i = 0;
-    while ((i < listLength(daftarLokasi)) && (NAMA_LOKASI(ELMT(daftarLokasi, i)) != currentWordFile.contents[0])) {
-        i++; //"daftarLokasi namanya hrs sesuaiin func yg di file lokasi"
-    }
-    AKSI_MAKANAN(*M) = ELMT(daftarLokasi, i);
-
-    advWordFile();
-    LAMA_PENGIRIMAN(*M) = wordToInt(currentWord);
-
-    advCharFile(); /* Membaca baris berikutnya */
+    LAMA_PENGIRIMAN(M) = pengiriman;  
 }
 
 void DisplayMakanan(Makanan M)
@@ -57,9 +23,12 @@ void DisplayMakanan(Makanan M)
     /* KAMUS */
 
     /* ALGORITMA */
-    printfFile("%d %c", ID(M), NAMA_MAKANAN(M));
-    printfFile(WAKTU_KADALUARSA(M));
-    printfFile(AKSI_MAKANAN(M));
-    printfFile("%d", LAMA_PENGIRIMAN(M));
+    printWord(NAMA_MAKANAN(M));
+    printf("   -   ");
+    printf("%d Hari %d Jam %d Menit", Day(WAKTU_KADALUARSA(M)), Hour(WAKTU_KADALUARSA(M)), Minute(WAKTU_KADALUARSA(M)));
+    printf("   -   ");
+    printWord(AKSI_MAKANAN(M));
+    printf("   -   ");
+    printf("%d Hari %d Jam %d Menit", Day(LAMA_PENGIRIMAN(M)), Hour(LAMA_PENGIRIMAN(M)), Minute(LAMA_PENGIRIMAN(M)));
 
 }

@@ -15,6 +15,18 @@ void IgnoreBlanksNewLine()
     }
 }
 
+void IgnoreNewLine()
+{
+/* Mengabaikan NEWLINE saja
+   I.S. : currentChar sembarang
+   F.S. : currentChar ≠ NEWLINE atau currentChar = MARK */
+    while (currentChar == NEWLINE)
+    {
+        ADV();
+    }
+}
+
+
 void STARTWORD()
 {
 /* Proses : membaca dari terminal
@@ -61,7 +73,7 @@ void ADVWORD()
    F.S. : currentWord adalah kata terakhir yang sudah diakuisisi,
           currentChar adalah karakter pertama dari kata berikutnya, mungkin MARK
           Jika currentChar = MARK, EndWord = true.
-   Proses : Akuisisi kata menggunakan procedure SalinWord */
+   Proses : Akuisisi kata menggunakan procedure CopyWord */
     IgnoreBlanksNewLine();
     if (currentChar == MARK)
     {
@@ -74,6 +86,25 @@ void ADVWORD()
     }
 }
 
+void ADVLINE() 
+{
+/* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi
+   F.S. : currentWord adalah kata terakhir yang sudah diakuisisi,
+          currentChar adalah karakter pertama dari kata berikutnya, mungkin MARK
+          Jika currentChar = MARK, EndWord = true.
+   Proses : Akuisisi kata menggunakan procedure CopyLine */
+   IgnoreNewLine();
+    if (currentChar == MARK)
+    {
+        EndWord = true;
+    }
+    else
+    {
+        CopyLine();
+        IgnoreNewLine();
+    }   
+}
+
 void CopyWord()
 {
 /* Mengakuisisi kata, menyimpan dalam currentWord
@@ -84,6 +115,27 @@ void CopyWord()
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
     currentWord.Length = 0;
     while (currentChar != BLANK && currentChar != MARK && currentChar != NEWLINE)
+    {
+        if (currentWord.Length < NMax)
+        { // jika lebih akan terpotong
+            currentWord.TabWord[currentWord.Length++] = currentChar;
+            ADV();
+        }
+        else
+            break;
+    }
+}
+
+void CopyLine()
+{
+/* Mengakuisisi 1 line dalam txt, menyimpan dalam currentWord
+   I.S. : currentChar adalah karakter pertama dari kata
+   F.S. : currentWord berisi kata yang sudah diakuisisi;
+          currentChar = NEWLINE atau currentChar = MARK;
+          currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
+          Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
+    currentWord.Length = 0;
+    while (currentChar != MARK && currentChar != NEWLINE)
     {
         if (currentWord.Length < NMax)
         { // jika lebih akan terpotong
@@ -110,12 +162,23 @@ boolean isWordEq(Word w1, Word w2) {
     } 
 }
 
+boolean isWordStrEq(Word w, char *str) {
+/* Mengembalikan nilai true jika w dan str adalah sama */
+    for (int i = 0; i < w.Length; i++) {
+        if (w.TabWord[i] != str[i]) {
+            return false;
+        }
+    }
+    return true;
+} 
+
+
 void printWord(Word w) {
 /* Mengoutput w ke layar*/
    for (int i = 0; i<w.Length; i++) {
       printf("%c", w.TabWord[i]);
    }
-   printf("\n");
+   //printf("\n");
 }
 
 int wordToInt(Word w)
@@ -127,3 +190,4 @@ int wordToInt(Word w)
     }
     return res;
 }
+

@@ -8,6 +8,7 @@ int main() {
     while (!EndWord) {
         printf("%d ", isWordEq(w1, currentWord));
         printWord(currentWord);
+        printf("\n");
 
         ADVWORD();
     } 
@@ -15,9 +16,20 @@ int main() {
     STARTWORDFILE("test.txt");
     Word w2 = currentWord;
     
-    while (!EndWord) {
-        printf("%d ", isWordEq(w2, currentWord));
-        printf("%d\n", wordToInt(currentWord));
+    printWord(currentWord);
+    printf("\n");
 
+    printf("%d\n", wordToInt(currentWord));
+    ADVLINE();
+    printWord(currentWord);
+    printf("\n");
+    ADVWORD();
+    printWord(currentWord);
+    printf("\n");
+    ADVWORD();
+    printWord(currentWord);
+    printf("\n");
+
+    printf("%d", isWordStrEq(currentWord, "12"));
     return 0;
 }

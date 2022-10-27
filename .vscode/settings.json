@@ -4,5 +4,6 @@
     "peta.h": "c",
     "stdio.h": "c",
     "inventory.h": "c"
-  }
+  },
+  "C_Cpp.errorSquiggles": "Enabled"
 }

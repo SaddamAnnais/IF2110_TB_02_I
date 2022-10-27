@@ -25,6 +25,11 @@ void IgnoreBlanksNewLine();
    I.S. : currentChar sembarang
    F.S. : currentChar ≠ BLANK atau currentChar = MARK */
 
+void IgnoreNewLine();
+/* Mengabaikan NEWLINE saja
+   I.S. : currentChar sembarang
+   F.S. : currentChar ≠ NEWLINE atau currentChar = MARK */   
+
 void STARTWORD();
 /* Proses : membaca dari terminal
    I.S.  currentChar sembarang
@@ -46,6 +51,13 @@ void ADVWORD();
           Jika currentChar = MARK, EndWord = true.
    Proses : Akuisisi kata menggunakan procedure SalinWord */
 
+void ADVLINE();
+/* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi
+   F.S. : currentWord adalah kata terakhir yang sudah diakuisisi,
+          currentChar adalah karakter pertama dari kata berikutnya, mungkin MARK
+          Jika currentChar = MARK, EndWord = true.
+   Proses : Akuisisi kata menggunakan procedure CopyLine */
+
 void CopyWord();
 /* Mengakuisisi kata, menyimpan dalam currentWord
    I.S. : currentChar adalah karakter pertama dari kata
@@ -54,8 +66,19 @@ void CopyWord();
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
+void CopyLine();
+/* Mengakuisisi 1 line dalam txt, menyimpan dalam currentWord
+   I.S. : currentChar adalah karakter pertama dari kata
+   F.S. : currentWord berisi kata yang sudah diakuisisi;
+          currentChar = NEWLINE atau currentChar = MARK;
+          currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
+          Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
+
 boolean isWordEq(Word w1, Word w2);
-/* Mengembalikan nilai true jika w1 dan w2 adalah sama */        
+/* Mengembalikan nilai true jika w1 dan w2 adalah sama */ 
+
+boolean isWordStrEq(Word w, char *str);
+/* Mengembalikan nilai true jika w dan str adalah sama */ 
 
 void printWord(Word w);
 /* Mengoutput w ke layar*/

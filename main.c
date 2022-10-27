@@ -8,6 +8,9 @@
 #include "./lib/priorityQueueDin/prioqueuedin.c"
 #include "./lib/Peta/peta.c"
 #include "./lib/ADT Matrix/matrix.c"
+#include "./lib/Makanan/listMakanan.c"
+#include "./lib/Makanan/makanan.c"
+#include "./lib/Time/time.c"
 // #include "./lib/Makanan/makanan.c"
 
 int main(){
@@ -17,13 +20,8 @@ int main(){
     printf("START/EXIT?\n");
     STARTWORD();
     // Membandingkan input pengguna dengan kata "START"
-    boolean start = true;
-    char *s = "START";
-    for (int i = 0; i < 5; i++){
-        if(currentWord.TabWord[i] != s[i]){
-            start = false;
-        }
-    }
+    boolean start = isWordStrEq(currentWord, "START");
+    
     if (start) // Memulai program
     {
         printf("Masukkan nama pengguna: ");
@@ -31,7 +29,12 @@ int main(){
         Simulator S;
         CreateSimulator(&S, currentWord);
         Peta P;
-        readPeta(&P, "./konfigurasi/konfigPeta.txt", &S);
-        
+        ListMakanan l;
+        readPeta(&P, "./config/peta.txt", &S);
+        BacaMakanan(&l, "./config/makanan.txt");
+
+        displayPeta(P);
     }
+
+    return 0;
 }

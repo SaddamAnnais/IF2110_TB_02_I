@@ -1,0 +1,1 @@
+gcc .\wordmachine.c .\charmachine.c .\driver.c -o test

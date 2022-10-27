@@ -1,0 +1,17 @@
+3
+11
+Ayam Mentah
+1 0 0
+0 0 15
+Buy
+21
+Ayam Potong
+0 2 0
+0 0 0
+Chop
+10
+Tepung
+0 1 0
+0 0 30
+Buy
+.
