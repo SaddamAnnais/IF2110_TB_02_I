@@ -56,3 +56,9 @@ void decNMinute (Time *T, int N){
     if (MM<0) MM=0;
     *T = minuteToTime(MM);
 }
+
+void displayTime(Time T){
+    printf("Waktu: ");
+    tulisTime(T);
+    printf("\n");
+}

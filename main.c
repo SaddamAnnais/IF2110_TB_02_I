@@ -24,9 +24,11 @@ int main(){
     
     if (start) // Memulai program
     {
+        Simulator S;
+        Peta P;
+        Time T;
         printf("Masukkan nama pengguna: ");
         STARTWORD();
-        Simulator S;
         CreateSimulator(&S, currentWord);
         Peta P;
         ListMakanan l;
