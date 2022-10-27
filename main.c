@@ -8,6 +8,8 @@
 #include "./lib/priorityQueueDin/prioqueuedin.c"
 #include "./lib/Peta/peta.c"
 #include "./lib/ADT Matrix/matrix.c"
+#include "./lib/Time/time.c"
+
 // #include "./lib/Makanan/makanan.c"
 
 int main(){
@@ -26,11 +28,12 @@ int main(){
     }
     if (start) // Memulai program
     {
+        Simulator S;
+        Peta P;
+        Time T;
         printf("Masukkan nama pengguna: ");
         STARTWORD();
-        Simulator S;
         CreateSimulator(&S, currentWord);
-        Peta P;
         readPeta(&P, "./konfigurasi/konfigPeta.txt", &S);
         
     }

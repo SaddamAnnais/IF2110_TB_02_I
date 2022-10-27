@@ -1,4 +1,4 @@
-#include "boolean.h"
+#include "../utility/boolean.h"
 #include "time.h"
 #include <stdio.h>
 
@@ -55,4 +55,10 @@ void decNMinute (Time *T, int N){
     MM = timeToMinute(*T)-N;
     if (MM<0) MM=0;
     *T = minuteToTime(MM);
+}
+
+void displayTime(Time T){
+    printf("Waktu: ");
+    tulisTime(T);
+    printf("\n");
 }
