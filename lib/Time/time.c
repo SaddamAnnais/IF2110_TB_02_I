@@ -1,8 +1,8 @@
-#include "../utility/boolean.h"
 #include "time.h"
 #include <stdio.h>
-#include "../Inventory/inventory.h"
-#include "../Delivery/delivery.h"
+#include "../priorityQueueDin/prioqueuedin.h"
+#include "../parser/charmachine.h"
+#include "../parser/wordmachine.h"
 
 /* *** Konstruktor: Membentuk sebuah TIME dari komponen-komponennya *** */
 void createTime (Time * T, int DD, int HH, int MM){

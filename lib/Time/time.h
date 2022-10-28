@@ -2,6 +2,8 @@
 #define TIME_H
 
 #include "../utility/boolean.h"
+#include "../Inventory/inventory.h"
+#include "../Delivery/delivery.h"
 
 /* *** Definisi TYPE TIME <DD:HH:MM> *** */
 typedef struct { 

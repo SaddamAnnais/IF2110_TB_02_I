@@ -21,7 +21,7 @@ void printListMakanan(ListMakanan l)
 /* Jika List kosong : menulis [] */
 {
     printf("List Makanan:\n");
-    printf("nama   -   durasi kadaluwarsa   -   aksi yang diperlukan   -   delivery time\n");
+    printf("        (nama   -   durasi kadaluwarsa   -   aksi yang diperlukan   -   delivery time   -   lama pembuatan)\n");
 
     for (int i = 0; i <= lenListMakanan(l) - 1; i++)
     {
@@ -80,6 +80,9 @@ void BacaMakanan(ListMakanan *l, char *filename)
 
         ADVWORD();
         AKSI_MAKANAN(m) = currentWord;
+
+        ADVWORD();
+        DURASI_AKSI(m) = wordToInt(currentWord);
 
         ElmtListMakanan(*l, i) = m;
         lenListMakanan(*l)++;

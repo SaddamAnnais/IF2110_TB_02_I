@@ -2,7 +2,7 @@
 #include "makanan.h"
 
 /*KONSTRUKTOR*/
-Makanan CreateMakanan(int id, Word nama, Word aksi, Time kadaluarsa, Time pengiriman)
+Makanan CreateMakanan(int id, Word nama, Word aksi, Time kadaluarsa, Time pengiriman, int durasi_aksi)
 /* Membentuk sebuah Makanan dari komponen-komponennya */
 {
     /*KAMUS*/
@@ -14,6 +14,7 @@ Makanan CreateMakanan(int id, Word nama, Word aksi, Time kadaluarsa, Time pengir
     WAKTU_KADALUARSA(M) = kadaluarsa;
     AKSI_MAKANAN(M) = aksi;
     LAMA_PENGIRIMAN(M) = pengiriman;  
+    DURASI_AKSI(M) = durasi_aksi;
 }
 
 void DisplayMakanan(Makanan M)
@@ -30,5 +31,6 @@ void DisplayMakanan(Makanan M)
     printWord(AKSI_MAKANAN(M));
     printf("   -   ");
     printf("%d Hari %d Jam %d Menit", Day(LAMA_PENGIRIMAN(M)), Hour(LAMA_PENGIRIMAN(M)), Minute(LAMA_PENGIRIMAN(M)));
-
+    printf("   -   ");
+    printf("%d Menit", DURASI_AKSI(M));
 }
