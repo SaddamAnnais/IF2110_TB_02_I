@@ -29,25 +29,37 @@ void Wait(Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
 }
 
 /* Menggerakan simulator sesuai input user, jika simulator berpindah posisi, waktu bertambah 1 menit*/
-void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif)
+void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi baru dan semua elemen waktu maju
-{
-  STARTWORD();
-  Point p0 = Lokasi(*s);
-  if (isWordStrEq(currentWord,"NORTH")){
-    moveNorth(p,s);
-  } else if (isWordStrEq(currentWord,"WEST")){
-    moveWest(p,s);
-  } else if (isWordStrEq(currentWord,"SOUTH")){
-    moveSouth(p,s);
-  } else if (isWordStrEq(currentWord,"EAST")){
-    moveEast(p,s);
-  } else {
-    printf("Input invalid\n");
-  }
-  Point pt = Lokasi(*s);
-  if (!isEqual(p0,pt)){ //pergerakan valid
-      timePass(1,T,I,D,invNotif,delivNotif);//waktu berjalan 1 menit
-  }
+    STARTWORD();
+    Point p0 = Lokasi(*s);
+
+    if (isWordStrEq(currentWord,"NORTH")){
+       moveNorth(p,s);
+    } else if (isWordStrEq(currentWord,"WEST")){
+       moveWest(p,s);
+    } else if (isWordStrEq(currentWord,"SOUTH")){
+       moveSouth(p,s);
+    } else if (isWordStrEq(currentWord,"EAST")){
+       moveEast(p,s);
+    } else {
+       printf("Input invalid\n");
+    }
+
+    Point pt = Lokasi(*s);
+    if (!isEqual(p0,pt)){ //pergerakan valid
+        timePass(1,T,I,D,invNotif,delivNotif);//waktu berjalan 1 menit
+    }
+}
+
+/* Menampilkan bahan makanan yang tersedia dalam aplikasi dan informasinya*/
+void Catalog(ListMakanan lM){
+    printf("List Makanan\n");
+    printf("(nama - durasi kedaluwarsa - aksi yang diperlukan - delivery time - durasi aksi)\n");
+
+    for (int i=0; i<lM.len; i++){
+        DisplayMakanan(lM.contents[i]);
+        printf("\n");
+    }
 }

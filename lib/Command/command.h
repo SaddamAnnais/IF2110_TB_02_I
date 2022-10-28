@@ -6,6 +6,7 @@
 #include "../Peta/peta.h"
 #include "../Inventory/inventory.h"
 #include "../Delivery/delivery.h"
+#include "../Makanan/listmakanan.h"
 
 
 /* T maju, elemen waktu pada Inventory I dan Delivery D berkurang*/
@@ -22,3 +23,6 @@ void Wait(Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif);
 void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif);
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi baru dan semua elemen waktu maju
+
+/* Menampilkan bahan makanan yang tersedia dalam aplikasi dan informasinya*/
+void Catalog(ListMakanan lM);
