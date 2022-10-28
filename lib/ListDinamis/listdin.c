@@ -121,33 +121,7 @@ void printList(ListDin l)
     }
     printf("]");
 }
-/* ********** OPERATOR ARITMATIKA ********** */
-/* *** Aritmatika list : Penjumlahan, pengurangan, perkalian, ... *** */
-ListDin plusMinusList(ListDin l1, ListDin l2, boolean plus)
-/* Prekondisi : l1 dan l2 memiliki Neff sama dan tidak kosong */
-/* Jika plus = true, mengirimkan  l1+l2, yaitu setiap elemen l1 dan l2 pada indeks yang sama dijumlahkan */
-/* Jika plus = false, mengirimkan l1-l2, yaitu setiap elemen l1 dikurangi elemen l2 pada indeks yang sama */
-{
-    /* KAMUS */
-    ListDin l;
-    IdxType i;
 
-    /* ALGORITMA */
-    CreateListDin(&l, listLength(l1)); /* length(l1) == length(l2) */
-
-    for (i = 0; i <= getLastIdx(l1); i++) {
-        if (plus) {
-            ELMT(l, i) = ELMT(l1, i) + ELMT(l2, i);
-        }
-        else {
-            ELMT(l, i) = ELMT(l1, i) - ELMT(l2, i);
-        }
-    }
-
-    NEFF(l) = listLength(l1);
-
-    return l;
-}
 /* ********** OPERATOR RELASIONAL ********** */
 /* *** Operasi pembandingan list : < =, > *** */
 boolean isListEqual(ListDin l1, ListDin l2)
@@ -200,28 +174,7 @@ IdxType indexOf(ListDin l, ElType val)
 
     return index;
 }
-/* ********** NILAI EKSTREM ********** */
-void extremeValues(ListDin l, ElType *max, ElType *min)
-/* I.S. List l tidak kosong */
-/* F.S. max berisi nilai maksimum l;
-        min berisi nilai minimum l */
-{
-    /* KAMUS */
-    IdxType i;
 
-    /* ALGORITMA */
-    *max = ELMT(l, 0);
-    *min = ELMT(l, 0);
-
-    for (i = 1; i <= getLastIdx(l); i++) {
-        if (ELMT(l, i) > *max) {
-            *max = ELMT(l, i);
-        }
-        if (ELMT(l, i) < *min) {
-            *min = ELMT(l, i);
-        }
-    }
-}
 /* ********** OPERASI LAIN ********** */
 void copyList(ListDin lIn, ListDin *lOut)
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
@@ -240,23 +193,7 @@ void copyList(ListDin lIn, ListDin *lOut)
         ELMT(*lOut, i) = ELMT(lIn, i);
     }
 }
-ElType sumList(ListDin l)
-/* Menghasilkan hasil penjumlahan semua elemen l */
-/* Jika l kosong menghasilkan 0 */
-{
-    /* KAMUS */
-    ElType hasil;
-    IdxType i;
 
-    /* ALGORITMA */
-    hasil = 0;
-
-    for (i = 0; i <= getLastIdx(l); i++) {
-        hasil += ELMT(l, i);
-    }
-
-    return hasil;
-}
 int countVal(ListDin l, ElType val)
 /* Menghasilkan berapa banyak kemunculan val di l */
 /* Jika l kosong menghasilkan 0 */
@@ -276,38 +213,7 @@ int countVal(ListDin l, ElType val)
 
     return hasil;
 }
-/* ********** SORTING ********** */
-void sort(ListDin *l, boolean asc)
-/* I.S. l boleh kosong */
-/* F.S. Jika asc = true, l terurut membesar */
-/*      Jika asc = false, l terurut mengecil */
-/* Proses : Mengurutkan l dengan salah satu algoritma sorting,
-   algoritma bebas */
-{
-    IdxType i, pos;
-    ElType temp;
 
-    for (i = 1; i <= getLastIdx(*l); i++) {
-        pos = i;
-        if (asc) {
-            while ((pos > 0) && (ELMT(*l, pos) < ELMT(*l, pos - 1))) {
-                temp = ELMT(*l, pos);
-                ELMT(*l, pos) = ELMT(*l, pos - 1);
-                ELMT(*l, pos - 1) = temp;
-
-                pos--;
-            }
-        } else {
-            while ((pos > 0) && (ELMT(*l, pos) > ELMT(*l, pos - 1))) {
-                temp = ELMT(*l, pos);
-                ELMT(*l, pos) = ELMT(*l, pos - 1);
-                ELMT(*l, pos - 1) = temp;
-
-                pos--;
-            }
-        }
-    }
-}
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
 void insertLast(ListDin *l, ElType val)

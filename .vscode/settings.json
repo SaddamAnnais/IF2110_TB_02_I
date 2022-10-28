@@ -3,7 +3,8 @@
     "boolean.h": "c",
     "peta.h": "c",
     "stdio.h": "c",
-    "inventory.h": "c"
+    "inventory.h": "c",
+    "listdin.h": "c"
   },
   "C_Cpp.errorSquiggles": "Enabled"
 }
