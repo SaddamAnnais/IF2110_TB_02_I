@@ -1,6 +1,8 @@
 #include "../utility/boolean.h"
 #include "time.h"
 #include <stdio.h>
+#include "../Inventory/inventory.h"
+#include "../Delivery/delivery.h"
 
 /* *** Konstruktor: Membentuk sebuah TIME dari komponen-komponennya *** */
 void createTime (Time * T, int DD, int HH, int MM){
@@ -61,4 +63,25 @@ void displayTime(Time T){
     printf("Waktu: ");
     tulisTime(T);
     printf("\n");
+}
+
+void timePass(int mm, Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
+    incNMinute(T,mm);
+    timePassQ(I,mm);
+    timePassQ(D,mm);
+    *invNotif = listIdNotPos(*I);
+    *delivNotif = listIdNotPos(*D);
+    keepPosTimeQ(I);
+    keepPosTimeQ(D);
+}
+
+void wait(Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
+    int hh, mm;
+    STARTWORD();
+    hh = wordToInt(currentWord);
+    STARTWORD();
+    mm = wordToInt(currentWord);
+
+    mm += hh*60;
+    timePass(mm,T,I,D,invNotif,delivNotif);
 }

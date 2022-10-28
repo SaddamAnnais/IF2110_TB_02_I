@@ -104,8 +104,8 @@ void moveNorth(Peta* p, Simulator* s)
   int newX, newY;
 
   /* ALGORITMA */
-  newX = ABSIS(Lokasi(*s)) + 1;
-  newY = ORDINAT(Lokasi(*s));
+  newX = ABSIS(Lokasi(*s));
+  newY = ORDINAT(Lokasi(*s))-1;
   if(isCoordSimValid(*p, newY, newX)) {
     ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
     ELMT(*p, newY, newX) = 'S';
@@ -247,5 +247,29 @@ boolean isNearMerebus(Peta p, Simulator s)
 
   /* ALGORITMA */
   return isNear(p, s, 'B');
+}
+
+/* Menggerakan simulator sesuai input user, jika simulator berpindah posisi, waktu bertambah 1 menit*/
+void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif)
+// I.S. Simulator berada pada posisi (x, y)
+// F.S. Jika pergerakan valid, simulator sekarang berada pada posisi baru dan semua elemen waktu maju
+{
+  STARTWORD();
+  Point p0 = Lokasi(*s);
+  if (isWordStrEq(currentWord,"NORTH")){
+    moveNorth(p,s);
+  } else if (isWordStrEq(currentWord,"WEST")){
+    moveWest(p,s);
+  } else if (isWordStrEq(currentWord,"SOUTH")){
+    moveSouth(p,s);
+  } else if (isWordStrEq(currentWord,"EAST")){
+    moveEast(p,s);
+  } else {
+    printf("Input invalid\n");
+  }
+  Point pt = Lokasi(*s);
+  if (!isEqual(p0,pt)){
+      timePass(1,T,I,D,invNotif,delivNotif);
+  }
 }
 

@@ -7,6 +7,9 @@
 #include "../utility/boolean.h"
 #include "../Simulator/simulator.h"
 #include "../parser/wordmachine.h"
+#include "../Time/time.h"
+#include "../Inventory/inventory.h"
+#include "../Delivery/delivery.h"
 
 /* ADT Peta berupa matriks of char */
 typedef Matrix Peta;
@@ -71,5 +74,10 @@ boolean isNearMenggoreng(Peta p, Simulator s);
 
 /* Menghasilkan true jika simulator berada di dekat tempat merebus */
 boolean isNearMerebus(Peta p, Simulator s);
+
+/* Menggerakan simulator sesuai input user, jika simulator berpindah posisi, waktu bertambah 1 menit*/
+void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif);
+// I.S. Simulator berada pada posisi (x, y)
+// F.S. Jika pergerakan valid, simulator sekarang berada pada posisi baru dan semua elemen waktu maju
 
 #endif
