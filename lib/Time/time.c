@@ -64,7 +64,7 @@ void displayTime(Time T){
     printf("\n");
 }
 
-/* display time format (dd hari mm jam mm menit)*/
+/* display time format (dd hari hh jam mm menit)*/
 void displayTime1(Time T){
     boolean space=false;
     if (Day(T)>0) {
