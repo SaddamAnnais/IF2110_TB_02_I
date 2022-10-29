@@ -14,7 +14,6 @@
 #include "./lib/Makanan/makanan.c"
 #include "./lib/Time/time.c"
 #include "./lib/Command/command.c"
-// #include "./lib/Makanan/makanan.c"
 
 void idle(Simulator S, Peta P, Time T, int* invenNotif, int* delivNotif){
     printf("\n\n\n");
