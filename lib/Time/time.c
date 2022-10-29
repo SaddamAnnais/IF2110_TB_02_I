@@ -57,9 +57,28 @@ void decNMinute (Time *T, int N){
     *T = minuteToTime(MM);
 }
 
-/* Menampilkan informasi waktu pada layar*/
+/* Menampilkan informasi waktu pada aplikasi*/
 void displayTime(Time T){
     printf("Waktu: ");
     tulisTime(T);
     printf("\n");
+}
+
+/* display time format (dd hari mm jam mm menit)*/
+void displayTime1(Time T){
+    boolean space=false;
+    if (Day(T)>0) {
+        printf("%d hari",Day(T));
+        space=true;
+    }
+    if (Hour(T)>0) {
+        if (space) printf(" ");
+        printf("%d jam", Hour(T));
+        space=true;
+    }
+    if (Minute(T)>0){
+        if (space) printf(" ");
+        printf("%d menit", Minute(T));
+    }
+    if (timeToMinute(T)==0) printf("0 menit");
 }
