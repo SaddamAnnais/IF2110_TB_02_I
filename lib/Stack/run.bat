@@ -1,0 +1,1 @@
+gcc stack.c driver.c ../Simulator/simulator.c ../Delivery/delivery.c ../Inventory/inventory.c ../Time/time.c ../Peta/peta.c ../parser/wordmachine.c ../parser/charmachine.c ../priorityQueueDin/prioqueuedin.c "../ADT Matrix/matrix.c" -o test
