@@ -13,7 +13,7 @@
 #include "./lib/Makanan/listMakanan.c"
 #include "./lib/Makanan/makanan.c"
 #include "./lib/Time/time.c"
-// #include "./lib/Makanan/makanan.c"
+#include "./lib/Command/command.c"
 
 void idle(Simulator S, Peta P, Time T, int* invenNotif, int* delivNotif){
     printf("\n\n\n");
@@ -21,7 +21,7 @@ void idle(Simulator S, Peta P, Time T, int* invenNotif, int* delivNotif){
     displayTime(T);
     displayPeta(P);
     printf("\n");
-    notifQ(invenNotif,true);
+    notifQ(invenNotif,true); //notif sementara
     notifQ(delivNotif,false);
     printf("\n");
     printf("Enter Command:  ");

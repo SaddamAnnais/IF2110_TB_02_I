@@ -1,32 +1,30 @@
 #include "time.h"
 #include <stdio.h>
-#include "../priorityQueueDin/prioqueuedin.h"
-#include "../parser/charmachine.h"
-#include "../parser/wordmachine.h"
 
-/* *** Konstruktor: Membentuk sebuah TIME dari komponen-komponennya *** */
-void createTime (Time * T, int DD, int HH, int MM){
 /* Membentuk sebuah TIME dari komponen-komponennya yang valid */
+void createTime (Time * T, int DD, int HH, int MM){
 /* Prekondisi : DD, MM, SS valid untuk membentuk TIME */
+/* I.S T sembarang */
+/* F.S T terdefinisi dengan DD,MM,SS valid*/
     Day(*T) = DD;
     Hour(*T) = HH;
     Minute(*T) = MM;
 }
 
+/* Menulis nilai setiap komponen T ke layar dalam format DD.HH.MM*/
 void tulisTime (Time T){
 /* I.S. : T sembarang */
 /* F.S. : Nilai T ditulis dg format DD.HH.MM */
-/* Proses : menulis nilai setiap komponen T ke layar dalam format DD.HH.MM */ 
     printf("%d.%02d.%02d", Day(T),Hour(T),Minute(T));
 }
 
-int timeToMinute (Time T){
 /* Mengembalikan konversi Time menjadi Minute */
+int timeToMinute (Time T){
     return 1440*Day(T) + 60*Hour(T) + Minute(T);
 }
 
+/* Mengembalikan konversi Time menjadi Minute */
 Time minuteToTime (int N){
-/* Mengembalikan konversi Detik ke Time */
     Time T;
     Day(T) = N / 1440;
     Hour(T) = (N % 1440) / 60;
@@ -34,54 +32,53 @@ Time minuteToTime (int N){
     return T;
 }
 
-void incMinute (Time *T){
 /* Mengirim 1 menit setelah T dalam bentuk Time */
+void incMinute (Time *T){
     incNMinute(T,1);
 }
 
-void incNMinute(Time *T, int N){
 /* Mengirim N menit setelah T dalam bentuk Time */
+void incNMinute(Time *T, int N){
     int MM;
     MM = timeToMinute(*T)+N;
     *T = minuteToTime(MM);
 }
 
-void decMinute (Time *T){
 /* Mengirim 1 menit sebelum T dalam bentuk Time */
+void decMinute (Time *T){
     decNMinute(T,1);
 }
 
-void decNMinute (Time *T, int N){
 /* Mengirim N menit sebelum T dalam bentuk Time */
+void decNMinute (Time *T, int N){
     int MM;
     MM = timeToMinute(*T)-N;
     if (MM<0) MM=0;
     *T = minuteToTime(MM);
 }
 
+/* Menampilkan informasi waktu pada aplikasi*/
 void displayTime(Time T){
     printf("Waktu: ");
     tulisTime(T);
     printf("\n");
 }
 
-void timePass(int mm, Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
-    incNMinute(T,mm);
-    timePassQ(I,mm);
-    timePassQ(D,mm);
-    *invNotif = listIdNotPos(*I);
-    *delivNotif = listIdNotPos(*D);
-    keepPosTimeQ(I);
-    keepPosTimeQ(D);
-}
-
-void wait(Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
-    int hh, mm;
-    STARTWORD();
-    hh = wordToInt(currentWord);
-    STARTWORD();
-    mm = wordToInt(currentWord);
-
-    mm += hh*60;
-    timePass(mm,T,I,D,invNotif,delivNotif);
+/* display time format (dd hari hh jam mm menit)*/
+void displayTime1(Time T){
+    boolean space=false;
+    if (Day(T)>0) {
+        printf("%d hari",Day(T));
+        space=true;
+    }
+    if (Hour(T)>0) {
+        if (space) printf(" ");
+        printf("%d jam", Hour(T));
+        space=true;
+    }
+    if (Minute(T)>0){
+        if (space) printf(" ");
+        printf("%d menit", Minute(T));
+    }
+    if (timeToMinute(T)==0) printf("0 menit");
 }
