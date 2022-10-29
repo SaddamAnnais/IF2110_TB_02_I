@@ -2,10 +2,10 @@
 Tubes Alstrukdat
 
 ## How to Start?
-### Configuration
 Open config folder to edit the maps, food, and recipe.
-#### maps
-10 10           // maps with (N x M) size
+#### Maps
+```
+10 10           // Maps with (N x M) size
 S#########      // S is the location of simulator
 ####T##X##      // S is the location of telephone (to buy food)
 #M#####X##      // # is an empty space 
@@ -17,8 +17,9 @@ S#########      // S is the location of simulator
 ##########
 ######B###      // F is the location for BOIL command
 .               // . to end map config
-
+```
 #### Food
+```
 3               // Number of food that will be stored
 11              // ID of the first food
 Ayam Mentah     // Name of the first food
@@ -38,6 +39,6 @@ Tepung
 0 0 30
 Buy
 10
-.           // . to end food config
-
+.               // . to end food config
+```
 After all of the configuration is complete, type in ./run in terminal and then type in ./main
