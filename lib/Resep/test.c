@@ -38,7 +38,7 @@ int main() {
   ID(m) = 2;
   addChild(&temp, newTreeNode(m));
 
-  // displayTree(t);
+  displayTree(t);
 
   printf("%d", ID(INFO(searchTree(t, 1))));
   return 0;
