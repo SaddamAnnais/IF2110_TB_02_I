@@ -31,6 +31,7 @@ void readResep(Resep* resep, char* filepath, ListMakanan listMakanan)
 
   STARTWORDFILE(filepath);
   while(!EndWord) {
+    printWord(currentWord);
     if(lineCount > 0) {
       wordCount = 0;
       for(i = 0; i < currentWord.Length; i++) {
@@ -166,6 +167,8 @@ void olahMakanan(Makanan makanan, Inventory* inventory, Resep resep)
   ListDin listBahan;
   IdxType i;
   infotype infoMakanan;
+  int numList;
+  Makanan tempMakanan;
 
   /* ALGORITMA */
   listBahan = bahanMakanan(resep, ID(makanan));
@@ -184,5 +187,20 @@ void olahMakanan(Makanan makanan, Inventory* inventory, Resep resep)
     }
     setInfotypeQ(&infoMakanan, ID(makanan), timeToMinute(WAKTU_KADALUARSA(makanan)));
     enqueue(inventory, infoMakanan);
+    printWord(NAMA_MAKANAN(makanan));
+    printf(" selesai dibuat dan sudah masuk ke inventory!\n");
+  } else {
+    printf("Gagal membuat ");
+    printWord(NAMA_MAKANAN(makanan));
+    printf(" karena kamu tidak memiliki bahan berikut:\n");
+
+    numList = 1;
+    for(i = 0; i < NEFF(listBahan); i++) {
+      if(!isIdInQ(*inventory, ID(INFO(ELMT(listBahan, i))))) {
+        printf("  %d.  ", numList);
+        printWord(NAMA_MAKANAN((INFO(ELMT(listBahan, i)))));
+        printf("\n");
+      }
+    }
   }
 }

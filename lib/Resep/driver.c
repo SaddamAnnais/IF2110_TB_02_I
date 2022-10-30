@@ -6,7 +6,6 @@ int main() {
   Resep resep;
   ListMakanan listMakanan;
   Inventory inventory;
-  CreateListMakanan(&listMakanan);
   createInventory(&inventory);
 
   // Read dari file konfigurasi
@@ -31,7 +30,10 @@ int main() {
 
   // Pengolahan makanan
   printPrioQ(inventory);
-  Makanan makanan = searchMakananById(listMakanan, 21);
+  Makanan makanan = searchMakananById(listMakanan, 1);
+  olahMakanan(makanan, &inventory, resep);
+  printPrioQ(inventory);
+  makanan = searchMakananById(listMakanan, 5);
   olahMakanan(makanan, &inventory, resep);
   printPrioQ(inventory);
 
