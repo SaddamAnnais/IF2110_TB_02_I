@@ -59,8 +59,6 @@ void displayOperasiMakanan(ListMakanan listMakanan, char* operasi);
 // F.S. Semua makanan yang dapat dibuat dari operasi tersebut ditampilkan di layar
 //      sesuai format pada spesifikasi
 
-// Fungsi belum disesuaikan dengan inventory karena sementara inventory belum dapat
-// menerima ADT makanan
 /* Melakukan operasi pengolahan makanan */
 void olahMakanan(Makanan makanan, Inventory* inventory, Resep resep);
 // I.S. Makanan merupakan makanan yang ingin dibuat
