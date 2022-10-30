@@ -71,5 +71,7 @@ boolean isNearMenggoreng(Peta p, Simulator s);
 /* Menghasilkan true jika simulator berada di dekat tempat merebus */
 boolean isNearMerebus(Peta p, Simulator s);
 
-
+void setPetaFromSimulator(Peta *p, Simulator s);
+// I.S. Peta dengan lokasi simulator sembarang
+// F.S. Terbentuk peta dengan lokasi simulator berada di ABSIS(Lokasi(s)), ORDINAT(Lokasi(s)) 
 #endif

@@ -7,6 +7,7 @@
 #include "../Inventory/inventory.h"
 #include "../Delivery/delivery.h"
 #include "../Makanan/listmakanan.h"
+#include "../Stack/stack.h"
 
 
 /* T maju, elemen waktu pada Inventory I dan Delivery D berkurang*/
@@ -26,3 +27,13 @@ void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int* *invNot
 
 /* Menampilkan bahan makanan yang tersedia dalam aplikasi dan informasinya*/
 void Catalog(ListMakanan lM);
+
+void undo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I);
+/* I.S. S terdefinisi, mungkin kosong*/
+/* F.S  S ter-pop atau kosong. 
+        X berisi Top stack jika S awal tidak kosong */
+
+void redo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I);
+/* I.S. S terdefinisi, mungking kosong */
+/* F.S  S ter-push jika tedapat elemen redo. 
+        S tidak ter-push jika redo habis */

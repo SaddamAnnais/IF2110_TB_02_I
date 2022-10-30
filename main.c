@@ -14,6 +14,7 @@
 #include "./lib/Makanan/makanan.c"
 #include "./lib/Time/time.c"
 #include "./lib/Command/command.c"
+#include "./lib/Stack/stack.c"
 // #include "./lib/Makanan/makanan.c"
 
 void idle(Simulator S, Peta P, Time T, int* invenNotif, int* delivNotif){
@@ -38,14 +39,15 @@ int main(){
     // Membandingkan input pengguna dengan kata "START"
     boolean start = isWordStrEq(currentWord, "START");
     
+
+    //CreateStack(&UndoSt);
+
+    //CreateStack(&UndoSt, &RedoSt);
+    
     if (start) // Memulai program
     {
-        Simulator S;
-        Peta P;
-        Time T;
-        ListMakanan l;
-        Inventory I;
-        Delivery D;
+        Simulator S; Time T; ListMakanan l; Peta P; Inventory I; 
+        Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo;
         int* invNotif;
         int* delivNotif;
         printf("Masukkan nama pengguna: ");
@@ -56,17 +58,45 @@ int main(){
         BacaMakanan(&l, "./config/makanan.txt");
         createInventory(&I); //sementara inventory kosong
         createDelivery(&D);
+        CreateStack(&UndoSt);
+        CreateStack(&RedoSt);
         
         invNotif = listIdNotPos(I);
         delivNotif = listIdNotPos(D);
 
+        CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
+        // PushStack(&UndoSt, ElmtUndoRedo);
         while (start){
             idle(S,P,T,invNotif,delivNotif);
-            if (isWordStrEq(currentWord,"MOVE")){
+
+            if (isWordStrEq(currentWord,"MOVE")){               
                 Move(&P,&S,&T,&I,&D,&invNotif,&delivNotif);
-            } else if(isWordStrEq(currentWord,"EXIT")){
+            } 
+            else if(isWordStrEq(currentWord,"EXIT")){
                 start=false;
             }
+            else if (isWordStrEq(currentWord, "UNDO")) {
+                undo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
+            }
+            else if (isWordStrEq(currentWord, "REDO")) {
+                redo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
+            }
+            
+
+
+
+
+
+            if ((!isWordStrEq(currentWord, "UNDO")) && (!isWordStrEq(currentWord, "REDO"))) {   // Untuk keperluan undo dan redo
+                PushStack(&UndoSt, ElmtUndoRedo);
+                CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
+                CreateStack(&RedoSt);
+            }
+            
+
+            printStack(UndoSt);
+            printf("\n");
+            printStack(RedoSt);
         }
     
     }

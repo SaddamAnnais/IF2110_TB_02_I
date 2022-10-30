@@ -1,0 +1,1 @@
+gcc driverPeta.c peta.c ../parser/wordmachine.c ../parser/charmachine.c ../Simulator/simulator.c "../ADT Matrix/matrix.c" ../Inventory/inventory.c ../priorityQueueDin/prioqueuedin.c -o driverPeta 

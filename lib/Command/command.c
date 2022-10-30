@@ -63,3 +63,58 @@ void Catalog(ListMakanan lM){
         printf("\n");
     }
 }
+
+/*UNDO REDO*/
+void undo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I)
+/*Membatalkan command yang dilakukan dan mengembalikan*/
+/*state aplikasi sebelum command tersebut*/
+{
+    if (!IsEmptyStack(*UndoSt)) {
+        // *X = TOP_STACK(*UndoSt); buat pertama doang
+        // PushStack(RedoSt, *X);
+
+        PushStack(RedoSt, *X);
+        PopStack(UndoSt, X);
+
+        *S = SIMULATOR_STACK(*X);
+        *D = DELIVERY_STACK(*X);
+        *T = TIME_STACK(*X);
+        *I = INVENTORY_STACK(*X);
+        setPetaFromSimulator(P, *S);
+
+        // PushStack(RedoSt, *X);
+
+    } 
+    else {
+        printf("Tidak bisa undo\n");
+        // *P = *P;
+        // *S = *S;
+        // *D = *D;
+        // *T = *T;
+        // *I = *I;
+
+    }
+}
+
+void redo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I)
+/*Membatalkan command undo pada Stack S*/
+{
+    if (!IsEmptyStack(*RedoSt)) {
+        // *X = TOP_STACK(*RedoSt);     buat pertama doang
+        // PushStack(UndoSt, *X);
+        
+        PushStack(UndoSt, *X);   
+        PopStack(RedoSt, X);
+
+        *S = SIMULATOR_STACK(*X);
+        *D = DELIVERY_STACK(*X);
+        *T = TIME_STACK(*X);
+        *I = INVENTORY_STACK(*X);
+        setPetaFromSimulator(P, *S);
+
+        //PushStack(UndoSt, *X);
+    } 
+    else {
+        printf("Tidak bisa redo\n");
+    }    
+}

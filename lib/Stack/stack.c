@@ -15,7 +15,7 @@ void CreateElTypeStack(ElTypeStack *elmt, Simulator S, Delivery D, Time t, Peta 
     SIMULATOR_STACK(*elmt) = S;
     DELIVERY_STACK(*elmt) = D;
     TIME_STACK(*elmt) = t;
-    PETA_STACK(*elmt) = p;
+    //PETA_STACK(*elmt) = p;
     INVENTORY_STACK(*elmt) = I;
 }
 
@@ -40,8 +40,16 @@ void PushStack(Stack * S, ElTypeStack X)
     /*KAMUS LOKAL*/
 
     /* ALGORITMA */
-    IDX_TOP_STACK(*S)++;
-    TOP_STACK(*S) = X;
+    if (IsFullStack(*S)) {
+        for (int i = 0; i < CAPACITY_STACK-1 ; i++) {
+            ELMT_STACK(*S, i) = ELMT_STACK(*S, i+1); 
+        }
+        TOP_STACK(*S) = X;
+    }
+    else {
+        IDX_TOP_STACK(*S)++;
+        TOP_STACK(*S) = X;
+    }
 }
 
 /* ************ Menghapus sebuah elemen Stack ************ */
@@ -50,13 +58,32 @@ void PopStack(Stack *S, ElTypeStack *X)
 /* I.S. S  tidak mungkin kosong */
 /* F.S. X adalah nilai elemen TOP yang lama, TOP berkurang 1 */
 {
-    *X = TOP_STACK(*S);
-    IDX_TOP_STACK(*S)--;
+    // if (IDX_TOP_STACK(*S) == 0) {
+        *X = TOP_STACK(*S);
+        IDX_TOP_STACK(*S)--;    
+    // }
+    // else {
+    //     IDX_TOP_STACK(*S)--;
+    //     *X = TOP_STACK(*S);
+    // }
 }
 
 int lenStack(Stack s)
 /*Mengirimkan jumlah elemen pada stack*/
 {
     return IDX_TOP_STACK(s) + 1;
+}
+
+void printStack(Stack s) 
+/* I.S. S terdefinisi, bisa kosong */
+/* F.S. Output stack dengan format <ORDINAT_ELEMEN0, ABSIS_ELEMEN0>;<ORDINAT_ELEMEN1, ABSIS_ELEMEN1>;... */
+{
+    if (IsEmptyStack(s)) {
+        printf("< >");
+    }
+
+    for (int i = 0; i<lenStack(s); i++) {
+        printf("<%d, %d>", ORDINAT(Lokasi(SIMULATOR_STACK(ELMT_STACK(s, i)))), ABSIS(Lokasi(SIMULATOR_STACK(ELMT_STACK(s, i))))); 
+    }
 }
 

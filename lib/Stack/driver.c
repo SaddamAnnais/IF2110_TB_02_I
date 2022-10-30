@@ -30,13 +30,14 @@ int main() {
     printf("\n");
     PushStack(&st, el1);
     printf("kosong? : %d\n", IsEmptyStack(st));
-    printf("len : %d\n", lenStack(st));
+    printStack(st);
+    printf("\nlen : %d\n", lenStack(st));
     PopStack(&st, &dump);
     printWord(Nama(SIMULATOR_STACK(dump)));
     printf("\n");    
     printf("kosong? : %d\n", IsEmptyStack(st));
     printf("len : %d\n", lenStack(st));    
-    
+    printStack(st);
     // PopStack(&st, &dump);
     // printf("kosong? : %d", IsEmptyStack(st));
 }

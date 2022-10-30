@@ -24,7 +24,7 @@ typedef struct {
   Simulator simul;  /* simulator */
   Delivery deliv;   /* delivery */
   Time time;        /* time */
-  Peta p;
+  //Peta p;
   Inventory inv;
 } ElTypeStack;
 
@@ -32,7 +32,7 @@ typedef struct {
 #define SIMULATOR_STACK(e) (e).simul
 #define DELIVERY_STACK(e)  (e).deliv
 #define TIME_STACK(e)      (e).time
-#define PETA_STACK(e)      (e).p
+//#define PETA_STACK(e)      (e).p
 #define INVENTORY_STACK(e) (e).inv
 
 typedef struct { 
@@ -42,7 +42,7 @@ typedef struct {
 
 /* ********* AKSES (Selektor) ********* */
 /* akses elemen Stack s: */
-#define BUFFER_STACK(s) (s).buffer
+#define ELMT_STACK(s, i) (s).buffer[i]
 #define IDX_TOP_STACK(s) (s).idxTop
 #define TOP_STACK(s) (s).buffer[(s).idxTop]
 
@@ -75,4 +75,7 @@ void PopStack(Stack *S, ElTypeStack *X);
 int lenStack(Stack s);
 /* Mengirimkan jumlah elemen pada stack */
 
+void printStack(Stack s);
+/* I.S. S terdefinisi, bisa kosong */
+/* F.S. Output stack dengan format <ORDINAT_ELEMEN0, ABSIS_ELEMEN0>;<ORDINAT_ELEMEN1, ABSIS_ELEMEN1>;... */
 #endif

@@ -23,5 +23,5 @@ void CreateSimulator(Simulator *S, Word nama){
 void displayLokasi(Simulator S){
 /* I.S. S terdefinisi */
 /* F.S. Menampilkan lokasi Simulator ke layar */
-    printf("BNMO di posisi: (%d,%d)\n", Lokasi(S).x, Lokasi(S).y);
+    printf("BNMO di posisi: (%d,%d)\n", Lokasi(S).y, Lokasi(S).x);
 }

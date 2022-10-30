@@ -3,7 +3,9 @@
     "boolean.h": "c",
     "peta.h": "c",
     "stdio.h": "c",
-    "inventory.h": "c"
+    "inventory.h": "c",
+    "delivery.h": "c",
+    "time.h": "c"
   },
   "C_Cpp.errorSquiggles": "Enabled"
 }
