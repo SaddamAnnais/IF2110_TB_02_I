@@ -5,8 +5,8 @@ int main() {
   Resep r;
   ListMakanan l;
   CreateListMakanan(&l);
-  BacaMakanan(&l, "../Makanan/test.txt");
-  printListMakanan(l);
+  BacaMakanan(&l, "./konfig2.txt");
+  // printListMakanan(l);
 
   // Word w;
   // w.TabWord[0] = 'w';
@@ -67,7 +67,7 @@ int main() {
   // ElmtListMakanan(l, lenListMakanan(l)) = m;
   // lenListMakanan(l)++;
 
-  // readResep(&r, "./konfig2.txt", l);
-  // displayCookbook(r);
+  readResep(&r, "./konfig.txt", l);
+  displayCookbook(r);
   return 0;
 }

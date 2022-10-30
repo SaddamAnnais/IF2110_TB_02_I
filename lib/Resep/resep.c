@@ -42,7 +42,7 @@ void readResep(Resep* r, char* filepath, ListMakanan l)
         if(numCount == 1) {
           createTree(&RELMT(*r, NRESEP(*r)), newTreeNode(currMakanan));
           NRESEP(*r)++;
-        } else if(numCount != 1) {
+        } else if(numCount > 2) {
           addChild(&RELMT(*r, NRESEP(*r)-1), newTreeNode(currMakanan));
         } 
       }
@@ -51,20 +51,20 @@ void readResep(Resep* r, char* filepath, ListMakanan l)
     ADVLINE();
   }
 
-  for(i = 0; i < NRESEP(*r); i++) {
-    for(j = 0; j < NRESEP(*r); j++) {
-      if(j!=i && RELMT(*r, j) != NULL) {
-        p = searchTree(RELMT(*r, j), ID(INFO(RELMT(*r, i))));
-        if(p != TREE_IDX_UNDEF) {
-          for(k = 0; k < NEFF(CHILDREN(RELMT(*r, i))); k++) {
-            addChild(&p, ELMT(CHILDREN(RELMT(*r, i)), k));
-          }
-          RELMT(*r, i) = NULL;
-          break;
-        } 
-      }
-    }
-  }
+  // for(i = 0; i < NRESEP(*r); i++) {
+  //   for(j = 0; j < NRESEP(*r); j++) {
+  //     if(j!=i && RELMT(*r, j) != NULL) {
+  //       p = searchTree(RELMT(*r, j), ID(INFO(RELMT(*r, i))));
+  //       if(p != TREE_IDX_UNDEF) {
+  //         for(k = 0; k < NEFF(CHILDREN(RELMT(*r, i))); k++) {
+  //           addChild(&p, ELMT(CHILDREN(RELMT(*r, i)), k));
+  //         }
+  //         RELMT(*r, i) = NULL;
+  //         break;
+  //       } 
+  //     }
+  //   }
+  // }
 }
 
 /* Menampilkan seluruh resep ke layar */
@@ -73,20 +73,35 @@ void displayCookbook(Resep r)
 // F.S. Seluruh resep ditampilkan di layar
 {
   /* KAMUS LOKAL */
-  int i;
+  int i, num = 1;
 
   /* ALGORITMA */
+  printf("List Resep\n(aksi yang diperlukan - bahan...)");
   for(i = 0; i < NRESEP(r); i++) {
     if(RELMT(r, i)!=NULL) {
-      displayTree(RELMT(r, i));
+      printf("\n%d.  ", i+1);
+      printWord(NAMA_MAKANAN(INFO(RELMT(r, i))));
+      printf("\n    ");
+      printWord(AKSI_MAKANAN(INFO(RELMT(r, i))));
+      displayResep(RELMT(r, i));
     }
   }
 }
 
 /* Menampilkan sebuah node resep ke layar */
-void displayResep(address p);
+void displayResep(address p)
 // I.S. Node p terdefinisi
 // F.S. Node p ditampilkan di layar dengan semua childnya
+{
+  /* KAMUS LOKAL */
+  int i;
+
+  /* ALGORITMA */
+  for(i = 0; i < NEFF(CHILDREN(p)); i++) {
+    printf(" - ");
+    printWord(NAMA_MAKANAN(INFO(ELMT(CHILDREN(p), i))));
+  }
+}
 
 /* Operasi-operasi pada resep */
 
