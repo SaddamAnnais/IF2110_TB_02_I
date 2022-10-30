@@ -57,9 +57,11 @@ void Catalog(ListMakanan lM){
     printf("List Makanan\n");
     printf("(nama - durasi kedaluwarsa - aksi yang diperlukan - delivery time - durasi aksi)\n");
 
-    for (int i=0; i<lM.len; i++){
-        DisplayMakanan(lM.contents[i]);
-        printf("\n");
+    for (int i=0; i<CAPACITY_LIST_MAKANAN; i++){
+        if (ID(ElmtListMakanan(lM, i)) != IDX_UNDEF) {
+            DisplayMakanan(ElmtListMakanan(lM, i));    
+            printf("\n");
+        }        
     }
 }
 

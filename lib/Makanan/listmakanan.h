@@ -5,7 +5,7 @@
 #include "makanan.h"
 
 /*  Kamus Umum */
-#define CAPACITY 100
+#define CAPACITY_LIST_MAKANAN 100
 /* Kapasitas penyimpanan */
 #define IDX_MIN 0
 /* Indeks minimum list */
@@ -16,7 +16,7 @@
 typedef Makanan ElTypeList;  /* type elemen List */
 typedef int IdxType;
 typedef struct {
-   ElTypeList contents[CAPACITY]; /* memori tempat penyimpan elemen (container) */
+   ElTypeList contents[CAPACITY_LIST_MAKANAN]; /* memori tempat penyimpan elemen (container) */
    int len;
 } ListMakanan;
 
