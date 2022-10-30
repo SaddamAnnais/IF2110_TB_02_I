@@ -9,7 +9,7 @@ void CreateListDin(ListDin *l, int capacity)
 /* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity */
 {
     BUFFER(*l) = (ElType *) malloc(capacity * sizeof(ElType));
-    CAPACITY(*l) = capacity;
+    LISTDINCAPACITY(*l) = capacity;
     NEFF(*l) = 0;
 }
 void dealocateList(ListDin *l)
@@ -18,7 +18,7 @@ void dealocateList(ListDin *l)
 {
 
     free(BUFFER(*l));
-    CAPACITY(*l) = 0;
+    LISTDINCAPACITY(*l) = 0;
     NEFF(*l) = 0;
 }
 /* ********** SELEKTOR (TAMBAHAN) ********** */
@@ -49,7 +49,7 @@ boolean isIdxValid(ListDin l, IdxType i)
 /* Mengirimkan true jika i adalah indeks yang valid utk kapasitas list l */
 /* yaitu antara indeks yang terdefinisi utk container*/
 {
-    return (i >= 0 && i < (IdxType) CAPACITY(l));
+    return (i >= 0 && i < (IdxType) LISTDINCAPACITY(l));
 }
 boolean isIdxEff(ListDin l, IdxType i)
 /* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
@@ -69,7 +69,7 @@ boolean isEmpty(ListDin l)
 boolean isFull(ListDin l)
 /* Mengirimkan true jika list l penuh, mengirimkan false jika tidak */
 {
-    return (NEFF(l) == CAPACITY(l));
+    return (NEFF(l) == LISTDINCAPACITY(l));
 }
 /* ********** BACA dan TULIS dengan INPUT/OUTPUT device ********** */
 /* *** Mendefinisikan isi list dari pembacaan *** */
@@ -89,7 +89,7 @@ void readList(ListDin *l)
 
     do {
         scanf("%d", &N);
-    } while(N < 0 || N > CAPACITY(*l));
+    } while(N < 0 || N > LISTDINCAPACITY(*l));
 
     for (i = 0; i < (IdxType) N; i++) {
         scanf("%d", &ELMT(*l, i));
@@ -185,7 +185,7 @@ void copyList(ListDin lIn, ListDin *lOut)
     IdxType i;
 
     /* ALGORITMA */
-    CreateListDin(lOut, CAPACITY(lIn));
+    CreateListDin(lOut, LISTDINCAPACITY(lIn));
 
     NEFF(*lOut) = listLength(lIn);
 
@@ -249,7 +249,7 @@ void expandList(ListDin *l, int num)
 
     /* ALGORITMA */
     copyList(*l, &temp);
-    awal_CAP = CAPACITY(*l);
+    awal_CAP = LISTDINCAPACITY(*l);
     awal_NEFF = NEFF(*l);
 
     dealocateList(l);
@@ -273,7 +273,7 @@ void shrinkList(ListDin *l, int num)
 
     /* ALGORITMA */
     copyList(*l, &temp);
-    awal_CAP = CAPACITY(*l);
+    awal_CAP = LISTDINCAPACITY(*l);
     awal_NEFF = NEFF(*l);
 
     dealocateList(l);

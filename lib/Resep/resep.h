@@ -3,14 +3,18 @@
 #define RESEP_H
 
 #include "tree.h"
+#include "../Inventory/inventory.h"
+#include "../Peta/peta.h"
+#include "../parser/wordmachine.h"
+#include "../Makanan/listmakanan.h"
 
-#define CAPACITY 100    // Kapasitas maksimum dari list resep
+#define RESEP_CAPACITY 100    // Kapasitas maksimum dari list resep
 
 typedef address resepElType;    // Elemen dari list resep
 /* ADT Resep */
 typedef struct resep
 {
-  resepElType contents[CAPACITY];   // List statik tempat menyimpan resep
+  resepElType contents[RESEP_CAPACITY];   // List statik tempat menyimpan resep
   int nResep;   // Jumlah elemen pada list resep
 } Resep;
 
@@ -24,7 +28,7 @@ void createResep(Resep* r);
 #define NRESEP(R) (R).nResep    // Jumlah elemen pada list resep
 
 /* Membaca resep dari file konfigurasi */
-void readResep(Resep* r, char* filepath);
+void readResep(Resep* r, char* filepath, ListMakanan l);
 // I.S. File konfigurasi valid dan resep r sembarang
 // F.S. Resep r terbentuk sesuai dengan file konfigurasi 
 
@@ -40,10 +44,24 @@ void displayResep(address p);
 
 /* Operasi-operasi pada resep */
 
+// Menghasilkan data makanan berdasarkan id
+Makanan searchMakanan(ListMakanan l, int id);
+
+// Melakukan operasi pengolahan makanan
+void olahMakanan(Makanan m, Inventory* i, char o);
+// I.S. o merupakan operasi yang akan dilakukan
+// F.S. Jika berhasil, bahan makanan diubah menjadi makanan baru pada inventory
+
 // Melakukan operasi mix makanan
-void mix();
+void mix(Makanan m, Inventory* i);
 
+// Melakukan operasi chop makanan
+void chop(Makanan m, Inventory* i);
 
-/* Menampil*/
+// Melakukan operasi fry makanan
+void fry(Makanan m, Inventory* i);
+
+// Melakuka operasi boil makanan
+void boil(Makanan m, Inventory* i);
 
 #endif

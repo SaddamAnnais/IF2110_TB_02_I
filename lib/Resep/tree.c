@@ -74,7 +74,7 @@ void addChild(Tree* t, address p)
 
   /* ALGORITMA */
   if(isFull(CHILDREN(*t))) {
-    expandList(&CHILDREN(*t), CAPACITY(CHILDREN(*t)));
+    expandList(&CHILDREN(*t), LISTDINCAPACITY(CHILDREN(*t)));
   }
 
   insertLast(&CHILDREN(*t), p);

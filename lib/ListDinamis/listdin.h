@@ -40,7 +40,7 @@ typedef struct
 #define NEFF(l) (l).nEff
 #define BUFFER(l) (l).buffer
 #define ELMT(l, i) (l).buffer[i]
-#define CAPACITY(l) (l).capacity
+#define LISTDINCAPACITY(l) (l).capacity
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create list kosong  */

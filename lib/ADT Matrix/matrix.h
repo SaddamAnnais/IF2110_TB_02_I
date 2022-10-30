@@ -8,12 +8,12 @@
 #define COL_CAP 100   // Ukuran maksimum kolom
 
 typedef int IdxType;   // Indeks baris dan kolom
-typedef char ElType;   // Elemen pada matriks
+typedef char MatrixElType;   // Elemen pada matriks
 
 /* ADT Matriks dengan elemen selalu di ujung kiri atas */
 typedef struct matrix
 {
-  ElType mem[ROW_CAP][COL_CAP];   // Array tempat menyimpan matrix
+  MatrixElType mem[ROW_CAP][COL_CAP];   // Array tempat menyimpan matrix
   int rowEff;   // Jumlah baris yang terdefinisi
   int colEff;   // Jumlah kolom yang terdefinisi
 } Matrix;
@@ -26,7 +26,7 @@ void createMatrix(int nRow, int nCol, Matrix* m);
 /* Selektor */
 #define ROW_EFF(m) (m).rowEff   // Jumlah baris efektif pada matriks
 #define COL_EFF(m) (m).colEff   // Jumlah kolom efektif pada matriks
-#define ELMT(m, i, j) (m).mem[i][j]   // Elemen baris ke-i dan kolom ke-j pada matriks
+#define MATRIX_ELMT(m, i, j) (m).mem[i][j]   // Elemen baris ke-i dan kolom ke-j pada matriks
 
 /* Menampilkan matrix ke layar */
 void displayMatrix(Matrix m);
@@ -39,7 +39,7 @@ void displayMatrix(Matrix m);
 boolean isMatrixIdxValid(IdxType i, IdxType j);
 
 /* Menghasilkan true jika i dan j merupakan indeks efektif untuk matriks m */
-boolean isIdxEff(Matrix m, IdxType i, IdxType j);
+boolean isMatrixIdxEff(Matrix m, IdxType i, IdxType j);
 
 /* Melakukan assignment mOut <- mIn */
 void copyMatrix(Matrix mIn, Matrix* mOut);
@@ -47,7 +47,7 @@ void copyMatrix(Matrix mIn, Matrix* mOut);
 // F.S. mOut memiliki elemen-elemen yang sama dengan mIn
 
 /* Selektor elemen diagonal ke-i */
-ElType getElmtDiagonal(Matrix m, IdxType i);
+MatrixElType getElmtDiagonal(Matrix m, IdxType i);
 
 /* Menghasilkan true jika m1 dan m2 memiliki elemen-elemen yang sama */
 boolean isMatrixEqual(Matrix m1, Matrix m2);

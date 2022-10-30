@@ -24,7 +24,7 @@ void displayMatrix(Matrix m)
   /* ALGORITMA */
   for(i = 0; i < ROW_EFF(m); i++) {
     for(j = 0; j < COL_EFF(m); j++) {
-      printf("%c ", ELMT(m, i, j));
+      printf("%c ", MATRIX_ELMT(m, i, j));
     }
     printf("\n");
   }
@@ -42,7 +42,7 @@ boolean isMatrixIdxValid(IdxType i, IdxType j)
 }
 
 /* Menghasilkan true jika i dan j merupakan indeks efektif untuk matriks m */
-boolean isIdxEff(Matrix m, IdxType i, IdxType j)
+boolean isMatrixIdxEff(Matrix m, IdxType i, IdxType j)
 {
   /* KAMUS LOKAL */
 
@@ -61,18 +61,18 @@ void copyMatrix(Matrix mIn, Matrix* mOut)
   /* ALGORITMA */
   for(i = 0; i < ROW_EFF(mIn); i++) {
     for(j = 0; j < COL_EFF(mIn); j++) {
-      ELMT(*mOut, i, j) = ELMT(mIn, i, j);
+      MATRIX_ELMT(*mOut, i, j) = MATRIX_ELMT(mIn, i, j);
     }
   }
 }
 
 /* Selektor elemen diagonal ke-i */
-ElType getElmtDiagonal(Matrix m, IdxType i)
+MatrixElType getMATRIX_ELMTDiagonal(Matrix m, IdxType i)
 {
   /* KAMUS LOKAL */
 
   /* ALGORITMA */
-  return ELMT(m, i, i);
+  return MATRIX_ELMT(m, i, i);
 }
 
 /* Menghasilkan true jika m1 dan m2 memiliki elemen-elemen yang sama */
@@ -87,7 +87,7 @@ boolean isMatrixEqual(Matrix m1, Matrix m2)
   } else {
     for(i = 0; i < ROW_EFF(m1); i++) {
       for(j = 0; j < COL_EFF(m1); j++) {
-        if(ELMT(m1, i, j) != ELMT(m2, i, j)) {
+        if(MATRIX_ELMT(m1, i, j) != MATRIX_ELMT(m2, i, j)) {
           return false;
         }
       }
@@ -123,7 +123,7 @@ boolean isSymmetric(Matrix m)
   /* ALGORITMA */
   for(i = 0; i < ROW_EFF(m); i++) {
     for(j = 0; j < COL_EFF(m); j++) {
-      if(ELMT(m, i, j) != ELMT(m, j, i)) {
+      if(MATRIX_ELMT(m, i, j) != MATRIX_ELMT(m, j, i)) {
         return false;
       }
     }
