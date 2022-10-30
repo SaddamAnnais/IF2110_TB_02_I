@@ -107,7 +107,10 @@ void timePassQ(PrioQueueTime *Q, int mnt);
 /* I.S. Q terdefinisi*/
 /* F.S. semua time elemen berkurang sebesar mnt*/
 
-int *listIdNotPos(PrioQueueTime Q);
+int *listIdNotPosInv(PrioQueueTime Q);
+/* Mengembalikan array yang berisi list dari elemen yang memiliki time <=0*/
+
+int *listIdNotPosDeliv(PrioQueueTime Q);
 /* Mengembalikan array yang berisi list dari elemen yang memiliki time <=0*/
 
 void keepPosTimeQ(PrioQueueTime *Q);
@@ -119,5 +122,18 @@ void notifQ(int listId[], boolean inventory);
 /* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
 /* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
 /* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/
+
+void matIdNotPos(int (*notif)[100],PrioQueueTime I, PrioQueueTime D);
+/* Proses: Mengubah notif menjadi matrix yang berisi list id non positif dari Inventory dan Delivery.*/
+/* I.S. notif sembarang, I dan D terdefinisi. */
+/* F.S. notif berisi list id non positif dari Inventory dan Delivery. Elemen bernilai Nil dianggap sebagai value kosong. */
+
+void displayNotif(int notif[2][100]);
+/* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
+/* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
+/* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/
+
+
+
 
 #endif
