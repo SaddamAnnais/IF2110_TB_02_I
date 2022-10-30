@@ -204,10 +204,30 @@ void timePassQ(PrioQueueTime *Q, int mnt)
     }
 }
 
-int *listIdNotPos(PrioQueueTime Q)
+int *listIdNotPosInv(PrioQueueTime Q)
 /* Mengembalikan array yang berisi list dari elemen yang memiliki time <=0*/
 {
-    static int listId[100], idx=0;
+    static int listId[100];
+    int idx=0;
+
+    for (int i = 0; i<100; i++) {
+        listId[i] = Nil;
+    }
+
+    for (int i = 0; i<=TailQ(Q); i++) {
+        if (Time(ElmtQ(Q, i)) <= 0) {
+            listId[idx] = Id(ElmtQ(Q, i));
+            idx++;
+        }
+    }
+    return listId;
+}
+
+int *listIdNotPosDeliv(PrioQueueTime Q)
+/* Mengembalikan array yang berisi list dari elemen yang memiliki time <=0*/
+{
+    static int listId[100];
+    int idx=0;
 
     for (int i = 0; i<100; i++) {
         listId[i] = Nil;
@@ -259,6 +279,45 @@ void notifQ(int listId[], boolean inventory)
             else {
                 printf("    %d. <%d> sudah diterima BNMO! :D\n", i+1, listId[i]);
             }
+        }
+    }
+}
+
+void matIdNotPos(int (*notif)[100],PrioQueueTime I, PrioQueueTime D)
+/* Proses: Mengubah notif menjadi matrix yang berisi list id non positif dari Inventory dan Delivery.*/
+/* I.S. notif sembarang, I dan D terdefinisi. */
+/* F.S. notif berisi list id non positif dari Inventory dan Delivery. Elemen bernilai Nil dianggap sebagai value kosong. */
+{
+    for (int i=0; i<2; i++){
+        for (int j=0; j<100; j++){
+            if (i==0){
+                *(*(notif+i)+j) = listIdNotPosInv(I)[j];
+            } else {
+                *(*(notif+i)+j) = listIdNotPosDeliv(D)[j];
+            }
+        }
+    }
+}
+
+void displayNotif(int notif[2][100])
+/* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
+/* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
+/* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/
+{
+    printf("Notifikasi: ");
+    if (*(*(notif))==Nil && *(*(notif+1))==Nil) {
+        printf("-\n");
+    } 
+    else {
+        printf("\n");
+        int num=1;
+        for (int i = 0; i<100 && notif[0][i]!= Nil; i++) {
+            printf("    %d. <%d> kedaluwarsa :(\n", num, notif[0][i]);
+            num++;
+        }
+        for (int i = 0; i<100 && notif[1][i]!= Nil; i++) {
+            printf("    %d. <%d> sudah diterima BNMO! :D\n", num, notif[1][i]);
+            num++;
         }
     }
 }

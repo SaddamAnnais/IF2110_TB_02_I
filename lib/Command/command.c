@@ -2,20 +2,19 @@
 #include <stdio.h>
 
 /* T maju, elemen waktu pada Inventory I dan Delivery D berkurang*/
-void timePass(int mm, Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
+void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100]){
 // I.S mm,T,I,D,invNotif,delivNotif terdefinisi
 // F.S T maju sebanyak mm menit, elemen waktu pada Inventory I dan Delivery D berkurang sebanyak mm menit, dan elemen time yang <0 dihapus 
     incNMinute(T,mm);
     timePassQ(I,mm);
     timePassQ(D,mm);
-    *invNotif = listIdNotPos(*I);
-    *delivNotif = listIdNotPos(*D);
+    matIdNotPos(notif,*I,*D);
     keepPosTimeQ(I);
     keepPosTimeQ(D);
 }
 
 // Memajukan time sebanyak input pengguna
-void Wait(Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
+void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100]){
 // I.S mm,T,I,D,invNotif,delivNotif terdefinisi
 // F.S T, I, D, invNotif, delivNotif berubah sesuai timePass()
     int hh, mm;
@@ -25,11 +24,11 @@ void Wait(Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
     mm = wordToInt(currentWord);
 
     mm += hh*60;
-    timePass(mm,T,I,D,invNotif,delivNotif);
+    timePass(mm,T,I,D,notif);
 }
 
 /* Menggerakan simulator sesuai input user, jika simulator berpindah posisi, waktu bertambah 1 menit*/
-void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int* *invNotif, int* *delivNotif){
+void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)[100]){
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi baru dan semua elemen waktu maju
     STARTWORD();
@@ -49,7 +48,7 @@ void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int* *invNot
 
     Point pt = Lokasi(*s);
     if (!isEqual(p0,pt)){ //pergerakan valid
-        timePass(1,T,I,D,invNotif,delivNotif);//waktu berjalan 1 menit
+        timePass(1,T,I,D,notif);//waktu berjalan 1 menit
     }
 }
 
@@ -65,7 +64,7 @@ void Catalog(ListMakanan lM){
 }
 
 /* Melakukan pemesanan makanan */
-void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory *I, int* *invNotif, int* *delivNotif){
+void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory *I, int (*notif)[100]){
     if (!isNearTelepon(*p, *s)){
         printf("BNMO tidak berada di area telepon!\n");
     } else{
@@ -105,7 +104,7 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
             infotype m1;
             Time(m1) = timeToMinute(LAMA_PENGIRIMAN(m));
             //Makanan(m1) = m;
-            timePass(1,T,I,D,invNotif,delivNotif);//waktu berjalan 1 menit
+            timePass(1,T,I,D,notif);//waktu berjalan 1 menit
             enqueue(D,m1);
             printf("Berhasil memesan ");
             printWord(NAMA_MAKANAN(m));
