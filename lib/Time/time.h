@@ -47,5 +47,8 @@ void decNMinute (Time *T, int N);
 /* Menampilkan informasi waktu pada layar*/
 void displayTime (Time T);
 
+/* display time format (dd hari mm jam mm menit)*/
+void displayTime1(Time T);
+
 
 #endif

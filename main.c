@@ -15,16 +15,16 @@
 #include "./lib/Time/time.c"
 #include "./lib/Command/command.c"
 #include "./lib/Stack/stack.c"
-// #include "./lib/Makanan/makanan.c"
 
-void idle(Simulator S, Peta P, Time T, int* invenNotif, int* delivNotif){
+void idle(Simulator S, Peta P, Time T, int notif[2][100]){
     printf("\n\n\n");
     displayLokasi(S);
     displayTime(T);
     displayPeta(P);
     printf("\n");
-    notifQ(invenNotif,true); //notif sementara
-    notifQ(delivNotif,false);
+    // notifQ(invenNotif,true); //notif sementara
+    // notifQ(delivNotif,false);
+    displayNotif(notif);
     printf("\n");
     printf("Enter Command:  ");
     STARTWORD();
@@ -50,6 +50,7 @@ int main(){
         Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo;
         int* invNotif;
         int* delivNotif;
+        int notif[2][100];
         printf("Masukkan nama pengguna: ");
         STARTWORD();
         CreateSimulator(&S, currentWord);
@@ -57,23 +58,30 @@ int main(){
         createTime(&T,0,0,0);
         BacaMakanan(&l, "./config/makanan.txt");
         createInventory(&I); //sementara inventory kosong
+        printPrioQ(I);
         createDelivery(&D);
         CreateStack(&UndoSt);
         CreateStack(&RedoSt);
-        
-        invNotif = listIdNotPos(I);
-        delivNotif = listIdNotPos(D);
+
+        printPrioQ(D);
+        matIdNotPos(notif,I,D);
+        // invNotif = listIdNotPos(I);
+        // delivNotif = listIdNotPos(D);
 
         CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
         // PushStack(&UndoSt, ElmtUndoRedo);
         while (start){
-            idle(S,P,T,invNotif,delivNotif);
-
-            if (isWordStrEq(currentWord,"MOVE")){               
-                Move(&P,&S,&T,&I,&D,&invNotif,&delivNotif);
-            } 
-            else if(isWordStrEq(currentWord,"EXIT")){
+            idle(S,P,T,notif);
+            if (isWordStrEq(currentWord,"MOVE")){
+                Move(&P,&S,&T,&I,&D,notif);
+            } else if (isWordStrEq(currentWord,"WAIT")){
+                Wait(&T,&I,&D,notif);
+            } else if(isWordStrEq(currentWord,"EXIT")){
                 start=false;
+            } else if (isWordStrEq(currentWord,"BUY")){
+                Buy(&P,&S,l,&D,&T,&I,notif);
+            } else if (isWordStrEq(currentWord, "CATALOG")){
+                Catalog(l);
             }
             else if (isWordStrEq(currentWord, "UNDO")) {
                 undo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
@@ -94,9 +102,9 @@ int main(){
             }
             
 
-            printStack(UndoSt);
-            printf("\n");
-            printStack(RedoSt);
+            // printStack(UndoSt);
+            // printf("\n");
+            // printStack(RedoSt);
         }
     
     }

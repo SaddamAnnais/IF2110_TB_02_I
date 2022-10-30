@@ -24,5 +24,7 @@ int main(){
     incNMinute(&T,20);
     tulisTime(T);
     printf("\n");
+    displayTime1(T);
+    printf("\n");
     return 0;
 }
