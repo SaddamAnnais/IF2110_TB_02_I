@@ -249,5 +249,17 @@ boolean isNearMerebus(Peta p, Simulator s)
   return isNear(p, s, 'B');
 }
 
-
+void setPetaFromSimulator(Peta *p, Simulator s)
+// I.S. Peta dengan lokasi simulator sembarang
+// F.S. Terbentuk peta dengan lokasi simulator berada di ABSIS(Lokasi(s)), ORDINAT(Lokasi(s)) 
+{
+  for (int i = 0; i<ROW_EFF(*p); i++) {
+    for (int j = 0; j<COL_EFF(*p); j++) {
+      if (ELMT(*p, i, j) == 'S') {
+        ELMT(*p, i, j) = ' ';
+      }
+    }
+  }  
+  ELMT(*p, ORDINAT(Lokasi(s))+1, ABSIS(Lokasi(s))+1) = 'S';
+}
 

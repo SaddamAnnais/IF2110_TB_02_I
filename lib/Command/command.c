@@ -57,9 +57,11 @@ void Catalog(ListMakanan lM){
     printf("List Makanan\n");
     printf("(nama - durasi kedaluwarsa - aksi yang diperlukan - delivery time - durasi aksi)\n");
 
-    for (int i=0; i<lM.len; i++){
-        DisplayMakanan(lM.contents[i]);
-        printf("\n");
+    for (int i=0; i<CAPACITY_LIST_MAKANAN; i++){
+        if (ID(ElmtListMakanan(lM, i)) != IDX_UNDEF) {
+            DisplayMakanan(ElmtListMakanan(lM, i));    
+            printf("\n");
+        }        
     }
 }
 
@@ -115,4 +117,58 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
             printf(".\n");
         }
     }
+}
+/*UNDO REDO*/
+void undo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I)
+/*Membatalkan command yang dilakukan dan mengembalikan*/
+/*state aplikasi sebelum command tersebut*/
+{
+    if (!IsEmptyStack(*UndoSt)) {
+        // *X = TOP_STACK(*UndoSt); buat pertama doang
+        // PushStack(RedoSt, *X);
+
+        PushStack(RedoSt, *X);
+        PopStack(UndoSt, X);
+
+        *S = SIMULATOR_STACK(*X);
+        *D = DELIVERY_STACK(*X);
+        *T = TIME_STACK(*X);
+        *I = INVENTORY_STACK(*X);
+        setPetaFromSimulator(P, *S);
+
+        // PushStack(RedoSt, *X);
+
+    } 
+    else {
+        printf("Tidak bisa undo\n");
+        // *P = *P;
+        // *S = *S;
+        // *D = *D;
+        // *T = *T;
+        // *I = *I;
+
+    }
+}
+
+void redo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I)
+/*Membatalkan command undo pada Stack S*/
+{
+    if (!IsEmptyStack(*RedoSt)) {
+        // *X = TOP_STACK(*RedoSt);     buat pertama doang
+        // PushStack(UndoSt, *X);
+        
+        PushStack(UndoSt, *X);   
+        PopStack(RedoSt, X);
+
+        *S = SIMULATOR_STACK(*X);
+        *D = DELIVERY_STACK(*X);
+        *T = TIME_STACK(*X);
+        *I = INVENTORY_STACK(*X);
+        setPetaFromSimulator(P, *S);
+
+        //PushStack(UndoSt, *X);
+    } 
+    else {
+        printf("Tidak bisa redo\n");
+    }    
 }

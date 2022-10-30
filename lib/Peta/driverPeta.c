@@ -6,7 +6,7 @@ int main() {
   Simulator s;
   STARTWORD();
   CreateSimulator(&s, currentWord);
-  readPeta(&p, "./Peta/konfigPeta.txt", &s);
+  readPeta(&p, "konfigPeta.txt", &s);
   displayLokasi(s);
   displayPeta(p);
 
@@ -35,5 +35,12 @@ int main() {
   displayLokasi(s);
   displayPeta(p);
 
+  ABSIS(Lokasi(s)) = 0;
+  ORDINAT(Lokasi(s)) = 0;
+  setPetaFromSimulator(&p, s);
+
+  
+  displayLokasi(s);
+  displayPeta(p);
   return 0;
 }

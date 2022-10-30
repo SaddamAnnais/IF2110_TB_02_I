@@ -4,7 +4,9 @@
     "peta.h": "c",
     "stdio.h": "c",
     "inventory.h": "c",
-    "listdin.h": "c"
+    "listdin.h": "c",
+    "delivery.h": "c",
+    "time.h": "c"
   },
   "C_Cpp.errorSquiggles": "Enabled"
 }

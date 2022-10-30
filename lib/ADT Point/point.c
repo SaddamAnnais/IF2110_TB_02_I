@@ -22,7 +22,7 @@ void displayPoint(Point p)
   /* KAMUS LOKAL */
 
   /* ALGORITMA */
-  printf("(%d,%d)", ABSIS(p), ORDINAT(p));
+  printf("(%d,%d)", ORDINAT(p), ABSIS(p));
 }
 
 /* Operasi-operasi pada point */

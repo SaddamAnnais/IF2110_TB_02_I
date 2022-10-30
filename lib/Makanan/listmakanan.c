@@ -1,5 +1,6 @@
 #include "listmakanan.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create List kosong  */
@@ -7,6 +8,9 @@ void CreateListMakanan(ListMakanan *l)
 /* I.S. l sembarang */
 /* F.S. Terbentuk List l kosong dengan kapasitas CAPACITY */
 {
+    for (int i = 0; i<CAPACITY_LIST_MAKANAN; i++) {
+        ID(ElmtListMakanan(*l, i)) = IDX_UNDEF;
+    }
     lenListMakanan(*l) = 0;
 }
 /* ********** TEST KOSONG/PENUH ********** */
@@ -84,7 +88,7 @@ void BacaMakanan(ListMakanan *l, char *filename)
         ADVWORD();
         DURASI_AKSI(m) = wordToInt(currentWord);
 
-        ElmtListMakanan(*l, i) = m;
+        ElmtListMakanan(*l, ID(m)) = m;
         lenListMakanan(*l)++;
         ADVWORD();
     }

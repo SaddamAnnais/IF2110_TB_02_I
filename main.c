@@ -14,6 +14,7 @@
 #include "./lib/Makanan/makanan.c"
 #include "./lib/Time/time.c"
 #include "./lib/Command/command.c"
+#include "./lib/Stack/stack.c"
 
 void idle(Simulator S, Peta P, Time T, int notif[2][100]){
     printf("\n\n\n");
@@ -38,14 +39,15 @@ int main(){
     // Membandingkan input pengguna dengan kata "START"
     boolean start = isWordStrEq(currentWord, "START");
     
+
+    //CreateStack(&UndoSt);
+
+    //CreateStack(&UndoSt, &RedoSt);
+    
     if (start) // Memulai program
     {
-        Simulator S;
-        Peta P;
-        Time T;
-        ListMakanan l;
-        Inventory I;
-        Delivery D;
+        Simulator S; Time T; ListMakanan l; Peta P; Inventory I; 
+        Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo;
         int* invNotif;
         int* delivNotif;
         int notif[2][100];
@@ -58,11 +60,16 @@ int main(){
         createInventory(&I); //sementara inventory kosong
         printPrioQ(I);
         createDelivery(&D);
+        CreateStack(&UndoSt);
+        CreateStack(&RedoSt);
+
         printPrioQ(D);
         matIdNotPos(notif,I,D);
         // invNotif = listIdNotPos(I);
         // delivNotif = listIdNotPos(D);
 
+        CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
+        // PushStack(&UndoSt, ElmtUndoRedo);
         while (start){
             idle(S,P,T,notif);
             if (isWordStrEq(currentWord,"MOVE")){
@@ -76,6 +83,28 @@ int main(){
             } else if (isWordStrEq(currentWord, "CATALOG")){
                 Catalog(l);
             }
+            else if (isWordStrEq(currentWord, "UNDO")) {
+                undo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
+            }
+            else if (isWordStrEq(currentWord, "REDO")) {
+                redo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
+            }
+            
+
+
+
+
+
+            if ((!isWordStrEq(currentWord, "UNDO")) && (!isWordStrEq(currentWord, "REDO"))) {   // Untuk keperluan undo dan redo
+                PushStack(&UndoSt, ElmtUndoRedo);
+                CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
+                CreateStack(&RedoSt);
+            }
+            
+
+            // printStack(UndoSt);
+            // printf("\n");
+            // printStack(RedoSt);
         }
     
     }
