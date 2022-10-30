@@ -2,13 +2,13 @@
 #ifndef TREE_H
 #define TREE_H
 
-#define TREE_IDX_UNDEF NULL
+#define TREE_IDX_UNDEF NULL     // Digunakan dalam operasi pencarian pada tree
 
 #include "../ListDinamis/listdin.h"
 #include "../Makanan/makanan.h"
 #include "../utility/boolean.h"
 
-typedef Makanan treeInfo;   // Isi dari sebuah node
+typedef Makanan treeInfo;             // Isi dari sebuah node
 typedef struct tTreeNode* address;    // Pointer ke node
 
 /* Node dari sebuah tree */
@@ -21,34 +21,36 @@ typedef struct tTreeNode
 /* ADT n-ary Tree */
 typedef address Tree;
 
+/* KONSTRUKTOR, SELEKTOR, dan INPUT/OUTPUT */
+
 /* Mengalokasikan memory untuk sebuah node */
-address newTreeNode(treeInfo val);
+address newTreeNode(treeInfo value);
 
 /* Konstruktor pembentuk tree */
-void createTree(Tree* t, address p);
+void createTree(Tree* tree, address node);
 // I.S. Tree sembarang
 // F.S. Tree terdefinisi
 
 /* Selektor */
-#define INFO(p) (p)->info    // Isi dari node
-#define CHILDREN(p) (p)->children    // List children dari sebuah node
+#define INFO(p) (p)->info            // Selektor isi dari node
+#define CHILDREN(p) (p)->children    // Selektor list children dari sebuah node
 
-/* Menampilkan tree */
-void displayTree(Tree t);
+/* Menampilkan tree ke layar */
+void displayTree(Tree tree);
 // I.S. Tree terdefinisi
 // F.S. Semua elemen tree ditampilkan di layar 
 
-/* Operasi-operasi pada tree */
+/* OPERASI-OPERASI PADA RESEP */
 
 /* Menghasilkan true jika tree memiliki >= 1 children */
-boolean isTreeHasChildren(Tree t);
+boolean isTreeHasChildren(Tree tree);
 
 /* Menambahkan sebuah child pada tree */
-void addChild(Tree* t, address p);
-// I.S. Node p sudah dialokasi
-// F.S. Node p menjadi salah satu children dari tree
+void addChild(Tree* tree, address node);
+// I.S. Node sudah dialokasi
+// F.S. Node menjadi salah satu children dari tree
 
-/* Menghasilkan address dari sebuah val pada tree */
-address searchTree(Tree t, int val);
+/* Melakukan operasi pencarian value pada tree */
+address searchTree(Tree tree, int value);
 
 #endif

@@ -1,135 +1,188 @@
+/* Implementasi ADT Resep */
 #include "resep.h"
 #include <stdlib.h>
 
+/* IMPLEMENTASI KONSTRUKTOR dan INPUT/OUTPUT */
+
 /* Konstruktor pembentuk resep */
-void createResep(Resep* r)
-// I.S. Resep sembarang
-// F.S. Resep terdefinisi
+void createResep(Resep* resep)
+// I.S. List resep sembarang
+// F.S. List resep terdefinisi
 {
   /* KAMUS LOKAL */
 
   /* ALGORITMA */
-  NRESEP(*r) = 0;
+  N_RESEP(*resep) = 0;
 }
 
 /* Membaca resep dari file konfigurasi */
-void readResep(Resep* r, char* filepath, ListMakanan l)
-// I.S. File konfigurasi valid dan resep r sembarang
-// F.S. Resep r terbentuk sesuai dengan file konfigurasi 
+void readResep(Resep* resep, char* filepath, ListMakanan listMakanan)
+// I.S. File konfigurasi valid dan list resep sembarang
+// F.S. List resep terbentuk sesuai dengan file konfigurasi
 {
   /* KAMUS LOKAL */
-  int lineCount = 0, i, j, k, currId, numCount;
-  Makanan currMakanan;
-  address p;
+  IdxType i, j, k;
+  int lineCount, currentId, wordCount;
+  Makanan currentMakanan;
 
   /* ALGORITMA */
+  createResep(resep);
+  lineCount = 0;
+
   STARTWORDFILE(filepath);
-  createResep(r);
   while(!EndWord) {
     if(lineCount > 0) {
-      // printWord(currentWord);
-      numCount = 0;
+      wordCount = 0;
       for(i = 0; i < currentWord.Length; i++) {
-        currId = 0;
+        currentId = 0;
         while(currentWord.TabWord[i] != BLANK && i < currentWord.Length) {
-          currId *= 10;
-          currId += currentWord.TabWord[i] - '0';
+          currentId *= 10;
+          currentId += currentWord.TabWord[i] - '0';
           i++;
         }
-        numCount++;
-        currMakanan = searchMakanan(l, currId);
+        wordCount++;
+        currentMakanan = searchMakananById(listMakanan, currentId);
 
-        if(numCount == 1) {
-          createTree(&RELMT(*r, NRESEP(*r)), newTreeNode(currMakanan));
-          NRESEP(*r)++;
-        } else if(numCount > 2) {
-          addChild(&RELMT(*r, NRESEP(*r)-1), newTreeNode(currMakanan));
+        if(wordCount == 1) {
+          createTree(&R_ELMT(*resep, N_RESEP(*resep)), newTreeNode(currentMakanan));
+          N_RESEP(*resep)++;
+        } else if(wordCount > 2) {
+          addChild(&R_ELMT(*resep, N_RESEP(*resep)-1), newTreeNode(currentMakanan));
         } 
       }
     }
+
     lineCount++;
     ADVLINE();
   }
-
-  // for(i = 0; i < NRESEP(*r); i++) {
-  //   for(j = 0; j < NRESEP(*r); j++) {
-  //     if(j!=i && RELMT(*r, j) != NULL) {
-  //       p = searchTree(RELMT(*r, j), ID(INFO(RELMT(*r, i))));
-  //       if(p != TREE_IDX_UNDEF) {
-  //         for(k = 0; k < NEFF(CHILDREN(RELMT(*r, i))); k++) {
-  //           addChild(&p, ELMT(CHILDREN(RELMT(*r, i)), k));
-  //         }
-  //         RELMT(*r, i) = NULL;
-  //         break;
-  //       } 
-  //     }
-  //   }
-  // }
 }
 
-/* Menampilkan seluruh resep ke layar */
-void displayCookbook(Resep r)
+/* Menampilkan seluruh resep ke layar dengan command COOKBOOK */
+void displayCookbook(Resep resep)
 // I.S. Resep terdefinisi
-// F.S. Seluruh resep ditampilkan di layar
+// F.S. Seluruh resep ditampilkan di layar sesuai format pada spesifikasi
 {
   /* KAMUS LOKAL */
-  int i, num = 1;
+  IdxType i; 
 
   /* ALGORITMA */
-  printf("List Resep\n(aksi yang diperlukan - bahan...)");
-  for(i = 0; i < NRESEP(r); i++) {
-    if(RELMT(r, i)!=NULL) {
-      printf("\n%d.  ", i+1);
-      printWord(NAMA_MAKANAN(INFO(RELMT(r, i))));
-      printf("\n    ");
-      printWord(AKSI_MAKANAN(INFO(RELMT(r, i))));
-      displayResep(RELMT(r, i));
+  if(N_RESEP(resep) == 0) {
+    printf("List resep kosong\n");
+  } else {
+    printf("List Resep\n(aksi yang diperlukan - bahan...)");
+    for(i = 0; i < N_RESEP(resep); i++) {
+      printf("\n  %d.  ", i+1);
+      printWord(NAMA_MAKANAN(INFO(R_ELMT(resep, i))));
+      printf("\n      ");
+      printWord(AKSI_MAKANAN(INFO(R_ELMT(resep, i))));
+
+      displayResep(R_ELMT(resep, i));
     }
+    printf("\n");
   }
 }
 
 /* Menampilkan sebuah node resep ke layar */
-void displayResep(address p)
-// I.S. Node p terdefinisi
-// F.S. Node p ditampilkan di layar dengan semua childnya
-{
-  /* KAMUS LOKAL */
-  int i;
-
-  /* ALGORITMA */
-  for(i = 0; i < NEFF(CHILDREN(p)); i++) {
-    printf(" - ");
-    printWord(NAMA_MAKANAN(INFO(ELMT(CHILDREN(p), i))));
-  }
-}
-
-/* Operasi-operasi pada resep */
-
-// Menghasilkan data makanan berdasarkan id
-Makanan searchMakanan(ListMakanan l, int id)
+void displayResep(address node)
+// I.S. Sebuah node resep terdefinisi
+// F.S. Sebuah node resep ditampilkan di layar sesuai format pada spesifikasi
 {
   /* KAMUS LOKAL */
   IdxType i;
 
   /* ALGORITMA */
-  for(i = 0; i < l.len; i++) {
-    if(ID(ElmtListMakanan(l, i)) == id) {
-      return ElmtListMakanan(l, i);
+  for(i = 0; i < NEFF(CHILDREN(node)); i++) {
+    printf(" - ");
+    printWord(NAMA_MAKANAN(INFO(ELMT(CHILDREN(node), i))));
+  }
+}
+
+/* IMPLEMENTASI OPERASI-OPERASI PADA RESEP */
+
+/* Menghasilkan data makanan berdasarkan id */
+Makanan searchMakananById(ListMakanan listMakanan, int id)
+{
+  /* KAMUS LOKAL */
+  IdxType i;
+
+  /* ALGORITMA */
+  for(i = 0; i < lenListMakanan(listMakanan); i++) {
+    if(ID(ElmtListMakanan(listMakanan, i)) == id) {
+      return ElmtListMakanan(listMakanan, i);
     }
   }
 }
 
-// Melakukan operasi pengolahan makanan
-void olahMakanan(Makanan m, Inventory* i, char o);
+/* Menghasilkan bahan makanan untuk membuat sebuah makanan */
+ListDin bahanMakanan(Resep resep, int id)
+{
+  /* KAMUS LOKAL */
+  IdxType i;
 
-// Melakukan operasi mix makanan
-void mix(Makanan m, Inventory* i);
+  /* ALGORITMA */
+  for(i = 0; i < N_RESEP(resep); i++) {
+    if(ID(INFO(R_ELMT(resep, i))) == id) {
+      return CHILDREN(R_ELMT(resep, i));
+    }
+  }
+}
 
-// Melakukan operasi chop makanan
-void chop(Makanan m, Inventory* i);
+/* Menampilkan daftar makanan yang dapat dibuat oleh sebuah operasi pengolahan makanan */
+void displayOperasiMakanan(ListMakanan listMakanan, char* operasi)
+// I.S. Operasi merupakan operasi pengolahan makanan yang valid
+// F.S. Semua makanan yang dapat dibuat dari operasi tersebut ditampilkan di layar
+//      sesuai format pada spesifikasi
+{
+  /* KAMUS LOKAL */
+  IdxType i;
+  int numList;
 
-// Melakukan operasi fry makanan
-void fry(Makanan m, Inventory* i);
+  /* ALGORITMA */
+  numList = 0;
 
-// Melakuka operasi boil makanan
-void boil(Makanan m, Inventory* i);
+  printf("List Bahan Makanan yang Bisa Dibuat:\n");
+  for(i = 0; i < lenListMakanan(listMakanan); i++) {
+    if(isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(listMakanan, i)), operasi)) {
+      printf("  %d. ", numList+1);
+      printWord(NAMA_MAKANAN(ElmtListMakanan(listMakanan, i)));
+      printf("\n");
+      numList++;
+    }
+  }
+  
+  if(numList == 0) {
+    printf("Tidak ada bahan makanan yang dapat dibuat dengan operasi '%s'\n", operasi);
+  }
+}
+
+/* Melakukan operasi pengolahan makanan */
+void olahMakanan(Makanan makanan, Inventory* inventory, Resep resep)
+// I.S. Makanan merupakan makanan yang ingin dibuat
+// F.S. Jika bahan makanan tersedia pada inventory, makanan hasil pengolahan ditambahkan
+//      ke dalam inventory dan bahan makanan dihilangkan dari inventory
+{
+  /* KAMUS LOKAL */
+  boolean isOpsValid;
+  ListDin listBahan;
+  IdxType i;
+  infotype infoMakanan;
+
+  /* ALGORITMA */
+  listBahan = bahanMakanan(resep, ID(makanan));
+
+  isOpsValid = true;
+  for(i = 0; i < NEFF(listBahan); i++) {
+    if(!isIdInQ(*inventory, ID(INFO(ELMT(listBahan, i))))) {
+      isOpsValid = false;
+      break;
+    }
+  }
+
+  if(isOpsValid) {
+    for(i = 0; i < NEFF(listBahan); i++) {
+      delIdFromQ(inventory, ID(INFO(ELMT(listBahan, i))));
+    }
+    setInfotypeQ(&infoMakanan, ID(makanan), timeToMinute(WAKTU_KADALUARSA(makanan)));
+    enqueue(inventory, infoMakanan);
+  }
+}

@@ -1,105 +1,108 @@
+/* Implementasi ADT n-ary Tree */
 #include "tree.h"
 #include <stdio.h>
 #include <stdlib.h>
 
+/* IMPLEMENTASI KONSTRUKTOR dan INPUT/OUTPUT */
+
 /* Mengalokasikan memory untuk sebuah node */
-address newTreeNode(treeInfo val)
+address newTreeNode(treeInfo value)
 {
   /* KAMUS LOKAL */
-  address p;
+  address node;
 
   /* ALGORITMA */
-  p = (address) malloc(sizeof(TreeNode));
-  if(p != NULL) {
-    ID(INFO(p)) = ID(val);
-    NAMA_MAKANAN(INFO(p)) = NAMA_MAKANAN(val);
-    WAKTU_KADALUARSA(INFO(p)) = WAKTU_KADALUARSA(val);
-    AKSI_MAKANAN(INFO(p)) = AKSI_MAKANAN(val);
-    LAMA_PENGIRIMAN(INFO(p)) = LAMA_PENGIRIMAN(val);
-    DURASI_AKSI(INFO(p)) = DURASI_AKSI(val);
+  node = (address) malloc(sizeof(TreeNode));
+  if(node != NULL) {
+    ID(INFO(node)) = ID(value);
+    NAMA_MAKANAN(INFO(node)) = NAMA_MAKANAN(value);
+    WAKTU_KADALUARSA(INFO(node)) = WAKTU_KADALUARSA(value);
+    AKSI_MAKANAN(INFO(node)) = AKSI_MAKANAN(value);
+    LAMA_PENGIRIMAN(INFO(node)) = LAMA_PENGIRIMAN(value);
+    DURASI_AKSI(INFO(node)) = DURASI_AKSI(value);
 
-    CreateListDin(&CHILDREN(p), 5);
-    return p;
+    CreateListDin(&CHILDREN(node), 5);
+    return node;
   }
 }
 
 /* Konstruktor pembentuk tree */
-void createTree(Tree* t, address p)
+void createTree(Tree* tree, address node)
 // I.S. Tree sembarang
 // F.S. Tree terdefinisi
 {
   /* KAMUS LOKAL */
 
   /* ALGORITMA */
-  *t = p;
+  *tree = node;
 }
 
-/* Menampilkan tree */
-void displayTree(Tree t)
+/* Menampilkan tree ke layar */
+void displayTree(Tree tree)
 // I.S. Tree terdefinisi
-// F.S. Semua elemen tree ditampilkan di layar
+// F.S. Semua elemen tree ditampilkan di layar 
 {
   /* KAMUS LOKAL */
   IdxType i;
 
   /* ALGORITMA */
-  printf("%d", ID(INFO(t)));
+  printf("%d", ID(INFO(tree)));
 
-  if(isTreeHasChildren(t)) {
-    for(i = 0; i < NEFF(CHILDREN(t)); i++) {
+  if(isTreeHasChildren(tree)) {
+    for(i = 0; i < NEFF(CHILDREN(tree)); i++) {
       printf("(");
-      displayTree(ELMT(CHILDREN(t), i));
+      displayTree(ELMT(CHILDREN(tree), i));
       printf(")");
     }
   }
 }
 
-/* Operasi-operasi pada tree */
+/* IMPLEMENTASI OPERASI-OPERASI PADA RESEP */
 
 /* Menghasilkan true jika tree memiliki >= 1 children */
-boolean isTreeHasChildren(Tree t)
+boolean isTreeHasChildren(Tree tree)
 {
   /* KAMUS LOKAL */
 
   /* ALGORITMA */
-  return NEFF(CHILDREN(t)) > 0;
+  return NEFF(CHILDREN(tree)) > 0;
 }
 
 /* Menambahkan sebuah child pada tree */
-void addChild(Tree* t, address p)
-// I.S. Node p sudah dialokasi
-// F.S. Node p menjadi salah satu children dari tree
+void addChild(Tree* tree, address node)
+// I.S. Node sudah dialokasi
+// F.S. Node menjadi salah satu children dari tree
 {
   /* KAMUS LOKAL */
 
   /* ALGORITMA */
-  if(isFull(CHILDREN(*t))) {
-    expandList(&CHILDREN(*t), LISTDINCAPACITY(CHILDREN(*t)));
+  if(isFull(CHILDREN(*tree))) {
+    expandList(&CHILDREN(*tree), LISTDINCAPACITY(CHILDREN(*tree)));
   }
 
-  insertLast(&CHILDREN(*t), p);
+  insertLast(&CHILDREN(*tree), node);
 }
 
-/* Menghasilkan address dari sebuah val pada tree */
-address searchTree(Tree t, int val)
+/* Melakukan operasi pencarian value pada tree */
+address searchTree(Tree tree, int value)
 {
   /* KAMUS LOKAL */
-  address p, temp;
+  address node, tempNode;
   IdxType i;
   
   /* ALGORITMA */
-  if(ID(INFO(t)) == val) {
-    return t;
+  if(ID(INFO(tree)) == value) {
+    return tree;
   }
 
-  if(isTreeHasChildren(t)) {
-    p = TREE_IDX_UNDEF;
-    for(i = 0; i < NEFF(CHILDREN(t)); i++) {
-      temp = searchTree(ELMT(CHILDREN(t), i), val);
-      if(temp != TREE_IDX_UNDEF) {
-        p = temp;
+  if(isTreeHasChildren(tree)) {
+    node = TREE_IDX_UNDEF;
+    for(i = 0; i < NEFF(CHILDREN(tree)); i++) {
+      tempNode = searchTree(ELMT(CHILDREN(tree), i), value);
+      if(tempNode != TREE_IDX_UNDEF) {
+        node = tempNode;
       }
     }
-    return p;
+    return node;
   }
 }

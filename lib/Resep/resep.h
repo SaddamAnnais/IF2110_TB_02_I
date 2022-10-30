@@ -1,4 +1,4 @@
-/* Definisi ADT Resep dengan implementasi list statik untuk menyimpan root dari tree */
+/* Definisi ADT Resep dengan implementasi list statik */
 #ifndef RESEP_H
 #define RESEP_H
 
@@ -11,57 +11,60 @@
 #define RESEP_CAPACITY 100    // Kapasitas maksimum dari list resep
 
 typedef address resepElType;    // Elemen dari list resep
-/* ADT Resep */
+
+/* ADT Resep dengan implementasi list statik */
 typedef struct resep
 {
   resepElType contents[RESEP_CAPACITY];   // List statik tempat menyimpan resep
-  int nResep;   // Jumlah elemen pada list resep
+  int nResep;                             // Jumlah elemen pada list resep
 } Resep;
 
+/* KONSTRUKTOR, SELEKTOR, dan INPUT/OUTPUT */
+
 /* Konstruktor pembentuk resep */
-void createResep(Resep* r);
-// I.S. Resep sembarang
-// F.S. Resep terdefinisi
+void createResep(Resep* resep);
+// I.S. List resep sembarang
+// F.S. List resep terdefinisi
 
 /* Selektor */
-#define RELMT(R, i) (R).contents[i]   // Elemen resep ke-i
-#define NRESEP(R) (R).nResep    // Jumlah elemen pada list resep
+#define R_ELMT(R, i) (R).contents[i]   // Selektor elemen resep ke-i
+#define N_RESEP(R) (R).nResep          // Selektor jumlah elemen pada list resep
 
 /* Membaca resep dari file konfigurasi */
-void readResep(Resep* r, char* filepath, ListMakanan l);
-// I.S. File konfigurasi valid dan resep r sembarang
-// F.S. Resep r terbentuk sesuai dengan file konfigurasi 
+void readResep(Resep* resep, char* filepath, ListMakanan listMakanan);
+// I.S. File konfigurasi valid dan list resep sembarang
+// F.S. List resep terbentuk sesuai dengan file konfigurasi
 
-/* Menampilkan seluruh resep ke layar */
-void displayCookbook(Resep r);
+/* Menampilkan seluruh resep ke layar dengan command COOKBOOK */
+void displayCookbook(Resep resep);
 // I.S. Resep terdefinisi
-// F.S. Seluruh resep ditampilkan di layar
+// F.S. Seluruh resep ditampilkan di layar sesuai format pada spesifikasi
 
 /* Menampilkan sebuah node resep ke layar */
-void displayResep(address p);
-// I.S. Node p terdefinisi
-// F.S. Node p ditampilkan di layar dengan semua childnya
+void displayResep(address node);
+// I.S. Sebuah node resep terdefinisi
+// F.S. Sebuah node resep ditampilkan di layar sesuai format pada spesifikasi
 
-/* Operasi-operasi pada resep */
+/* OPERASI-OPERASI PADA RESEP */
 
-// Menghasilkan data makanan berdasarkan id
-Makanan searchMakanan(ListMakanan l, int id);
+/* Menghasilkan data makanan berdasarkan id */
+Makanan searchMakananById(ListMakanan listMakanan, int id);
 
-// Melakukan operasi pengolahan makanan
-void olahMakanan(Makanan m, Inventory* i, char o);
-// I.S. o merupakan operasi yang akan dilakukan
-// F.S. Jika berhasil, bahan makanan diubah menjadi makanan baru pada inventory
+/* Menghasilkan bahan makanan untuk membuat sebuah makanan */
+ListDin bahanMakanan(Resep resep, int id);
 
-// Melakukan operasi mix makanan
-void mix(Makanan m, Inventory* i);
+/* Menampilkan daftar makanan yang dapat dibuat oleh sebuah operasi pengolahan makanan */
+void displayOperasiMakanan(ListMakanan listMakanan, char* operasi);
+// I.S. Operasi merupakan operasi pengolahan makanan yang valid
+// F.S. Semua makanan yang dapat dibuat dari operasi tersebut ditampilkan di layar
+//      sesuai format pada spesifikasi
 
-// Melakukan operasi chop makanan
-void chop(Makanan m, Inventory* i);
-
-// Melakukan operasi fry makanan
-void fry(Makanan m, Inventory* i);
-
-// Melakuka operasi boil makanan
-void boil(Makanan m, Inventory* i);
+// Fungsi belum disesuaikan dengan inventory karena sementara inventory belum dapat
+// menerima ADT makanan
+/* Melakukan operasi pengolahan makanan */
+void olahMakanan(Makanan makanan, Inventory* inventory, Resep resep);
+// I.S. Makanan merupakan makanan yang ingin dibuat
+// F.S. Jika bahan makanan tersedia pada inventory, makanan hasil pengolahan ditambahkan
+//      ke dalam inventory dan bahan makanan dihilangkan dari inventory
 
 #endif

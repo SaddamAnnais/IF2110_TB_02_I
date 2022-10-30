@@ -1,4 +1,4 @@
-3
+6
 11
 Ayam Mentah
 1 0 0
@@ -11,10 +11,28 @@ Ayam Potong
 0 0 0
 Chop
 4
-5
+10
 Tepung
 0 1 0
 0 0 30
 Buy
 10
+15
+Minyak Goreng
+0 1 30
+0 1 0
+Buy
+0
+31
+Ayam Tepung
+0 0 30
+0 0 0
+Mix
+5
+37
+Ayam Goreng
+0 0 15
+0 0 0
+Fry
+3
 .
