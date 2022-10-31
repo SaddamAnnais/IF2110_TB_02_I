@@ -65,59 +65,6 @@ void Catalog(ListMakanan lM){
     }
 }
 
-/* Melakukan pemesanan makanan */
-void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory *I, int (*notif)[100]){
-    if (!isNearTelepon(*p, *s)){
-        printf("BNMO tidak berada di area telepon!\n");
-    } else{
-        printf("======================\n");
-        printf("=        BUY         =\n");
-        printf("======================\n");
-        printf("List Bahan Makanan:\n");
-        // display makanan
-        int count = 1;
-        for (int i = 0; i < lM.len; i++){
-            if (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "BUY")){
-                printf("    %d. ", count);
-                printWord(NAMA_MAKANAN(ElmtListMakanan(lM,i)));
-                printf(" (");
-                displayTime1(LAMA_PENGIRIMAN(ElmtListMakanan(lM,i)));
-                printf(")\n");
-                count++;
-            }
-        }
-        printf("Kirim 0 untuk exit.\n");
-        printf("Enter command: ");
-        int n;
-        scanf("%d", &n);
-        if (n >= count || n < 0){
-            printf("Perintah tidak valid.\n");
-        } else if (n > 0){
-            Makanan m;
-            int count1 = 1;
-            for (int i = 0; i < lM.len; i++){
-                if (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "BUY")){
-                    count1++;
-                }
-                if (count1 == n){
-                    m = ElmtListMakanan(lM,i);
-                }
-            }
-            infotype m1;
-            Time(m1) = timeToMinute(LAMA_PENGIRIMAN(m));
-            //Makanan(m1) = m;
-            timePass(1,T,I,D,notif);//waktu berjalan 1 menit
-            enqueue(D,m1);
-            printf("Berhasil memesan ");
-            printWord(NAMA_MAKANAN(m));
-            printf(". ");
-            printWord(NAMA_MAKANAN(m));
-            printf(" akan diantar dalam ");
-            displayTime1(LAMA_PENGIRIMAN(m));
-            printf(".\n");
-        }
-    }
-}
 /*UNDO REDO*/
 void undo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I)
 /*Membatalkan command yang dilakukan dan mengembalikan*/
@@ -171,4 +118,95 @@ void redo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, D
     else {
         printf("Tidak bisa redo\n");
     }    
+}
+
+/* Melakukan pemesanan makanan */
+void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory *I, int (*notif)[100]){
+    if (!isNearTelepon(*p, *s)){
+        printf("BNMO tidak berada di area telepon!\n");
+    } else{
+        printf("======================\n");
+        printf("=        BUY         =\n");
+        printf("======================\n");
+        printf("List Bahan Makanan:\n");
+        // display makanan
+        int count = 1;
+        for (int i = 0; i < lM.len; i++){
+            if (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "BUY")){
+                printf("    %d. ", count);
+                printWord(NAMA_MAKANAN(ElmtListMakanan(lM,i)));
+                printf(" (");
+                displayTime1(LAMA_PENGIRIMAN(ElmtListMakanan(lM,i)));
+                printf(")\n");
+                count++;
+            }
+        }
+        printf("Kirim 0 untuk exit.\n");
+        printf("Enter command: ");
+        int n;
+        scanf("%d", &n);
+        if (n >= count || n < 0){
+            printf("Perintah tidak valid.\n");
+        } else if (n > 0){
+            Makanan m;
+            int count1 = 1;
+            for (int i = 0; i < lenListMakanan(lM); i++){
+                if (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "BUY")){
+                    count1++;
+                }
+                if (count1 == n){
+                    m = ElmtListMakanan(lM,i);
+                }
+            }
+            infotype m1;
+            setInfotypeQ(&m1, ID(m), timeToMinute(LAMA_PENGIRIMAN(m)));
+            timePass(1,T,I,D,notif);//waktu berjalan 1 menit
+            enqueue(D,m1);
+            printf("Berhasil memesan ");
+            printWord(NAMA_MAKANAN(m));
+            printf(". ");
+            printWord(NAMA_MAKANAN(m));
+            printf(" akan diantar dalam ");
+            displayTime1(LAMA_PENGIRIMAN(m));
+            printf(".\n");
+        }
+    }
+}
+
+/* Melihat Delivery List */
+void PrintDelivery(ListMakanan lM, Delivery D){
+    printf("List Makanan di Perjalanan\n");
+    printf("(nama - waktu sisa delivery)\n");
+    if (!isEmptyQ(D)){
+        for (int i = 0; i <= TailQ(D); i++){
+            printf("    %d. ", i+1);
+            for(int j = 0; j < lenListMakanan(lM); j++){
+                if (ID(ElmtListMakanan(lM,j)) == Id(ElmtQ(D,i))){
+                    printWord(NAMA_MAKANAN(ElmtListMakanan(lM,j)));
+                }
+            }
+            printf(" - ");
+            displayTime1(minuteToTime(Time(ElmtQ(D,i))));
+            printf("\n");
+        }
+    }
+}
+
+/* Melihat makanan yang dimiliki di Inventory */
+void PrintInventory(ListMakanan lM, Inventory I){
+    printf("List Makanan di Inventory\n");
+    printf("(nama - waktu sisa kadaluarsa)\n");
+    if (!isEmptyQ(I)){
+        for (int i = 0; i <= TailQ(I); i++){
+            printf("    %d. ", i+1);
+            for(int j = 0; j < lenListMakanan(lM); j++){
+                if (ID(ElmtListMakanan(lM,j)) == Id(ElmtQ(I,i))){
+                    printWord(NAMA_MAKANAN(ElmtListMakanan(lM,j)));
+                }
+            }
+            printf(" - ");
+            displayTime1(minuteToTime(Time(ElmtQ(I,i))));
+            printf("\n");
+        }
+    }
 }
