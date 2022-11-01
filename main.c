@@ -71,11 +71,13 @@ int main(){
         matIdNotPos(notif,I,D);
         // invNotif = listIdNotPos(I);
         // delivNotif = listIdNotPos(D);
+        
 
         CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
         // PushStack(&UndoSt, ElmtUndoRedo);
         while (start){
             idle(S,P,T,notif);
+            //printf("%d\n", TailQ(D));
             if (isWordStrEq(currentWord,"MOVE")){
                 Move(&P,&S,&T,&I,&D,notif);
             } else if (isWordStrEq(currentWord,"WAIT")){
