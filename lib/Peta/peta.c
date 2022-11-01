@@ -14,7 +14,7 @@ void createPeta(Peta* p, int nRow, int nCol)
   for(i = 0; i < ROW_EFF(*p); i++) {
     for(j = 0; j < COL_EFF(*p); j++) {
       if(isBatas(*p, i, j)) {
-        ELMT(*p, i, j) = '*';
+        MATRIX_ELMT(*p, i, j) = '*';
       }
     }
   }
@@ -47,13 +47,13 @@ void readPeta(Peta* p, char* filename, Simulator* s)
     } else {
       for(i = 0; i < currentWord.Length; i++) {
         if(currentWord.TabWord[i] == '#') {
-          ELMT(*p, count-1, i+1) = ' ';
+          MATRIX_ELMT(*p, count-1, i+1) = ' ';
         } else if(currentWord.TabWord[i] == 'S') {
-          ELMT(*p, count-1, i+1) = 'S';
+          MATRIX_ELMT(*p, count-1, i+1) = 'S';
           ABSIS(Lokasi(*s)) = i;
           ORDINAT(Lokasi(*s)) = count-2; 
         } else {
-          ELMT(*p, count-1, i+1) = currentWord.TabWord[i];
+          MATRIX_ELMT(*p, count-1, i+1) = currentWord.TabWord[i];
         }
       }
     }
@@ -91,7 +91,7 @@ boolean isCoordSimValid(Peta p, IdxType i, IdxType j)
   char element;
 
   /* ALGORITMA */
-  element = ELMT(p, i, j);
+  element = MATRIX_ELMT(p, i, j);
   return element == ' ';
 }
 
@@ -107,8 +107,8 @@ void moveNorth(Peta* p, Simulator* s)
   newX = ABSIS(Lokasi(*s));
   newY = ORDINAT(Lokasi(*s))-1;
   if(isCoordSimValid(*p, newY, newX)) {
-    ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
-    ELMT(*p, newY, newX) = 'S';
+    MATRIX_ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
+    MATRIX_ELMT(*p, newY, newX) = 'S';
     ABSIS(Lokasi(*s)) = newX-1;
     ORDINAT(Lokasi(*s)) = newY-1;
   } else {
@@ -128,8 +128,8 @@ void moveEast(Peta* p, Simulator* s)
   newX = ABSIS(Lokasi(*s)) + 2;
   newY = ORDINAT(Lokasi(*s)) + 1;
   if(isCoordSimValid(*p, newY, newX)) {
-    ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
-    ELMT(*p, newY, newX) = 'S';
+    MATRIX_ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
+    MATRIX_ELMT(*p, newY, newX) = 'S';
     ABSIS(Lokasi(*s)) = newX-1;
     ORDINAT(Lokasi(*s)) = newY-1;
   } else {
@@ -150,8 +150,8 @@ void moveSouth(Peta* p, Simulator* s)
   newX = ABSIS(Lokasi(*s)) + 1;
   newY = ORDINAT(Lokasi(*s)) + 2;
   if(isCoordSimValid(*p, newY, newX)) {
-    ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
-    ELMT(*p, newY, newX) = 'S';
+    MATRIX_ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
+    MATRIX_ELMT(*p, newY, newX) = 'S';
     ABSIS(Lokasi(*s)) = newX-1;
     ORDINAT(Lokasi(*s)) = newY-1;
   } else {
@@ -172,8 +172,8 @@ void moveWest(Peta* p, Simulator* s)
   newX = ABSIS(Lokasi(*s));
   newY = ORDINAT(Lokasi(*s)) + 1;
   if(isCoordSimValid(*p, newY, newX)) {
-    ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
-    ELMT(*p, newY, newX) = 'S';
+    MATRIX_ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
+    MATRIX_ELMT(*p, newY, newX) = 'S';
     ABSIS(Lokasi(*s)) = newX-1;
     ORDINAT(Lokasi(*s)) = newY-1;
   } else {
@@ -193,7 +193,7 @@ boolean isNear(Peta p, Simulator s, char c)
   y = ORDINAT(Lokasi(s)) + 1;
   for(i = y-1; i <= y+1; i++) {
     for(j = x-1; j <= x+1; j++) {
-      if(ELMT(p, i, j) == c) {
+      if(MATRIX_ELMT(p, i, j) == c) {
         return true;
       }
     }
@@ -255,11 +255,11 @@ void setPetaFromSimulator(Peta *p, Simulator s)
 {
   for (int i = 0; i<ROW_EFF(*p); i++) {
     for (int j = 0; j<COL_EFF(*p); j++) {
-      if (ELMT(*p, i, j) == 'S') {
-        ELMT(*p, i, j) = ' ';
+      if (MATRIX_ELMT(*p, i, j) == 'S') {
+        MATRIX_ELMT(*p, i, j) = ' ';
       }
     }
   }  
-  ELMT(*p, ORDINAT(Lokasi(s))+1, ABSIS(Lokasi(s))+1) = 'S';
+  MATRIX_ELMT(*p, ORDINAT(Lokasi(s))+1, ABSIS(Lokasi(s))+1) = 'S';
 }
 

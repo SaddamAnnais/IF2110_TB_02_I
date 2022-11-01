@@ -56,11 +56,14 @@ void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)
 void Catalog(ListMakanan lM){
     printf("List Makanan\n");
     printf("(nama - durasi kedaluwarsa - aksi yang diperlukan - delivery time - durasi aksi)\n");
-
+    printf("------------------------------------------------------------------------------------\n");
+    int count = 1;
     for (int i=0; i<CAPACITY_LIST_MAKANAN; i++){
         if (ID(ElmtListMakanan(lM, i)) != IDX_UNDEF) {
+            printf("%d. ",count);
             DisplayMakanan(ElmtListMakanan(lM, i));    
             printf("\n");
+            count++;
         }        
     }
 }
@@ -76,8 +79,8 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
         printf("List Bahan Makanan:\n");
         // display makanan
         int count = 1;
-        for (int i = 0; i < lM.len; i++){
-            if (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "BUY")){
+        for (int i = 0; i < CAPACITY_LIST_MAKANAN ;i++){
+            if (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "Buy") && (ID(ElmtListMakanan(lM, i)) != IDX_UNDEF)){
                 printf("    %d. ", count);
                 printWord(NAMA_MAKANAN(ElmtListMakanan(lM,i)));
                 printf(" (");
@@ -88,15 +91,15 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
         }
         printf("Kirim 0 untuk exit.\n");
         printf("Enter command: ");
-        int n;
-        scanf("%d", &n);
+        STARTWORD();
+        int n = wordToInt(currentWord);
         if (n >= count || n < 0){
             printf("Perintah tidak valid.\n");
         } else if (n > 0){
             Makanan m;
-            int count1 = 1;
-            for (int i = 0; i < lM.len; i++){
-                if (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "BUY")){
+            int count1 = 0;
+            for (int i = 0; i < CAPACITY_LIST_MAKANAN; i++){
+                if (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "Buy") && (ID(ElmtListMakanan(lM, i)) != IDX_UNDEF)){
                     count1++;
                 }
                 if (count1 == n){
