@@ -40,3 +40,9 @@ void redo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, D
         
 /* Melakukan pemesanan makanan */
 void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory *I, int (*notif)[100]);
+
+/* Melihat Delivery List */
+void PrintDelivery(ListMakanan lM, Delivery D);
+
+/* Melihat makanan yang dimiliki di Inventory */
+void PrintInventory(ListMakanan lM, Inventory I);

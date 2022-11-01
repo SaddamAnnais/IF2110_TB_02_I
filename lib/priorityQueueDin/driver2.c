@@ -28,7 +28,7 @@ int main(){
     matIdNotPos(notif,I,D);
     keepPosTimeQ(&I);
     keepPosTimeQ(&D);
-    displayNotif(notif);
+    displayNotif(notif,true);
 
     timePassQ(&D,1);
     enqueue(&I, val5);
@@ -37,7 +37,7 @@ int main(){
     matIdNotPos(notif,I,D);
     keepPosTimeQ(&I);
     keepPosTimeQ(&D);
-    displayNotif(notif);
+    displayNotif(notif,false);
 
 
 

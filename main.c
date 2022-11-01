@@ -24,7 +24,7 @@ void idle(Simulator S, Peta P, Time T, int notif[2][100]){
     printf("\n");
     // notifQ(invenNotif,true); //notif sementara
     // notifQ(delivNotif,false);
-    displayNotif(notif);
+    displayNotif(notif,true);
     printf("\n");
     printf("Enter Command:  ");
     STARTWORD();
@@ -82,11 +82,13 @@ int main(){
                 Buy(&P,&S,l,&D,&T,&I,notif);
             } else if (isWordStrEq(currentWord, "CATALOG")){
                 Catalog(l);
-            }
-            else if (isWordStrEq(currentWord, "UNDO")) {
+            } else if (isWordStrEq(currentWord, "DELIVERY")){
+                PrintDelivery(l, D);
+            } else if (isWordStrEq(currentWord, "INVENTORY")){
+                PrintInventory(l, I);
+            } else if (isWordStrEq(currentWord, "UNDO")) {
                 undo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
-            }
-            else if (isWordStrEq(currentWord, "REDO")) {
+            } else if (isWordStrEq(currentWord, "REDO")) {
                 redo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
             }
             

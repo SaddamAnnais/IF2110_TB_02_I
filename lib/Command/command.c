@@ -108,7 +108,7 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
             }
             infotype m1;
             Time(m1) = timeToMinute(LAMA_PENGIRIMAN(m));
-            //Makanan(m1) = m;
+            Id(m1) = ID(m);
             timePass(1,T,I,D,notif);//waktu berjalan 1 menit
             enqueue(D,m1);
             printf("Berhasil memesan ");
@@ -174,4 +174,42 @@ void redo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, D
     else {
         printf("Tidak bisa redo\n");
     }    
+}
+
+/* Melihat Delivery List */
+void PrintDelivery(ListMakanan lM, Delivery D){
+    printf("List Makanan di Perjalanan\n");
+    printf("(nama - waktu sisa delivery)\n");
+    if (!isEmptyQ(D)){
+        for (int i = 0; i <= TailQ(D); i++){
+            printf("    %d. ", i+1);
+            for(int j = 0; j < lenListMakanan(lM); j++){
+                if (ID(ElmtListMakanan(lM,j)) == Id(ElmtQ(D,i))){
+                    printWord(NAMA_MAKANAN(ElmtListMakanan(lM,j)));
+                }
+            }
+            printf(" - ");
+            displayTime1(minuteToTime(Time(ElmtQ(D,i))));
+            printf("\n");
+        }
+    }
+}
+
+/* Melihat makanan yang dimiliki di Inventory */
+void PrintInventory(ListMakanan lM, Inventory I){
+    printf("List Makanan di Inventory\n");
+    printf("(nama - waktu sisa kadaluarsa)\n");
+    if (!isEmptyQ(I)){
+        for (int i = 0; i <= TailQ(I); i++){
+            printf("    %d. ", i+1);
+            for(int j = 0; j < lenListMakanan(lM); j++){
+                if (ID(ElmtListMakanan(lM,j)) == Id(ElmtQ(I,i))){
+                    printWord(NAMA_MAKANAN(ElmtListMakanan(lM,j)));
+                }
+            }
+            printf(" - ");
+            displayTime1(minuteToTime(Time(ElmtQ(I,i))));
+            printf("\n");
+        }
+    }
 }
