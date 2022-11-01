@@ -182,16 +182,18 @@ void delIdFromQ(PrioQueueTime *Q, int id)
 /* I.S. Q terdefinisi, terdapat elemen yang memiliki id adalah id*/
 /* F.S. elemen pertama yang memiliki id adalah id dihapus dari Q*/
 {
-    int idx=0;
-    while (id != Id(ElmtQ(*Q, idx))) {     // mendapatkan index dari id dalam Q
-        idx++;
-    }
-    //printf("%d", idx);
+    if (isIdInQ(*Q, id)) {
+        int idx=0;
+        while (id != Id(ElmtQ(*Q, idx))) {     // mendapatkan index dari id dalam Q
+            idx++;
+        }
+        //printf("%d", idx);
 
-    for (int i = idx; i<TailQ(*Q); i++) {
-        ElmtQ(*Q, i) = ElmtQ(*Q, i+1);
+        for (int i = idx; i<TailQ(*Q); i++) {
+            ElmtQ(*Q, i) = ElmtQ(*Q, i+1);
+        }
+        TailQ(*Q)--;
     }
-    TailQ(*Q)--;
 }
 
 void timePassQ(PrioQueueTime *Q, int mnt)
@@ -247,7 +249,7 @@ void keepPosTimeQ(PrioQueueTime *Q)
 /* I.S. Q terdefinisi*/
 /* F.S. semua elemen time lebih besar dari 0*/
 {
-    static int listId[100], i=0;
+    int listId[100], i=0;
     for (int i = 0; i<100; i++) {
         listId[i] = Nil;
     }
