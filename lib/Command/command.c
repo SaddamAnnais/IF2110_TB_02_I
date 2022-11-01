@@ -102,17 +102,13 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
                 if (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "Buy") && (ID(ElmtListMakanan(lM, i)) != IDX_UNDEF)){
                     count1++;
                 }
-                if (count1 == n){
+                if (count1 == n && (isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(lM,i)), "Buy")) && (ID(ElmtListMakanan(lM, i)) != IDX_UNDEF)){
                     m = ElmtListMakanan(lM,i);
                 }
             }
             infotype m1;
             Time(m1) = timeToMinute(LAMA_PENGIRIMAN(m));
             Id(m1) = ID(m);
-            timePass(1,T,I,D,notif);//waktu berjalan 1 menit
-            printf("%d\n", TailQ(*D));
-            enqueue(D,m1);
-            printf("%d\n", TailQ(*D));
             printf("Berhasil memesan ");
             printWord(NAMA_MAKANAN(m));
             printf(". ");
@@ -120,6 +116,8 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
             printf(" akan diantar dalam ");
             displayTime1(LAMA_PENGIRIMAN(m));
             printf(".\n");
+            timePass(1,T,I,D,notif);//waktu berjalan 1 menit
+            enqueue(D,m1);
         }
     }
 }
