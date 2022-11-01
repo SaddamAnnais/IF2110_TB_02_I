@@ -104,8 +104,8 @@ void moveNorth(Peta* p, Simulator* s)
   int newX, newY;
 
   /* ALGORITMA */
-  newX = ABSIS(Lokasi(*s));
-  newY = ORDINAT(Lokasi(*s))-1;
+  newX = ABSIS(Lokasi(*s)) + 1;
+  newY = ORDINAT(Lokasi(*s));
   if(isCoordSimValid(*p, newY, newX)) {
     MATRIX_ELMT(*p, ORDINAT(Lokasi(*s))+1, ABSIS(Lokasi(*s))+1) = ' ';
     MATRIX_ELMT(*p, newY, newX) = 'S';

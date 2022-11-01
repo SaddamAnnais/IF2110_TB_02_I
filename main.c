@@ -15,6 +15,9 @@
 #include "./lib/Time/time.c"
 #include "./lib/Command/command.c"
 #include "./lib/Stack/stack.c"
+#include "./lib/Resep/resep.c"
+#include "./lib/Resep/tree.c"
+#include "./lib/ListDinamis/listdin.c"
 
 void idle(Simulator S, Peta P, Time T, int notif[2][100]){
     printf("\n\n\n");
@@ -47,7 +50,7 @@ int main(){
     if (start) // Memulai program
     {
         Simulator S; Time T; ListMakanan l; Peta P; Inventory I; 
-        Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo;
+        Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo; Resep R;
         int* invNotif;
         int* delivNotif;
         int notif[2][100];
@@ -62,6 +65,7 @@ int main(){
         createDelivery(&D);
         CreateStack(&UndoSt);
         CreateStack(&RedoSt);
+        readResep(&R, "./config/resep.txt", l);
 
         printPrioQ(D);
         matIdNotPos(notif,I,D);
@@ -90,6 +94,14 @@ int main(){
                 undo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
             } else if (isWordStrEq(currentWord, "REDO")) {
                 redo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
+            } else if (isWordStrEq(currentWord, "FRY")) {
+                PengolahanMakanan(currentWord, "Fry", l, &I, R, &T, &D, notif, P, S);
+            } else if (isWordStrEq(currentWord, "MIX")) {
+                PengolahanMakanan(currentWord, "Mix", l, &I, R, &T, &D, notif, P, S);
+            } else if (isWordStrEq(currentWord, "CHOP")) {
+                PengolahanMakanan(currentWord, "Chop", l, &I, R, &T, &D, notif, P, S);
+            } else if (isWordStrEq(currentWord, "BOIL")) {
+                PengolahanMakanan(currentWord, "Boil", l, &I, R, &T, &D, notif, P, S);
             }
             
 

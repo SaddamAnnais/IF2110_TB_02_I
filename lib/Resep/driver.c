@@ -25,8 +25,8 @@ int main() {
   displayCookbook(resep);
 
   // Menampilkan semua makanan yang dapat dibuat oleh sebuah operasi pengolahan makanan
-  displayOperasiMakanan(listMakanan, "Fry");
-  displayOperasiMakanan(listMakanan, "Boil");
+  ListMakanan temp1 = displayOperasiMakanan(listMakanan, "Fry");
+  ListMakanan temp2 = displayOperasiMakanan(listMakanan, "Boil");
 
   // Pengolahan makanan
   printPrioQ(inventory);

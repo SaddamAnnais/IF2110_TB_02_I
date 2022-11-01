@@ -129,7 +129,7 @@ ListDin bahanMakanan(Resep resep, int id)
 }
 
 /* Menampilkan daftar makanan yang dapat dibuat oleh sebuah operasi pengolahan makanan */
-void displayOperasiMakanan(ListMakanan listMakanan, char* operasi)
+ListMakanan displayOperasiMakanan(ListMakanan listMakanan, char* operasi)
 // I.S. Operasi merupakan operasi pengolahan makanan yang valid
 // F.S. Semua makanan yang dapat dibuat dari operasi tersebut ditampilkan di layar
 //      sesuai format pada spesifikasi
@@ -137,8 +137,10 @@ void displayOperasiMakanan(ListMakanan listMakanan, char* operasi)
   /* KAMUS LOKAL */
   IdxType i;
   int numList;
+  ListMakanan output;
 
   /* ALGORITMA */
+  CreateListMakanan(&output);
   numList = 0;
 
   printf("List Bahan Makanan yang Bisa Dibuat:\n");
@@ -148,16 +150,20 @@ void displayOperasiMakanan(ListMakanan listMakanan, char* operasi)
       printWord(NAMA_MAKANAN(ElmtListMakanan(listMakanan, i)));
       printf("\n");
       numList++;
+      ElmtListMakanan(output, numList) = ElmtListMakanan(listMakanan, i);
+      lenListMakanan(output)++;
     }
   }
   
   if(numList == 0) {
     printf("Tidak ada bahan makanan yang dapat dibuat dengan operasi '%s'\n", operasi);
   }
+
+  return output;
 }
 
 /* Melakukan operasi pengolahan makanan */
-void olahMakanan(Makanan makanan, Inventory* inventory, Resep resep)
+boolean olahMakanan(Makanan makanan, Inventory* inventory, Resep resep)
 // I.S. Makanan merupakan makanan yang ingin dibuat
 // F.S. Jika bahan makanan tersedia pada inventory, makanan hasil pengolahan ditambahkan
 //      ke dalam inventory dan bahan makanan dihilangkan dari inventory

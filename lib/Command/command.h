@@ -8,7 +8,7 @@
 #include "../Delivery/delivery.h"
 #include "../Makanan/listmakanan.h"
 #include "../Stack/stack.h"
-
+#include "../Resep/resep.h"
 
 /* T maju, elemen waktu pada Inventory I dan Delivery D berkurang*/
 void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100]);
@@ -46,3 +46,8 @@ void PrintDelivery(ListMakanan lM, Delivery D);
 
 /* Melihat makanan yang dimiliki di Inventory */
 void PrintInventory(ListMakanan lM, Inventory I);
+
+/* Melakukan operasi pengolahan makanan */
+void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory* inventory, Resep resep, Time* time, Delivery* delivery, int (*notif)[100], Peta peta, Simulator simulator);
+// I.S. Semua parameter terdefinisi
+// F.S. Jika operasi berhasil, maka isi dari inventory simulator akan berubah

@@ -213,3 +213,53 @@ void PrintInventory(ListMakanan lM, Inventory I){
         }
     }
 }
+
+/* Melakukan operasi pengolahan makanan */
+void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory* inventory, Resep resep, Time* time, Delivery* delivery, int (*notif)[100], Peta peta, Simulator simulator)
+// I.S. Semua parameter terdefinisi
+// F.S. Jika operasi berhasil, maka isi dari inventory simulator akan berubah
+{
+  /* KAMUS LOKAL */
+  IdxType i;
+  int currInput;
+  ListMakanan pilihanMakanan;
+  boolean isSucceed;
+
+  /* ALGORITMA */
+  // Validasi posisi simulator
+  if(!isNear(peta, simulator, op[0]))
+
+  // Menampilkan jenis operasi pada layar
+  for(i = 0; i <= 22; i++) printf("="); 
+  printf("\n=");
+  for(i = 0; i <= (20-opWord.Length)/2; i++) printf(" ");
+  printWord(opWord);
+  for(i = 0; i <= (opWord.Length - ((20-opWord.Length)/2)); i++) printf((" "));
+  printf("=\n");
+  for(i = 0; i <= 22; i++) printf("=");
+  printf("\n");
+
+  // Menampilkan makanan yang dapat diolah
+  pilihanMakanan = displayOperasiMakanan(listMakanan, op);
+
+  // Menerima input pilihan makanan yang akan diolah
+    printf("\nKirim 0 untuk exit.\n");
+  while(true) {
+    printf("\nEnter Command: ");
+    STARTWORD();
+    currInput = wordToInt(currentWord);
+
+    // Validasi input
+    if(currInput > lenListMakanan(pilihanMakanan) || currInput < 0) {
+      printf("\nInput tidak valid");
+    } else if(currInput == 0) {
+      break;
+    }
+
+    // Melakukan pengolahan makanan
+    isSucceed = olahMakanan(ElmtListMakanan(pilihanMakanan, currInput), inventory, resep);
+    if(isSucceed) {
+      timePass(DURASI_AKSI(ElmtListMakanan(pilihanMakanan, currInput)), time, inventory, delivery, notif);
+    }
+  } 
+}
