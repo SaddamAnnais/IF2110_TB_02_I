@@ -128,7 +128,7 @@ void matIdNotPos(int (*notif)[100],PrioQueueTime I, PrioQueueTime D);
 /* I.S. notif sembarang, I dan D terdefinisi. */
 /* F.S. notif berisi list id non positif dari Inventory dan Delivery. Elemen bernilai Nil dianggap sebagai value kosong. */
 
-void displayNotif(int notif[2][100]);
+void displayNotif(int notif[2][100], boolean alurMaju);
 /* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
 /* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
 /* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/

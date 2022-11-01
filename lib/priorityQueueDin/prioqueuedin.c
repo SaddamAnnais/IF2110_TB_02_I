@@ -299,7 +299,7 @@ void matIdNotPos(int (*notif)[100],PrioQueueTime I, PrioQueueTime D)
     }
 }
 
-void displayNotif(int notif[2][100])
+void displayNotif(int notif[2][100], boolean alurMaju)
 /* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
 /* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
 /* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/
@@ -311,13 +311,24 @@ void displayNotif(int notif[2][100])
     else {
         printf("\n");
         int num=1;
-        for (int i = 0; i<100 && notif[0][i]!= Nil; i++) {
-            printf("    %d. <%d> kedaluwarsa :(\n", num, notif[0][i]);
-            num++;
-        }
-        for (int i = 0; i<100 && notif[1][i]!= Nil; i++) {
-            printf("    %d. <%d> sudah diterima BNMO! :D\n", num, notif[1][i]);
-            num++;
+        if (alurMaju){
+            for (int i = 0; i<100 && notif[0][i]!= Nil; i++) {
+                printf("    %d. <%d> kedaluwarsa :(\n", num, notif[0][i]);
+                num++;
+            }
+            for (int i = 0; i<100 && notif[1][i]!= Nil; i++) {
+                printf("    %d. <%d> sudah diterima BNMO! :D\n", num, notif[1][i]);
+                num++;
+            }
+        } else {
+            for (int i = 0; i<100 && notif[0][i]!= Nil; i++) {
+                printf("    %d. <%d> dikembalikan ke inventory\n", num, notif[0][i]);
+                num++;
+            }
+            for (int i = 0; i<100 && notif[1][i]!= Nil; i++) {
+                printf("    %d. <%d> dikeluarkan dari inventory\n", num, notif[1][i]);
+                num++;
+            }
         }
     }
 }

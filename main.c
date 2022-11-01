@@ -24,7 +24,7 @@ void idle(Simulator S, Peta P, Time T, int notif[2][100]){
     printf("\n");
     // notifQ(invenNotif,true); //notif sementara
     // notifQ(delivNotif,false);
-    displayNotif(notif);
+    displayNotif(notif,true);
     printf("\n");
     printf("Enter Command:  ");
     STARTWORD();
