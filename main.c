@@ -82,11 +82,13 @@ int main(){
                 Buy(&P,&S,l,&D,&T,&I,notif);
             } else if (isWordStrEq(currentWord, "CATALOG")){
                 Catalog(l);
-            }
-            else if (isWordStrEq(currentWord, "UNDO")) {
+            } else if (isWordStrEq(currentWord, "DELIVERY")){
+                PrintDelivery(l, D);
+            } else if (isWordStrEq(currentWord, "INVENTORY")){
+                PrintInventory(l, I);
+            } else if (isWordStrEq(currentWord, "UNDO")) {
                 undo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
-            }
-            else if (isWordStrEq(currentWord, "REDO")) {
+            } else if (isWordStrEq(currentWord, "REDO")) {
                 redo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
             }
             
