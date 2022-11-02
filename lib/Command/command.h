@@ -16,12 +16,12 @@ void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100]);
 // F.S T maju sebanyak mm menit, elemen waktu pada Inventory I dan Delivery D berkurang sebanyak mm menit, dan elemen time yang <0 dihapus 
 
 // Memajukan time sebanyak input pengguna
-void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100]);
+void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100], boolean *isValid);
 // I.S mm,T,I,D,invNotif,delivNotif terdefinisi
 // F.S T, I, D, invNotif, delivNotif berubah sesuai timePass()
 
 /* Menggerakan simulator sesuai input user, jika simulator berpindah posisi, waktu bertambah 1 menit */
-void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)[100]);
+void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)[100],boolean *isValid);
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi baru dan semua elemen waktu maju
 
@@ -39,7 +39,7 @@ void redo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, D
         S tidak ter-push jika redo habis */
         
 /* Melakukan pemesanan makanan */
-void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory *I, int (*notif)[100]);
+void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory *I, int (*notif)[100], boolean *isValid);
 
 /* Melihat Delivery List */
 void PrintDelivery(ListMakanan lM, Delivery D);
@@ -48,6 +48,6 @@ void PrintDelivery(ListMakanan lM, Delivery D);
 void PrintInventory(ListMakanan lM, Inventory I);
 
 /* Melakukan operasi pengolahan makanan */
-void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory* inventory, Resep resep, Time* time, Delivery* delivery, int (*notif)[100], Peta peta, Simulator simulator);
+void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory* inventory, Resep resep, Time* time, Delivery* delivery, int (*notif)[100], Peta peta, Simulator simulator, boolean *isValid);
 // I.S. Semua parameter terdefinisi
 // F.S. Jika operasi berhasil, maka isi dari inventory simulator akan berubah

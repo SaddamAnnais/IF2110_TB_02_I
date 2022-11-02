@@ -14,7 +14,7 @@ void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100]){
 }
 
 // Memajukan time sebanyak input pengguna
-void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100]){
+void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100], boolean *isValid){
 // I.S mm,T,I,D,invNotif,delivNotif terdefinisi
 // F.S T, I, D, invNotif, delivNotif berubah sesuai timePass()
     int hh, mm;
@@ -22,13 +22,17 @@ void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100]){
     hh = wordToInt(currentWord);
     STARTWORD();
     mm = wordToInt(currentWord);
-
-    mm += hh*60;
-    timePass(mm,T,I,D,notif);
+    if (hh>= 0 && mm>= 0 && (hh!=0 || mm!=0)){
+        mm += hh*60;
+        timePass(mm,T,I,D,notif);
+        *isValid = true;
+    } else {
+        printf("Waktu wait harus >0\n");
+    }
 }
 
 /* Menggerakan simulator sesuai input user, jika simulator berpindah posisi, waktu bertambah 1 menit*/
-void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)[100]){
+void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)[100],boolean *isValid){
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi baru dan semua elemen waktu maju
     STARTWORD();
@@ -49,6 +53,7 @@ void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)
     Point pt = Lokasi(*s);
     if (!isEqual(p0,pt)){ //pergerakan valid
         timePass(1,T,I,D,notif);//waktu berjalan 1 menit
+        *isValid = true;
     }
 }
 
@@ -69,7 +74,7 @@ void Catalog(ListMakanan lM){
 }
 
 /* Melakukan pemesanan makanan */
-void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory *I, int (*notif)[100]){
+void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory *I, int (*notif)[100], boolean *isValid){
     if (!isNearTelepon(*p, *s)){
         printf("BNMO tidak berada di area telepon!\n");
     } else{
@@ -118,6 +123,7 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
             printf(".\n");
             timePass(1,T,I,D,notif);//waktu berjalan 1 menit
             enqueue(D,m1);
+            *isValid = true;
         }
     }
 }
@@ -203,7 +209,7 @@ void PrintInventory(ListMakanan lM, Inventory I){
 }
 
 /* Melakukan operasi pengolahan makanan */
-void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory* inventory, Resep resep, Time* time, Delivery* delivery, int (*notif)[100], Peta peta, Simulator simulator)
+void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory* inventory, Resep resep, Time* time, Delivery* delivery, int (*notif)[100], Peta peta, Simulator simulator, boolean *isValid)
 // I.S. Semua parameter terdefinisi
 // F.S. Jika operasi berhasil, maka isi dari inventory simulator akan berubah
 {
@@ -248,6 +254,7 @@ void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory
     isSucceed = olahMakanan(ElmtListMakanan(pilihanMakanan, currInput), inventory, resep);
     if(isSucceed) {
       timePass(DURASI_AKSI(ElmtListMakanan(pilihanMakanan, currInput)), time, inventory, delivery, notif);
+      *isValid = true;
     }
   } 
 }

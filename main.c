@@ -51,9 +51,8 @@ int main(){
     {
         Simulator S; Time T; ListMakanan l; Peta P; Inventory I; 
         Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo; Resep R;
-        int* invNotif;
-        int* delivNotif;
         int notif[2][100];
+        boolean isValid;
         printf("Masukkan nama pengguna: ");
         STARTWORD();
         CreateSimulator(&S, currentWord);
@@ -69,23 +68,22 @@ int main(){
 
         printPrioQ(D);
         matIdNotPos(notif,I,D);
-        // invNotif = listIdNotPos(I);
-        // delivNotif = listIdNotPos(D);
         
 
         CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
         // PushStack(&UndoSt, ElmtUndoRedo);
         while (start){
+            isValid = false;
             idle(S,P,T,notif);
             //printf("%d\n", TailQ(D));
             if (isWordStrEq(currentWord,"MOVE")){
-                Move(&P,&S,&T,&I,&D,notif);
+                Move(&P,&S,&T,&I,&D,notif,&isValid);
             } else if (isWordStrEq(currentWord,"WAIT")){
-                Wait(&T,&I,&D,notif);
+                Wait(&T,&I,&D,notif,&isValid);
             } else if(isWordStrEq(currentWord,"EXIT")){
                 start=false;
             } else if (isWordStrEq(currentWord,"BUY")){
-                Buy(&P,&S,l,&D,&T,&I,notif);
+                Buy(&P,&S,l,&D,&T,&I,notif,&isValid);
             } else if (isWordStrEq(currentWord, "CATALOG")){
                 Catalog(l);
             } else if (isWordStrEq(currentWord, "DELIVERY")){
@@ -97,27 +95,26 @@ int main(){
             } else if (isWordStrEq(currentWord, "REDO")) {
                 redo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
             } else if (isWordStrEq(currentWord, "FRY")) {
-                PengolahanMakanan(currentWord, "Fry", l, &I, R, &T, &D, notif, P, S);
+                PengolahanMakanan(currentWord, "Fry", l, &I, R, &T, &D, notif, P, S, &isValid);
             } else if (isWordStrEq(currentWord, "MIX")) {
-                PengolahanMakanan(currentWord, "Mix", l, &I, R, &T, &D, notif, P, S);
+                PengolahanMakanan(currentWord, "Mix", l, &I, R, &T, &D, notif, P, S, &isValid);
             } else if (isWordStrEq(currentWord, "CHOP")) {
-                PengolahanMakanan(currentWord, "Chop", l, &I, R, &T, &D, notif, P, S);
+                PengolahanMakanan(currentWord, "Chop", l, &I, R, &T, &D, notif, P, S, &isValid);
             } else if (isWordStrEq(currentWord, "BOIL")) {
-                PengolahanMakanan(currentWord, "Boil", l, &I, R, &T, &D, notif, P, S);
+                PengolahanMakanan(currentWord, "Boil", l, &I, R, &T, &D, notif, P, S, &isValid);
             }
             
 
 
 
 
-
-            if ((!isWordStrEq(currentWord, "UNDO")) && (!isWordStrEq(currentWord, "REDO"))) {   // Untuk keperluan undo dan redo
-                PushStack(&UndoSt, ElmtUndoRedo);
-                CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
-                CreateStack(&RedoSt);
-            }
+            // if ((!isWordStrEq(currentWord, "UNDO")) && (!isWordStrEq(currentWord, "REDO"))) {   // Untuk keperluan undo dan redo
+            //     PushStack(&UndoSt, ElmtUndoRedo);
+            //     CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
+            //     CreateStack(&RedoSt);
+            // }
             
-
+            // isValid = false;
             // printStack(UndoSt);
             // printf("\n");
             // printStack(RedoSt);
