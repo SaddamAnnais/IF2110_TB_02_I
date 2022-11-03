@@ -18,7 +18,7 @@ void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100], Lis
 /* Menambahkan makanan yang telah sampai ke Inventory*/
 void delivToInv(Delivery D, Inventory *I,ListMakanan lM);
 // I.S notif, I, lM terdefinisi
-// F.S makanan
+// F.S makanan D yang memiliki elemen time <= 0 akan masuk Inventory
 
 
 // Memajukan time sebanyak input pengguna
