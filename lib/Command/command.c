@@ -19,8 +19,8 @@ void delivToInv(Delivery D, Inventory *I,ListMakanan lM){
     for (int i = 0; i<=TailQ(D); i++) {
         if (Time(ElmtQ(D,i))<=0){
             Id(X)=Id(ElmtQ(D,i));
-            Time(X)=timeToMinute(WAKTU_KADALUARSA(ElmtListMakanan(lM,Id(X))));
-            enqueue(I,X);
+            Time(X)=timeToMinute(WAKTU_KADALUARSA(ElmtListMakanan(lM,Id(X))))+Time(ElmtQ(D,i));
+        enqueue(I,X);
         }
     }
 }
