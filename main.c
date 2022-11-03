@@ -19,7 +19,7 @@
 #include "./lib/Resep/tree.c"
 #include "./lib/ListDinamis/listdin.c"
 
-void idle(Simulator S, Peta P, Time T, int notif[2][100]){
+void idle(Simulator S, Peta P, Time T, int (*notif)[100],Inventory I,Delivery D){
     printf("\n\n\n");
     displayLokasi(S);
     displayTime(T);
@@ -28,6 +28,7 @@ void idle(Simulator S, Peta P, Time T, int notif[2][100]){
     // notifQ(invenNotif,true); //notif sementara
     // notifQ(delivNotif,false);
     displayNotif(notif,true);
+    matIdNotPos(notif,I,D);
     printf("\n");
     printf("Enter Command:  ");
     STARTWORD();
@@ -74,12 +75,12 @@ int main(){
         // PushStack(&UndoSt, ElmtUndoRedo);
         while (start){
             isValid = false;
-            idle(S,P,T,notif);
+            idle(S,P,T,notif,I,D);
             //printf("%d\n", TailQ(D));
             if (isWordStrEq(currentWord,"MOVE")){
-                Move(&P,&S,&T,&I,&D,notif,&isValid);
+                Move(&P,&S,&T,&I,&D,notif,&isValid,l);
             } else if (isWordStrEq(currentWord,"WAIT")){
-                Wait(&T,&I,&D,notif,&isValid);
+                Wait(&T,&I,&D,notif,&isValid,l);
             } else if(isWordStrEq(currentWord,"EXIT")){
                 start=false;
             } else if (isWordStrEq(currentWord,"BUY")){
@@ -103,11 +104,6 @@ int main(){
             } else if (isWordStrEq(currentWord, "BOIL")) {
                 PengolahanMakanan(currentWord, "Boil", l, &I, R, &T, &D, notif, P, S, &isValid);
             }
-            
-
-
-
-
             // if ((!isWordStrEq(currentWord, "UNDO")) && (!isWordStrEq(currentWord, "REDO"))) {   // Untuk keperluan undo dan redo
             //     PushStack(&UndoSt, ElmtUndoRedo);
             //     CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);

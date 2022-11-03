@@ -11,17 +11,23 @@
 #include "../Resep/resep.h"
 
 /* T maju, elemen waktu pada Inventory I dan Delivery D berkurang*/
-void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100]);
-// I.S mm,T,I,D,invNotif,delivNotif terdefinisi
+void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100], ListMakanan lM);
+// I.S mm,T,I,D,notif terdefinisi
 // F.S T maju sebanyak mm menit, elemen waktu pada Inventory I dan Delivery D berkurang sebanyak mm menit, dan elemen time yang <0 dihapus 
 
+/* Menambahkan makanan yang telah sampai ke Inventory*/
+void delivToInv(Delivery D, Inventory *I,ListMakanan lM);
+// I.S notif, I, lM terdefinisi
+// F.S makanan
+
+
 // Memajukan time sebanyak input pengguna
-void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100], boolean *isValid);
+void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100], boolean *isValid, ListMakanan lM);
 // I.S mm,T,I,D,invNotif,delivNotif terdefinisi
 // F.S T, I, D, invNotif, delivNotif berubah sesuai timePass()
 
 /* Menggerakan simulator sesuai input user, jika simulator berpindah posisi, waktu bertambah 1 menit */
-void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)[100],boolean *isValid);
+void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)[100],boolean *isValid, ListMakanan lM);
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi baru dan semua elemen waktu maju
 

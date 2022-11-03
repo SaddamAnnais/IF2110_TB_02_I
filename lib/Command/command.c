@@ -2,19 +2,31 @@
 #include <stdio.h>
 
 /* T maju, elemen waktu pada Inventory I dan Delivery D berkurang*/
-void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100]){
+void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100], ListMakanan lM){
 // I.S mm,T,I,D,invNotif,delivNotif terdefinisi
 // F.S T maju sebanyak mm menit, elemen waktu pada Inventory I dan Delivery D berkurang sebanyak mm menit, dan elemen time yang <0 dihapus 
     incNMinute(T,mm);
     timePassQ(I,mm);
     timePassQ(D,mm);
     matIdNotPos(notif,*I,*D);
+    delivToInv(*D,I,lM);
     keepPosTimeQ(I);
     keepPosTimeQ(D);
 }
 
+void delivToInv(Delivery D, Inventory *I,ListMakanan lM){
+    infotype X;
+    for (int i = 0; i<=TailQ(D); i++) {
+        if (Time(ElmtQ(D,i))<=0){
+            Id(X)=Id(ElmtQ(D,i));
+            Time(X)=timeToMinute(WAKTU_KADALUARSA(ElmtListMakanan(lM,Id(X))));
+            enqueue(I,X);
+        }
+    }
+}
+
 // Memajukan time sebanyak input pengguna
-void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100], boolean *isValid){
+void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100], boolean *isValid, ListMakanan lM){
 // I.S mm,T,I,D,invNotif,delivNotif terdefinisi
 // F.S T, I, D, invNotif, delivNotif berubah sesuai timePass()
     int hh, mm;
@@ -24,7 +36,7 @@ void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100], boolean *isVali
     mm = wordToInt(currentWord);
     if (hh>= 0 && mm>= 0 && (hh!=0 || mm!=0)){
         mm += hh*60;
-        timePass(mm,T,I,D,notif);
+        timePass(mm,T,I,D,notif,lM);
         *isValid = true;
     } else {
         printf("Waktu wait harus >0\n");
@@ -32,7 +44,7 @@ void Wait(Time *T, Inventory *I, Delivery *D, int (*notif)[100], boolean *isVali
 }
 
 /* Menggerakan simulator sesuai input user, jika simulator berpindah posisi, waktu bertambah 1 menit*/
-void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)[100],boolean *isValid){
+void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)[100],boolean *isValid, ListMakanan lM){
 // I.S. Simulator berada pada posisi (x, y)
 // F.S. Jika pergerakan valid, simulator sekarang berada pada posisi baru dan semua elemen waktu maju
     STARTWORD();
@@ -52,7 +64,7 @@ void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)
 
     Point pt = Lokasi(*s);
     if (!isEqual(p0,pt)){ //pergerakan valid
-        timePass(1,T,I,D,notif);//waktu berjalan 1 menit
+        timePass(1,T,I,D,notif,lM);//waktu berjalan 1 menit
         *isValid = true;
     }
 }
@@ -121,7 +133,7 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
             printf(" akan diantar dalam ");
             displayTime1(LAMA_PENGIRIMAN(m));
             printf(".\n");
-            timePass(1,T,I,D,notif);//waktu berjalan 1 menit
+            timePass(1,T,I,D,notif,lM);//waktu berjalan 1 menit
             enqueue(D,m1);
             *isValid = true;
         }
@@ -253,7 +265,7 @@ void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory
     // Melakukan pengolahan makanan
     isSucceed = olahMakanan(ElmtListMakanan(pilihanMakanan, currInput), inventory, resep);
     if(isSucceed) {
-      timePass(DURASI_AKSI(ElmtListMakanan(pilihanMakanan, currInput)), time, inventory, delivery, notif);
+      timePass(DURASI_AKSI(ElmtListMakanan(pilihanMakanan, currInput)), time, inventory, delivery, notif, listMakanan);
       *isValid = true;
     }
   } 
