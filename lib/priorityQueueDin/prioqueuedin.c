@@ -301,36 +301,28 @@ void matIdNotPos(int (*notif)[100],PrioQueueTime I, PrioQueueTime D)
     }
 }
 
-void displayNotif(int notif[2][100], boolean alurMaju)
-/* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
-/* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
-/* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/
-{
-    printf("Notifikasi: ");
-    if (*(*(notif))==Nil && *(*(notif+1))==Nil) {
-        printf("-\n");
-    } 
-    else {
-        printf("\n");
-        int num=1;
-        if (alurMaju){
-            for (int i = 0; i<100 && notif[0][i]!= Nil; i++) {
-                printf("    %d. <%d> kedaluwarsa :(\n", num, notif[0][i]);
-                num++;
-            }
-            for (int i = 0; i<100 && notif[1][i]!= Nil; i++) {
-                printf("    %d. <%d> sudah diterima BNMO! :D\n", num, notif[1][i]);
-                num++;
-            }
-        } else {
-            for (int i = 0; i<100 && notif[0][i]!= Nil; i++) {
-                printf("    %d. <%d> dikembalikan ke inventory\n", num, notif[0][i]);
-                num++;
-            }
-            for (int i = 0; i<100 && notif[1][i]!= Nil; i++) {
-                printf("    %d. <%d> dikeluarkan dari inventory\n", num, notif[1][i]);
-                num++;
+void createNotifNil(int (*notif)[100]) {
+    for (int i=0; i<2; i++){
+        for (int j=0; j<100; j++){
+            if (i==0){
+                *(*(notif+i)+j) = Nil;
+            } else {
+                *(*(notif+i)+j) = Nil;
             }
         }
+    }    
+}
+
+PrioQueueTime copyQ(PrioQueueTime Qin) {
+/* mengembalikan nilai PrioQueueTime yang memiliki value yang sama seperti Qin. */
+    PrioQueueTime hasil;
+    makeEmptyQ(&hasil, MaxElQ(Qin));
+    HeadQ(hasil) = 0;
+    TailQ(hasil) = TailQ(Qin);
+    
+    for (int i = 0; i<=TailQ(Qin); i++) {
+        Time(ElmtQ(hasil, i)) = Time(ElmtQ(Qin, i));
+        Id(ElmtQ(hasil, i)) = Id(ElmtQ(Qin, i));
     }
+    return hasil;
 }

@@ -7,7 +7,6 @@ int main() {
     Inventory inv;
     Delivery deliv;
     Time t;
-    Peta p;
 
     STARTWORD();
 
@@ -21,10 +20,9 @@ int main() {
     createInventory(&inv);
     createDelivery(&deliv);
     createTime(&t, 2, 2, 2);
-    createPeta(&p, 2, 2);
 
-    CreateElTypeStack(&el1, s, deliv, t, p, inv);
-    CreateElTypeStack(&el2, s, deliv, t, p, inv);
+    CreateElTypeStack(&el1, s, deliv, t, inv);
+    CreateElTypeStack(&el2, s, deliv, t, inv);
 
     printWord(Nama(SIMULATOR_STACK(el1)));
     printf("\n");

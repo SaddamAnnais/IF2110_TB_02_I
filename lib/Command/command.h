@@ -8,6 +8,7 @@
 #include "../Delivery/delivery.h"
 #include "../Makanan/listmakanan.h"
 #include "../Stack/stack.h"
+// #include "../Stack/stack_notif.h"
 
 
 /* T maju, elemen waktu pada Inventory I dan Delivery D berkurang*/
@@ -28,12 +29,12 @@ void Move(Peta *p, Simulator *s,Time *T, Inventory *I, Delivery *D, int (*notif)
 /* Menampilkan bahan makanan yang tersedia dalam aplikasi dan informasinya*/
 void Catalog(ListMakanan lM);
 
-void undo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I);
+void undo(Stack *UndoSt, Stack *RedoSt, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I, Notif *notif);
 /* I.S. S terdefinisi, mungkin kosong*/
 /* F.S  S ter-pop atau kosong. 
         X berisi Top stack jika S awal tidak kosong */
 
-void redo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I);
+void redo(Stack *UndoSt, Stack *RedoSt, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I, Notif *notif);
 /* I.S. S terdefinisi, mungking kosong */
 /* F.S  S ter-push jika tedapat elemen redo. 
         S tidak ter-push jika redo habis */
@@ -46,3 +47,15 @@ void PrintDelivery(ListMakanan lM, Delivery D);
 
 /* Melihat makanan yang dimiliki di Inventory */
 void PrintInventory(ListMakanan lM, Inventory I);
+
+void displayNotif(int notif[2][100], boolean alurMaju, ListMakanan lM);
+/* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
+/* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
+/* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/
+
+// void undoNotif(StackNotif *UndoStNotif, StackNotif *RedoStNotif, Notif *notif);
+// /*Membatalkan command yang dilakukan dan mengembalikan*/
+// /*state notif aplikasi sebelum command tersebut*/
+
+// void redoNotif(StackNotif *UndoStNotif, StackNotif *RedoStNotif, Notif *notif);
+// /*Membatalkan command undo pada notif aplikasi*/

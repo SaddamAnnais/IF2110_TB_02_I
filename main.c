@@ -15,8 +15,9 @@
 #include "./lib/Time/time.c"
 #include "./lib/Command/command.c"
 #include "./lib/Stack/stack.c"
+//#include "./lib/Stack/stack_notif.c"
 
-void idle(Simulator S, Peta P, Time T, int notif[2][100]){
+void idle(Simulator S, Peta P, Time T, int notif[2][100], ListMakanan lM, boolean alurMaju){
     printf("\n\n\n");
     displayLokasi(S);
     displayTime(T);
@@ -24,7 +25,7 @@ void idle(Simulator S, Peta P, Time T, int notif[2][100]){
     printf("\n");
     // notifQ(invenNotif,true); //notif sementara
     // notifQ(delivNotif,false);
-    displayNotif(notif,true);
+    displayNotif(notif, alurMaju, lM);
     printf("\n");
     printf("Enter Command:  ");
     STARTWORD();
@@ -48,32 +49,22 @@ int main(){
     {
         Simulator S; Time T; ListMakanan l; Peta P; Inventory I; 
         Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo;
-        int* invNotif;
-        int* delivNotif;
-        int notif[2][100];
+        int* invNotif; int* delivNotif;
+        Notif notif; boolean alurMaju = true;
         printf("Masukkan nama pengguna: ");
         STARTWORD();
-        CreateSimulator(&S, currentWord);
-        readPeta(&P, "./config/peta.txt", &S);
-        createTime(&T,0,0,0);
-        BacaMakanan(&l, "./config/makanan.txt");
-        createInventory(&I); //sementara inventory kosong
-        printPrioQ(I);
-        createDelivery(&D);
-        CreateStack(&UndoSt);
-        CreateStack(&RedoSt);
-
-        printPrioQ(D);
+        readPeta(&P, "./config/peta.txt", &S); BacaMakanan(&l, "./config/makanan.txt");
+        CreateSimulator(&S, currentWord);createTime(&T,0,0,0);createInventory(&I);
+        createDelivery(&D);CreateStack(&UndoSt); CreateStack(&RedoSt);
         matIdNotPos(notif,I,D);
-        // invNotif = listIdNotPos(I);
-        // delivNotif = listIdNotPos(D);
         
 
-        CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
-        // PushStack(&UndoSt, ElmtUndoRedo);
+        CreateElTypeStack(&ElmtUndoRedo,S, D, T, I, notif);
+        PushStack(&UndoSt, ElmtUndoRedo);
+
         while (start){
-            idle(S,P,T,notif);
-            //printf("%d\n", TailQ(D));
+            idle(S,P,T,notif,l,alurMaju);
+
             if (isWordStrEq(currentWord,"MOVE")){
                 Move(&P,&S,&T,&I,&D,notif);
             } else if (isWordStrEq(currentWord,"WAIT")){
@@ -89,26 +80,22 @@ int main(){
             } else if (isWordStrEq(currentWord, "INVENTORY")){
                 PrintInventory(l, I);
             } else if (isWordStrEq(currentWord, "UNDO")) {
-                undo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
+                undo(&UndoSt, &RedoSt, &P, &S, &D, &T, &I, &notif);
+                alurMaju = false;
+                // printf("id: %d", notif[1][0]);
             } else if (isWordStrEq(currentWord, "REDO")) {
-                redo(&UndoSt, &RedoSt, &ElmtUndoRedo, &P, &S, &D, &T, &I);
+                redo(&UndoSt, &RedoSt, &P, &S, &D, &T, &I, &notif);
+                alurMaju = true;
             }
             
-
-
-
-
 
             if ((!isWordStrEq(currentWord, "UNDO")) && (!isWordStrEq(currentWord, "REDO"))) {   // Untuk keperluan undo dan redo
+                CreateElTypeStack(&ElmtUndoRedo,S, D, T, I, notif);
                 PushStack(&UndoSt, ElmtUndoRedo);
-                CreateElTypeStack(&ElmtUndoRedo,S, D, T, P, I);
                 CreateStack(&RedoSt);
+                makeNotifMundur(&UndoSt);
+                alurMaju = true;
             }
-            
-
-            // printStack(UndoSt);
-            // printf("\n");
-            // printStack(RedoSt);
         }
     
     }

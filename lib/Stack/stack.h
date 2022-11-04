@@ -20,20 +20,24 @@
 
 /* Implementasi penyimpanan statik sehinnga undo dapat dilakukan sebanyak CAPACITY_STACK */
 
+typedef int Notif[2][100];
+
 typedef struct {
-  Simulator simul;  /* simulator */
-  Delivery deliv;   /* delivery */
-  Time time;        /* time */
-  //Peta p;
-  Inventory inv;
+  Simulator simul;      /* simulator */
+  Delivery deliv;       /* delivery */
+  Time time;            /* time */
+  Inventory inv;        /* inventory*/
+  Notif alurMaju;
+  Notif alurMundur;
 } ElTypeStack;
 
 /* akses ElTypeStack e: */
-#define SIMULATOR_STACK(e) (e).simul
-#define DELIVERY_STACK(e)  (e).deliv
-#define TIME_STACK(e)      (e).time
-//#define PETA_STACK(e)      (e).p
-#define INVENTORY_STACK(e) (e).inv
+#define SIMULATOR_STACK(e)       (e).simul
+#define DELIVERY_STACK(e)        (e).deliv
+#define TIME_STACK(e)            (e).time
+#define INVENTORY_STACK(e)       (e).inv
+#define NOTIF_MAJU_STACK(e)      (e).alurMaju
+#define NOTIF_MUNDUR_STACK(e)    (e).alurMundur   
 
 typedef struct { 
   ElTypeStack buffer[CAPACITY_STACK]; /* tabel penyimpan elemen */
@@ -44,16 +48,22 @@ typedef struct {
 /* akses elemen Stack s: */
 #define ELMT_STACK(s, i) (s).buffer[i]
 #define IDX_TOP_STACK(s) (s).idxTop
-#define TOP_STACK(s) (s).buffer[(s).idxTop]
+#define TOP_STACK(s)     (s).buffer[(s).idxTop]
 
 /*KONSTRUKTOR*/
 void CreateStack(Stack *S);
-/* I.S. sembarang; */
+/* I.S. S sembarang; */
 /* F.S. Membuat sebuah stack S yang kosong */
 /* Ciri stack kosong : idxTop bernilai IDX_UNDEF_STACK */
 
-void CreateElTypeStack(ElTypeStack *elmt, Simulator S, Delivery D, Time t, Peta p, Inventory I);
-/* Mengembalikan ElTypeStack yang terdefinisi sesuai input */ 
+void CreateNotif(Notif *elmt, int notif[2][100]);
+/* I.S. elmt sembarang; */
+/* F.S. elmt terdefinisi sesuai input */
+
+void CreateElTypeStack(ElTypeStack *elmt, Simulator S, Delivery D, Time t, Inventory I, int notif[2][100]);
+/* I.S. elmt sembarang; */
+/* F.S. elmt memiliki value sesuai parameter */
+/* Ciri stack kosong : idxTop bernilai IDX_UNDEF_STACK */
 
 /* ************ Predikat Untuk test keadaan KOLEKSI ************ */
 boolean IsEmptyStack(Stack S);
@@ -78,4 +88,9 @@ int lenStack(Stack s);
 void printStack(Stack s);
 /* I.S. S terdefinisi, bisa kosong */
 /* F.S. Output stack dengan format <ORDINAT_ELEMEN0, ABSIS_ELEMEN0>;<ORDINAT_ELEMEN1, ABSIS_ELEMEN1>;... */
+
+void makeNotifMundur(Stack *S);
+/* I.S. S terdefinisi, bisa kosong */
+/* F.S. Notif alurMundur memiliki 1 state lebih mundur dari Notif alurMaju*/
+
 #endif

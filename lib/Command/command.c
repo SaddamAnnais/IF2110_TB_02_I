@@ -110,9 +110,7 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
             Time(m1) = timeToMinute(LAMA_PENGIRIMAN(m));
             Id(m1) = ID(m);
             timePass(1,T,I,D,notif);//waktu berjalan 1 menit
-            printf("%d\n", TailQ(*D));
             enqueue(D,m1);
-            printf("%d\n", TailQ(*D));
             printf("Berhasil memesan ");
             printWord(NAMA_MAKANAN(m));
             printf(". ");
@@ -124,59 +122,82 @@ void Buy(Peta *p, Simulator *s, ListMakanan lM, Delivery *D, Time *T, Inventory 
     }
 }
 /*UNDO REDO*/
-void undo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I)
+void undo(Stack *UndoSt, Stack *RedoSt, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I, Notif *notif)
 /*Membatalkan command yang dilakukan dan mengembalikan*/
 /*state aplikasi sebelum command tersebut*/
 {
     if (!IsEmptyStack(*UndoSt)) {
-        // *X = TOP_STACK(*UndoSt); buat pertama doang
-        // PushStack(RedoSt, *X);
+        ElTypeStack X;
 
-        PushStack(RedoSt, *X);
-        PopStack(UndoSt, X);
+        PopStack(UndoSt, &X);
+        PushStack(RedoSt, X);
 
-        *S = SIMULATOR_STACK(*X);
-        *D = DELIVERY_STACK(*X);
-        *T = TIME_STACK(*X);
-        *I = INVENTORY_STACK(*X);
+        *S = SIMULATOR_STACK(TOP_STACK(*UndoSt));
+        *D = DELIVERY_STACK(TOP_STACK(*UndoSt));
+        *T = TIME_STACK(TOP_STACK(*UndoSt));
+        *I = INVENTORY_STACK(TOP_STACK(*UndoSt));
         setPetaFromSimulator(P, *S);
-
-        // PushStack(RedoSt, *X);
-
+        CreateNotif(notif, NOTIF_MUNDUR_STACK(TOP_STACK(*UndoSt)));
     } 
     else {
         printf("Tidak bisa undo\n");
-        // *P = *P;
-        // *S = *S;
-        // *D = *D;
-        // *T = *T;
-        // *I = *I;
-
     }
 }
 
-void redo(Stack *UndoSt, Stack *RedoSt, ElTypeStack *X, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I)
+void redo(Stack *UndoSt, Stack *RedoSt, Peta *P, Simulator *S, Delivery *D, Time *T, Inventory *I, Notif *notif)
 /*Membatalkan command undo pada Stack S*/
 {
-    if (!IsEmptyStack(*RedoSt)) {
-        // *X = TOP_STACK(*RedoSt);     buat pertama doang
-        // PushStack(UndoSt, *X);
-        
-        PushStack(UndoSt, *X);   
-        PopStack(RedoSt, X);
+    if (!(IDX_TOP_STACK(*RedoSt)==-1)) {
+        ElTypeStack X;
 
-        *S = SIMULATOR_STACK(*X);
-        *D = DELIVERY_STACK(*X);
-        *T = TIME_STACK(*X);
-        *I = INVENTORY_STACK(*X);
+        PopStack(RedoSt, &X);
+        PushStack(UndoSt, X);   
+
+        *S = SIMULATOR_STACK(TOP_STACK(*UndoSt));
+        *D = DELIVERY_STACK(TOP_STACK(*UndoSt));
+        *T = TIME_STACK(TOP_STACK(*UndoSt));
+        *I = INVENTORY_STACK(TOP_STACK(*UndoSt));
         setPetaFromSimulator(P, *S);
-
-        //PushStack(UndoSt, *X);
+        CreateNotif(notif, NOTIF_MAJU_STACK(TOP_STACK(*UndoSt)));
     } 
     else {
         printf("Tidak bisa redo\n");
     }    
 }
+
+
+// void undoNotif(StackNotif *UndoStNotif, StackNotif *RedoStNotif, Notif *notif)
+// /*Membatalkan command yang dilakukan dan mengembalikan*/
+// /*state notif aplikasi sebelum command tersebut*/
+// {
+//     if (!IsEmptyStackNotif(*UndoStNotif)) {
+//         ElTypeStackNotif X;
+
+//         PopStackNotif(UndoStNotif, &X);
+//         PushStackNotif(RedoStNotif, X);
+        
+        
+//     } 
+//     else {
+//         printf("Tidak bisa undo notif\n");
+//     }
+// }
+
+// void redoNotif(StackNotif *UndoStNotif, StackNotif *RedoStNotif, Notif *notif)
+// /*Membatalkan command undo pada notif aplikasi*/
+// {
+//     if (!(IDX_TOP_STACK_NOTIF(*RedoStNotif)==-1)) {
+//         ElTypeStackNotif X;
+
+//         PopStackNotif(RedoStNotif, &X);
+//         PushStackNotif(UndoStNotif, X);
+        
+//         CreateNotif(notif, NOTIF_MAJU(TOP_STACK_NOTIF(*UndoStNotif)));
+//     } 
+//     else {
+//         printf("Tidak bisa redo notif\n");
+//     }
+// }
 
 /* Melihat Delivery List */
 void PrintDelivery(ListMakanan lM, Delivery D){
@@ -201,5 +222,47 @@ void PrintInventory(ListMakanan lM, Inventory I){
         printf(" - ");
         displayTime1(minuteToTime(Time(ElmtQ(I,i))));
         printf("\n");
+    }
+}
+
+void displayNotif(int notif[2][100], boolean alurMaju, ListMakanan lM)
+/* Proses: Mengoutput notif makanan/bahan kadaluarsa atau delivery bahan sampai.*/
+/* I.S. listId terdefinisi. Elemen bernilai Nil dianggap sebagai value kosong (tidak dioutput)*/
+/* F.S. Output notif makanan/bahan kadaluarsa atau delivery bahan sampai*/
+{
+    printf("Notifikasi: ");
+    if (*(*(notif))==Nil && *(*(notif+1))==Nil) {
+        printf("-\n");
+    } 
+    else {
+        printf("\n");
+        int num = 1;
+        if (alurMaju){
+            for (int i = 0; i<100 && notif[0][i]!= Nil; i++) {
+                printf("    %d. ", num);
+                printWord(NAMA_MAKANAN(ElmtListMakanan(lM, notif[0][i])));
+                printf(" kadaluwarsa :(\n");
+                num++;
+            }
+            for (int i = 0; i<100 && notif[1][i]!= Nil; i++) {
+                printf("    %d. ", num);
+                printWord(NAMA_MAKANAN(ElmtListMakanan(lM, notif[1][i])));
+                printf(" sudah diterima BNMO! :D\n");
+                num++;
+            }         
+        } else {
+            for (int i = 0; i<100 && notif[0][i]!= Nil; i++) {
+                printf("    %d. ", num);
+                printWord(NAMA_MAKANAN(ElmtListMakanan(lM, notif[0][i])));
+                printf(" dikembalikan ke inventory :)\n");
+                num++;
+            }
+            for (int i = 0; i<100 && notif[1][i]!= Nil; i++) {
+                printf("    %d. ", num);
+                printWord(NAMA_MAKANAN(ElmtListMakanan(lM, notif[1][i])));
+                printf(" dikeluarkan dari inventory D:\n");
+                num++;
+            }            
+        }
     }
 }

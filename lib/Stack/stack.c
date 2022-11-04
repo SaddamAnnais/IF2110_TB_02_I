@@ -9,32 +9,44 @@ void CreateStack(Stack *S)
     IDX_TOP_STACK(*S) = IDX_UNDEF_STACK;
 }
 
-void CreateElTypeStack(ElTypeStack *elmt, Simulator S, Delivery D, Time t, Peta p, Inventory I)
-/* Mengembalikan ElTypeStack yang terdefinisi sesuai input */
+void CreateNotif(Notif *elmt, int notif[2][100]) { 
+/* I.S. elmt sembarang; */
+/* F.S. elmt terdefinisi sesuai input */
+    for (int i = 0; i<2; i++) {
+        for (int j = 0; j<100; j++) {
+            (*elmt)[i][j] = notif[i][j];
+       }
+    }
+}
+
+void CreateElTypeStack(ElTypeStack *elmt, Simulator S, Delivery D, Time t, Inventory I, int notif[2][100])
+/* I.S. elmt sembarang; */
+/* F.S. elmt memiliki value sesuai parameter */
+/* Ciri stack kosong : idxTop bernilai IDX_UNDEF_STACK */
 {
     SIMULATOR_STACK(*elmt) = S;
-    DELIVERY_STACK(*elmt) = D;
+    DELIVERY_STACK(*elmt) = copyQ(D);
     TIME_STACK(*elmt) = t;
-    //PETA_STACK(*elmt) = p;
-    INVENTORY_STACK(*elmt) = I;
+    INVENTORY_STACK(*elmt) = copyQ(I);
+    CreateNotif(&NOTIF_MAJU_STACK(*elmt), notif);
 }
 
 /* ************ Predikat Untuk test keadaan KOLEKSI ************ */
 boolean IsEmptyStack(Stack S)
 /* Mengirim true jika Stack kosong: lihat definisi di atas */
 {
-    return (IDX_TOP_STACK(S) == IDX_UNDEF_STACK);
+    return (IDX_TOP_STACK(S) == 0);
 }
 
 boolean IsFullStack(Stack S)
 /* Mengirim true jika tabel penampung nilai elemen stack penuh */
 {
-     return (IDX_TOP_STACK(S) == CAPACITY_STACK - 1);
+    return (IDX_TOP_STACK(S) == CAPACITY_STACK - 1);
 }
 
 void PushStack(Stack * S, ElTypeStack X)
 /* Menambahkan X sebagai elemen Stack S. */
-/* I.S. S mungkin kosong, tabel penampung elemen stack TIDAK penuh */
+/* I.S. S mungkin kosong*/
 /* F.S. X menjadi TOP yang baru,TOP bertambah 1 */
 {
     /*KAMUS LOKAL*/
@@ -87,3 +99,14 @@ void printStack(Stack s)
     }
 }
 
+void makeNotifMundur(Stack *S) {
+/* I.S. S terdefinisi, bisa kosong */
+/* F.S. elemen mundur terdefinisi seperti maju*/
+    for (int i = 1; i<CAPACITY_STACK && i<=IDX_TOP_STACK(*S); i++) {
+        for (int j = 0; j<2; j++) {
+            for (int k = 0; k<100; k++) {
+                NOTIF_MUNDUR_STACK(ELMT_STACK(*S, i-1))[j][k] = NOTIF_MAJU_STACK(ELMT_STACK(*S, i))[j][k];
+            }
+        }
+    }
+}
