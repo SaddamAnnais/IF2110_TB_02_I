@@ -129,14 +129,16 @@ ListMakanan displayOperasiMakanan(ListMakanan listMakanan, char* operasi)
   numList = 0;
 
   printf("List Bahan Makanan yang Bisa Dibuat:\n");
-  for(i = 0; i < lenListMakanan(listMakanan); i++) {
-    if(isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(listMakanan, i)), operasi)) {
-      printf("  %d. ", numList+1);
-      printWord(NAMA_MAKANAN(ElmtListMakanan(listMakanan, i)));
-      printf("\n");
-      numList++;
-      ElmtListMakanan(output, numList) = ElmtListMakanan(listMakanan, i);
-      lenListMakanan(output)++;
+  for(i = 0; i < CAPACITY_LIST_MAKANAN; i++) {
+    if (ID(ElmtListMakanan(listMakanan, i)) != IDX_UNDEF) {
+      if(isWordStrEq(AKSI_MAKANAN(ElmtListMakanan(listMakanan, i)), operasi)) {
+        printf("  %d. ", numList+1);
+        printWord(NAMA_MAKANAN(ElmtListMakanan(listMakanan, i)));
+        printf("\n");
+        numList++;
+        ElmtListMakanan(output, numList) = ElmtListMakanan(listMakanan, i);
+        lenListMakanan(output)++;
+      }
     }
   }
   
@@ -180,6 +182,7 @@ boolean olahMakanan(Makanan makanan, Inventory* inventory, Resep resep)
     enqueue(inventory, infoMakanan);
     printWord(NAMA_MAKANAN(makanan));
     printf(" selesai dibuat dan sudah masuk ke inventory!\n");
+    return true;
   } else {
     printf("Gagal membuat ");
     printWord(NAMA_MAKANAN(makanan));
@@ -193,5 +196,6 @@ boolean olahMakanan(Makanan makanan, Inventory* inventory, Resep resep)
         printf("\n");
       }
     }
+    return false;
   }
 }

@@ -297,14 +297,19 @@ void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory
 
   /* ALGORITMA */
   // Validasi posisi simulator
-  if(!isNear(peta, simulator, op[0]))
+  if(!isNear(peta, simulator, op[0])) {
+    printf("BNMO tidak berada di area ");
+    printWord(opWord);
+    printf("\n");
+    return;
+  }
 
   // Menampilkan jenis operasi pada layar
   for(i = 0; i <= 22; i++) printf("="); 
   printf("\n=");
   for(i = 0; i <= (20-opWord.Length)/2; i++) printf(" ");
   printWord(opWord);
-  for(i = 0; i <= (opWord.Length - ((20-opWord.Length)/2)); i++) printf((" "));
+  for(i = 0; i <= ((20-opWord.Length) - ((20-opWord.Length)/2) - 1); i++) printf((" "));
   printf("=\n");
   for(i = 0; i <= 22; i++) printf("=");
   printf("\n");
@@ -313,24 +318,23 @@ void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory
   pilihanMakanan = displayOperasiMakanan(listMakanan, op);
 
   // Menerima input pilihan makanan yang akan diolah
-    printf("\nKirim 0 untuk exit.\n");
-  while(true) {
-    printf("\nEnter Command: ");
-    STARTWORD();
-    currInput = wordToInt(currentWord);
+  printf("\nKirim 0 untuk exit.\n");
+  printf("\nEnter Command: ");
+  STARTWORD();
+  currInput = wordToInt(currentWord);
 
-    // Validasi input
-    if(currInput > lenListMakanan(pilihanMakanan) || currInput < 0) {
-      printf("\nInput tidak valid");
-    } else if(currInput == 0) {
-      break;
-    }
+  // Validasi input
+  if(currInput > lenListMakanan(pilihanMakanan) || currInput < 0) {
+    printf("\nInput tidak valid");
+    return;
+  } else if(currInput == 0) {
+    return;
+  }
 
-    // Melakukan pengolahan makanan
-    isSucceed = olahMakanan(ElmtListMakanan(pilihanMakanan, currInput), inventory, resep);
-    if(isSucceed) {
-      timePass(DURASI_AKSI(ElmtListMakanan(pilihanMakanan, currInput)), time, inventory, delivery, notif, listMakanan);
-      *isValid = true;
-    }
-  } 
+  // Melakukan pengolahan makanan
+  isSucceed = olahMakanan(ElmtListMakanan(pilihanMakanan, currInput), inventory, resep);
+  if(isSucceed) {
+    timePass(DURASI_AKSI(ElmtListMakanan(pilihanMakanan, currInput)), time, inventory, delivery, notif, listMakanan);
+    *isValid = true;
+  }
 }
