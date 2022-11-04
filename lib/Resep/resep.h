@@ -54,13 +54,13 @@ Makanan searchMakananById(ListMakanan listMakanan, int id);
 ListDin bahanMakanan(Resep resep, int id);
 
 /* Menampilkan daftar makanan yang dapat dibuat oleh sebuah operasi pengolahan makanan */
-void displayOperasiMakanan(ListMakanan listMakanan, char* operasi);
+ListMakanan displayOperasiMakanan(ListMakanan listMakanan, char* operasi);
 // I.S. Operasi merupakan operasi pengolahan makanan yang valid
 // F.S. Semua makanan yang dapat dibuat dari operasi tersebut ditampilkan di layar
 //      sesuai format pada spesifikasi
 
 /* Melakukan operasi pengolahan makanan */
-void olahMakanan(Makanan makanan, Inventory* inventory, Resep resep);
+boolean olahMakanan(Makanan makanan, Inventory* inventory, Resep resep);
 // I.S. Makanan merupakan makanan yang ingin dibuat
 // F.S. Jika bahan makanan tersedia pada inventory, makanan hasil pengolahan ditambahkan
 //      ke dalam inventory dan bahan makanan dihilangkan dari inventory

@@ -15,9 +15,11 @@
 #include "./lib/Time/time.c"
 #include "./lib/Command/command.c"
 #include "./lib/Stack/stack.c"
-//#include "./lib/Stack/stack_notif.c"
+#include "./lib/Resep/resep.c"
+#include "./lib/Resep/tree.c"
+#include "./lib/ListDinamis/listdin.c"
 
-void idle(Simulator S, Peta P, Time T, int notif[2][100], ListMakanan lM, boolean alurMaju){
+void idle(Simulator S, Peta P, Time T, int notif[2][100], ListMakanan lM,Inventory I,Delivery D, boolean alurMaju){
     printf("\n\n\n");
     displayLokasi(S);
     displayTime(T);
@@ -26,6 +28,7 @@ void idle(Simulator S, Peta P, Time T, int notif[2][100], ListMakanan lM, boolea
     // notifQ(invenNotif,true); //notif sementara
     // notifQ(delivNotif,false);
     displayNotif(notif, alurMaju, lM);
+    matIdNotPos(notif,I,D);
     printf("\n");
     printf("Enter Command:  ");
     STARTWORD();
@@ -48,14 +51,23 @@ int main(){
     if (start) // Memulai program
     {
         Simulator S; Time T; ListMakanan l; Peta P; Inventory I; 
-        Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo;
-        int* invNotif; int* delivNotif;
-        Notif notif; boolean alurMaju = true;
+        Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo; Resep R;
+        int notif[2][100];
+        boolean isValid, alurMaju=true;
         printf("Masukkan nama pengguna: ");
         STARTWORD();
-        readPeta(&P, "./config/peta.txt", &S); BacaMakanan(&l, "./config/makanan.txt");
-        CreateSimulator(&S, currentWord);createTime(&T,0,0,0);createInventory(&I);
-        createDelivery(&D);CreateStack(&UndoSt); CreateStack(&RedoSt);
+        CreateSimulator(&S, currentWord);
+        readPeta(&P, "./config/peta.txt", &S);
+        createTime(&T,0,0,0);
+        BacaMakanan(&l, "./config/makanan.txt");
+        createInventory(&I); //sementara inventory kosong
+        printPrioQ(I);
+        createDelivery(&D);
+        CreateStack(&UndoSt);
+        CreateStack(&RedoSt);
+        readResep(&R, "./config/resep.txt", l);
+
+        printPrioQ(D);
         matIdNotPos(notif,I,D);
         
 
@@ -63,16 +75,17 @@ int main(){
         PushStack(&UndoSt, ElmtUndoRedo);
 
         while (start){
-            idle(S,P,T,notif,l,alurMaju);
-
+            isValid = false;
+            idle(S,P,T,notif,l,I,D,alurMaju);
+            //printf("%d\n", TailQ(D));
             if (isWordStrEq(currentWord,"MOVE")){
-                Move(&P,&S,&T,&I,&D,notif);
+                Move(&P,&S,&T,&I,&D,notif,&isValid,l);
             } else if (isWordStrEq(currentWord,"WAIT")){
-                Wait(&T,&I,&D,notif);
+                Wait(&T,&I,&D,notif,&isValid,l);
             } else if(isWordStrEq(currentWord,"EXIT")){
                 start=false;
             } else if (isWordStrEq(currentWord,"BUY")){
-                Buy(&P,&S,l,&D,&T,&I,notif);
+                Buy(&P,&S,l,&D,&T,&I,notif,&isValid);
             } else if (isWordStrEq(currentWord, "CATALOG")){
                 Catalog(l);
             } else if (isWordStrEq(currentWord, "DELIVERY")){
@@ -86,9 +99,16 @@ int main(){
             } else if (isWordStrEq(currentWord, "REDO")) {
                 redo(&UndoSt, &RedoSt, &P, &S, &D, &T, &I, &notif);
                 alurMaju = true;
+            } else if (isWordStrEq(currentWord, "FRY")) {
+                PengolahanMakanan(currentWord, "Fry", l, &I, R, &T, &D, notif, P, S, &isValid);
+            } else if (isWordStrEq(currentWord, "MIX")) {
+                PengolahanMakanan(currentWord, "Mix", l, &I, R, &T, &D, notif, P, S, &isValid);
+            } else if (isWordStrEq(currentWord, "CHOP")) {
+                PengolahanMakanan(currentWord, "Chop", l, &I, R, &T, &D, notif, P, S, &isValid);
+            } else if (isWordStrEq(currentWord, "BOIL")) {
+                PengolahanMakanan(currentWord, "Boil", l, &I, R, &T, &D, notif, P, S, &isValid);
             }
             
-
             if ((!isWordStrEq(currentWord, "UNDO")) && (!isWordStrEq(currentWord, "REDO"))) {   // Untuk keperluan undo dan redo
                 CreateElTypeStack(&ElmtUndoRedo,S, D, T, I, notif);
                 PushStack(&UndoSt, ElmtUndoRedo);
