@@ -31,7 +31,6 @@ void readResep(Resep* resep, char* filepath, ListMakanan listMakanan)
 
   STARTWORDFILE(filepath);
   while(!EndWord) {
-    //printWord(currentWord);
     if(lineCount > 0) {
       wordCount = 0;
       for(i = 0; i < currentWord.Length; i++) {
@@ -42,7 +41,7 @@ void readResep(Resep* resep, char* filepath, ListMakanan listMakanan)
           i++;
         }
         wordCount++;
-        currentMakanan = searchMakananById(listMakanan, currentId);
+        currentMakanan = ElmtListMakanan(listMakanan, currentId);
 
         if(wordCount == 1) {
           createTree(&R_ELMT(*resep, N_RESEP(*resep)), newTreeNode(currentMakanan));
@@ -99,20 +98,6 @@ void displayResep(address node)
 }
 
 /* IMPLEMENTASI OPERASI-OPERASI PADA RESEP */
-
-/* Menghasilkan data makanan berdasarkan id */
-Makanan searchMakananById(ListMakanan listMakanan, int id)
-{
-  /* KAMUS LOKAL */
-  IdxType i;
-
-  /* ALGORITMA */
-  for(i = 0; i < lenListMakanan(listMakanan); i++) {
-    if(ID(ElmtListMakanan(listMakanan, i)) == id) {
-      return ElmtListMakanan(listMakanan, i);
-    }
-  }
-}
 
 /* Menghasilkan bahan makanan untuk membuat sebuah makanan */
 ListDin bahanMakanan(Resep resep, int id)
