@@ -31,7 +31,7 @@ void readResep(Resep* resep, char* filepath, ListMakanan listMakanan)
 
   STARTWORDFILE(filepath);
   while(!EndWord) {
-    printWord(currentWord);
+    //printWord(currentWord);
     if(lineCount > 0) {
       wordCount = 0;
       for(i = 0; i < currentWord.Length; i++) {

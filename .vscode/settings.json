@@ -6,7 +6,9 @@
     "inventory.h": "c",
     "listdin.h": "c",
     "delivery.h": "c",
-    "time.h": "c"
+    "time.h": "c",
+    "wordmachine.h": "c",
+    "listmakanan.h": "c"
   },
   "C_Cpp.errorSquiggles": "Enabled"
 }
