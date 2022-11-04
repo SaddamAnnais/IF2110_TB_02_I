@@ -47,9 +47,6 @@ void displayResep(address node);
 
 /* OPERASI-OPERASI PADA RESEP */
 
-/* Menghasilkan data makanan berdasarkan id */
-Makanan searchMakananById(ListMakanan listMakanan, int id);
-
 /* Menghasilkan bahan makanan untuk membuat sebuah makanan */
 ListDin bahanMakanan(Resep resep, int id);
 
