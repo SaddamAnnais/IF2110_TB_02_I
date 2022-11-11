@@ -233,7 +233,7 @@ void PrintDelivery(ListMakanan lM, Delivery D){
 /* Melihat makanan yang dimiliki di Inventory */
 void PrintInventory(ListMakanan lM, Inventory I){
     printf("List Makanan di Inventory\n");
-    printf("(nama - waktu sisa delivery)\n");
+    printf("(nama - waktu sisa kedaluarsa)\n");
     for (int i = 0; i <= TailQ(I); i++){
         printf("    %d. ", i+1);
         printWord(NAMA_MAKANAN(ElmtListMakanan(lM, Id(ElmtQ(I, i)))));
