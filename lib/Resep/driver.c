@@ -30,10 +30,10 @@ int main() {
 
   // Pengolahan makanan
   printPrioQ(inventory);
-  Makanan makanan = searchMakananById(listMakanan, 1);
+  Makanan makanan;
+  makanan = ElmtListMakanan(listMakanan, 5);
   olahMakanan(makanan, &inventory, resep);
   printPrioQ(inventory);
-  makanan = searchMakananById(listMakanan, 5);
   olahMakanan(makanan, &inventory, resep);
   printPrioQ(inventory);
 
