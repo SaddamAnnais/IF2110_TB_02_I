@@ -22,7 +22,8 @@ void createSet(Set* set);
 // F.S. Set terdefinisi
 
 /* Selektor */
-#define SET_LENGTH(s) (s).length    // Jumlah elemen pada set
+#define SET_ELMT(s, i) (s).buffer[i]    // Elemen dari sebuah set
+#define SET_LENGTH(s) (s).length        // Jumlah elemen pada set
 
 /* Menampilkan set ke layar */
 void displaySet(Set set);
