@@ -194,6 +194,7 @@ boolean olahMakanan(Makanan makanan, Inventory* inventory, Resep resep)
         printf("  %d.  ", numList);
         printWord(NAMA_MAKANAN((INFO(ELMT(listBahan, i)))));
         printf("\n");
+        numList++;
       }
     }
     return false;
