@@ -1,4 +1,4 @@
-/* Definisi ADT Set */
+/* Definisi ADT Set menggunakan konsep multiset */
 #ifndef SET_H
 #define SET_H
 
@@ -6,11 +6,11 @@
 
 #include "../utility/boolean.h"
 
-typedef int ElType;   // Elemen pada set
+typedef int setElType;   // Elemen pada set
 /* ADT Set */
 typedef struct set
 {
-  ElType buffer[SET_CAPACITY];    // Array tempat menyimpan set
+  setElType buffer[SET_CAPACITY];    // Array tempat menyimpan set
   int length;                     // Jumlah elemen pada set
 } Set;
 
@@ -33,23 +33,26 @@ void displaySet(Set set);
 /* OPERASI-OPERASI PADA SET */
 
 /* Menghasilkan true jika set kosong */
-boolean isEmpty(Set set);
+boolean isSetEmpty(Set set);
 
 /* Menambahkan elemen ke set */
-void addToSet(Set* set, ElType x);
+void addToSet(Set* set, setElType x);
 // I.S. Set terdefinisi dan mungkin kosong
-// F.S. Menambahkan elemen ke set jika x belum terdapat di set
+// F.S. Menambahkan elemen ke set
 
 /* Menghapus elemen dari set */
-void removeFromSet(Set* set, ElType x);
+void removeFromSet(Set* set, setElType x);
 // I.S. Set tidak kosong dan x terdapat di dalam set
 // F.S. X terhapus dari set
 
+/* Meng-kopi sebuah set */
+Set copySet(Set set);
+
 /* Menghasilkan true jika x terdapat di dalam set */
-boolean isIn(Set set, ElType x);
+boolean isIn(Set set, setElType x);
 
 /* Menghasilkan true jika s1 = s2 */
-boolean isEqual(Set s1, Set s2);
+boolean isSetEqual(Set s1, Set s2);
 
 /* Menghasilkan gabungan dari s1 dan s2 */
 Set unionSet(Set s1, Set s2);

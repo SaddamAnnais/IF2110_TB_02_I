@@ -1,4 +1,4 @@
-/* Implementasi dari ADT Set */
+/* Implementasi dari ADT Set menggunakan konsep multiset */
 #include "set.h"
 #include <stdio.h>
 
@@ -37,7 +37,7 @@ void displaySet(Set set)
 /* IMPLEMENTASI OPERASI-OPERASI PADA SET */
 
 /* Menghasilkan true jika set kosong */
-boolean isEmpty(Set set)
+boolean isSetEmpty(Set set)
 {
   /* KAMUS LOKAL */
 
@@ -46,25 +46,19 @@ boolean isEmpty(Set set)
 }
 
 /* Menambahkan elemen ke set */
-void addToSet(Set* set, ElType x)
+void addToSet(Set* set, setElType x)
 // I.S. Set terdefinisi dan mungkin kosong
 // F.S. Menambahkan elemen ke set jika x belum terdapat di set
 {
   /* KAMUS LOKAL */
-  int i;
 
   /* ALGORITMA */
-  for(i = 0; i < SET_LENGTH(*set); i++) {
-    if(SET_ELMT(*set, i) == x) {
-      return;
-    }
-  }
   SET_ELMT(*set, SET_LENGTH(*set)) = x;
   SET_LENGTH(*set)++;
 }
 
 /* Menghapus elemen dari set */
-void removeFromSet(Set* set, ElType x)
+void removeFromSet(Set* set, setElType x)
 // I.S. Set tidak kosong dan x terdapat di dalam set
 // F.S. X terhapus dari set
 {
@@ -84,8 +78,23 @@ void removeFromSet(Set* set, ElType x)
   SET_LENGTH(*set)--;
 }
 
+/* Meng-kopi sebuah set */
+Set copySet(Set set)
+{
+  /* KAMUS LOKAL */
+  Set sOut;
+  int i;
+
+  /* ALGORITMA */
+  createSet(&sOut);
+  for(i = 0; i < SET_LENGTH(set); i++) {
+    addToSet(&sOut, SET_ELMT(set, i));
+  }
+  return sOut;
+}
+
 /* Menghasilkan true jika x terdapat di dalam set */
-boolean isIn(Set set, ElType x)
+boolean isIn(Set set, setElType x)
 {
   /* KAMUS LOKAL */
   int i;
@@ -100,12 +109,12 @@ boolean isIn(Set set, ElType x)
 }
 
 /* Menghasilkan true jika s1 = s2 */
-boolean isEqual(Set s1, Set s2)
+boolean isSetEqual(Set s1, Set s2)
 {
   /* KAMUS LOKAL */
 
   /* ALGORITMA */
-  if(isEmpty(s1) && isEmpty(s2)) {
+  if(isSetEmpty(s1) && isSetEmpty(s2)) {
     return true;
   } else {
     return isSubset(s1, s2) && isSubset(s2, s1);
@@ -150,13 +159,22 @@ Set intersectionSet(Set s1, Set s2)
 boolean isSubset(Set s1, Set s2)
 {
   /* KAMUS LOKAL */
-  int i;
+  Set sTemp1, sTemp2;
+  setElType temp;
+  boolean subset;
 
   /* ALGORITMA */
-  for(i = 0; i < SET_LENGTH(s1); i++) {
-    if(!isIn(s2, SET_ELMT(s1, i))) {
-      return false;
+  sTemp1 = copySet(s1);
+  sTemp2 = copySet(s2);
+  subset = true;
+  while(!isSetEmpty(sTemp1) && subset) {
+    if(isIn(sTemp2, SET_ELMT(sTemp1, 0))) {
+      temp = SET_ELMT(sTemp1, 0);
+      removeFromSet(&sTemp1, temp);
+      removeFromSet(&sTemp2, temp);
+    } else {
+      subset = false;
     }
   }
-  return true;
+  return subset;
 }

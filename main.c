@@ -18,6 +18,8 @@
 #include "./lib/Resep/resep.c"
 #include "./lib/Resep/tree.c"
 #include "./lib/ListDinamis/listdin.c"
+#include "./lib/RekomendasiMakanan/rekomendasi.c"
+#include "./lib/RekomendasiMakanan/set.c"
 
 void idle(Simulator S, Peta P, Time T, int notif[2][100], ListMakanan lM,Inventory I,Delivery D, boolean alurMaju){
     printf("\n\n\n");
@@ -43,7 +45,7 @@ int main(){
     boolean start = isWordStrEq(currentWord, "START");
     if (start) // Memulai program
     {
-        Simulator S; Time T; ListMakanan l; Peta P; Inventory I; 
+        Simulator S; Time T; ListMakanan l; Peta P; Inventory I; SetResep SR;
         Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo; Resep R;
         int notif[2][100];
         boolean isValid, alurMaju=true;
@@ -58,6 +60,17 @@ int main(){
         CreateStack(&UndoSt);
         CreateStack(&RedoSt);
         readResep(&R, "./config/resep.txt", l);
+        createSetResep(&SR, R);
+        int i;
+        for(i = 0; i < N_RESEP(R); i++) {
+          unionResep(&SR);
+        }
+        // for(i = 0; i < CAPACITY_LIST_MAKANAN; i++) {
+        //   if(!isSetEmpty(SR.buffer[i])) {
+        //     printf("%d ", i);
+        //     displaySet(SR.buffer[i]);
+        //   }
+        // }
 
         matIdNotPos(notif,I,D);
         
@@ -99,6 +112,9 @@ int main(){
                 PengolahanMakanan(currentWord, "Boil", l, &I, R, &T, &D, notif, P, S, &isValid);
             } else if (isWordStrEq(currentWord, "COOKBOOK")) {
                 displayCookbook(R);
+            } else if(isWordStrEq(currentWord, "RECOMMEND")) {
+                
+                rekomendasi(SR, I, l);
             }
             
             if ((!isWordStrEq(currentWord, "UNDO")) && (!isWordStrEq(currentWord, "REDO") && isValid)) {   // Untuk keperluan undo dan redo
