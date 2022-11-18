@@ -338,3 +338,96 @@ void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory
     *isValid = true;
   }
 }
+
+/* Membuka kulkas */
+void OpenKulkas(ListMakanan listmakanan, Inventory* inventory, Kulkas* kulkas)
+// I.S. Semua parameter terdefinisi
+// F.S. Menambahkan atau mengeluarkan makanan dari kulkas
+{
+  /* KAMUS LOKAL */
+  int currInput, i, baris, kolom, panjang, lebar;
+  boolean isKosong;
+
+  /* ALGORITMA */
+  isKosong = true;
+  printf("======== KULKAS =======\n");
+  displayKulkas(*kulkas);
+  for(i = 0; i < 100; i++) {
+    if(K_MAKANAN(*kulkas, i) != -1) {
+      isKosong = false;
+      printf("  %c: ", (char) ('A' + i));
+      printWord(NAMA_MAKANAN(ElmtListMakanan(listmakanan, K_MAKANAN(*kulkas, i))));
+      printf("\n");
+    }
+  }
+  printf("\nPilih aksi yang ingin dilakukan\n");
+  printf("  1. Masukkan makanan ke kulkas\n");
+  printf("  2. Keluarkan makanan dari kulkas\n");
+  printf("Enter command: ");
+  STARTWORD();
+  currInput = wordToInt(currentWord);
+
+  if(currInput == 1) {
+    if(TailQ(*inventory) < 0) {
+      printf("\nInventory kosong, tidak ada makanan yang bisa dimasukkan.\n");
+      return;
+    } else {
+      printf("\nPilih makanan yang ingin dimasukkan ke kulkas - (panjang x lebar)\n");
+      for(i = 0; i <= TailQ(*inventory); i++) {
+        printf("  %d. ", i+1);
+        printWord(NAMA_MAKANAN(ElmtListMakanan(listmakanan, Id(ElmtQ(*inventory, i)))));
+        printf(" - (%d x %d)\n", PANJANG(ElmtListMakanan(listmakanan, Id(ElmtQ(*inventory, i)))), LEBAR(ElmtListMakanan(listmakanan, Id(ElmtQ(*inventory, i)))));
+      }
+      printf("Enter command: ");
+      STARTWORD();
+      currInput = wordToInt(currentWord);
+
+      if(currInput < 1 || currInput > TailQ(*inventory)+1) {
+        printf("\nMasukkan tidak valid.\n");
+        return;
+      }
+      currInput--;
+
+      panjang = PANJANG(ElmtListMakanan(listmakanan, Id(ElmtQ(*inventory, currInput))));
+      lebar = LEBAR(ElmtListMakanan(listmakanan, Id(ElmtQ(*inventory, currInput))));
+
+      printf("Masukkan baris dan kolom pada kulkas: ");
+      STARTWORD();
+      baris = wordToInt(currentWord);
+      STARTWORD();
+      kolom = wordToInt(currentWord);
+
+      if(!isKulkasIdxValid(*kulkas, baris, kolom, panjang, lebar)) {
+        printf("\nBaris dan kolom tidak valid.\n");
+        return;
+      } else {
+        insertToKulkas(kulkas, inventory, Id(ElmtQ(*inventory, currInput)), baris, kolom, panjang, lebar);
+        printf("\nMakanan berhasil dimasukkan ke kulkas.\n");
+        return;
+      }
+    }
+  } else if(currInput == 2) {
+    if(isKosong) {
+      printf("\nKulkas kosong, tidak ada makanan yang bisa dikeluarkan.\n");
+      return;
+    } else {
+      printf("Masukkan makanan yang ingin dikeluarkan: ");
+      STARTWORD();
+      currInput = currentWord.TabWord[0];
+      if(((int) currInput - 'A') < 0 || ((int) currInput - 'A') > 100) {
+        printf("\nMasukkan tidak valid.\n");
+        return;
+      } else if(K_MAKANAN(*kulkas, (int) currInput - 'A') == -1) {
+        printf("\nMakanan tidak terdapat di kulkas.\n");
+        return;
+      } else {
+        removeFromKulkas(kulkas, inventory, currInput);
+        printf("\nMakanan berhasil dikeluarkan dari kulkas.\n");
+        return;
+      }
+    }
+  } else {
+    printf("\nMasukkan tidak valid.\n");
+    return;
+  }
+}

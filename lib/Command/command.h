@@ -9,6 +9,7 @@
 #include "../Makanan/listmakanan.h"
 #include "../Stack/stack.h"
 #include "../Resep/resep.h"
+#include "../Kulkas/kulkas.h"
 
 /* T maju, elemen waktu pada Inventory I dan Delivery D berkurang*/
 void timePass(int mm, Time *T, Inventory *I, Delivery *D, int (*notif)[100], ListMakanan lM);
@@ -64,7 +65,13 @@ void displayNotif(int notif[2][100], boolean alurMaju, ListMakanan lM);
 
 // void redoNotif(StackNotif *UndoStNotif, StackNotif *RedoStNotif, Notif *notif);
 // /*Membatalkan command undo pada notif aplikasi*/
+
 /* Melakukan operasi pengolahan makanan */
 void PengolahanMakanan(Word opWord, char* op, ListMakanan listMakanan, Inventory* inventory, Resep resep, Time* time, Delivery* delivery, int (*notif)[100], Peta peta, Simulator simulator, boolean *isValid);
 // I.S. Semua parameter terdefinisi
 // F.S. Jika operasi berhasil, maka isi dari inventory simulator akan berubah
+
+/* Membuka kulkas */
+void OpenKulkas(ListMakanan listmakanan, Inventory* inventory, Kulkas* kulkas);
+// I.S. Semua parameter terdefinisi
+// F.S. Menambahkan atau mengeluarkan makanan dari kulkas

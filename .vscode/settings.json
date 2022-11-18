@@ -8,7 +8,8 @@
     "delivery.h": "c",
     "time.h": "c",
     "wordmachine.h": "c",
-    "listmakanan.h": "c"
+    "listmakanan.h": "c",
+    "string_view": "c"
   },
   "C_Cpp.errorSquiggles": "Enabled"
 }

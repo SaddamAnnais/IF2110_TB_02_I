@@ -18,6 +18,7 @@
 #include "./lib/Resep/resep.c"
 #include "./lib/Resep/tree.c"
 #include "./lib/ListDinamis/listdin.c"
+#include "./lib/Kulkas/kulkas.c"
 
 void idle(Simulator S, Peta P, Time T, int notif[2][100], ListMakanan lM,Inventory I,Delivery D, boolean alurMaju){
     printf("\n\n\n");
@@ -43,7 +44,7 @@ int main(){
     boolean start = isWordStrEq(currentWord, "START");
     if (start) // Memulai program
     {
-        Simulator S; Time T; ListMakanan l; Peta P; Inventory I; 
+        Simulator S; Time T; ListMakanan l; Peta P; Inventory I; Kulkas K;
         Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo; Resep R;
         int notif[2][100];
         boolean isValid, alurMaju=true;
@@ -55,6 +56,7 @@ int main(){
         BacaMakanan(&l, "./config/makanan.txt");
         createInventory(&I); //sementara inventory kosong
         createDelivery(&D);
+        createKulkas(&K);
         CreateStack(&UndoSt);
         CreateStack(&RedoSt);
         readResep(&R, "./config/resep.txt", l);
@@ -99,6 +101,8 @@ int main(){
                 PengolahanMakanan(currentWord, "Boil", l, &I, R, &T, &D, notif, P, S, &isValid);
             } else if (isWordStrEq(currentWord, "COOKBOOK")) {
                 displayCookbook(R);
+            } else if (isWordStrEq(currentWord, "FRIDGE")) {
+                OpenKulkas(l, &I, &K);
             }
             
             if ((!isWordStrEq(currentWord, "UNDO")) && (!isWordStrEq(currentWord, "REDO") && isValid)) {   // Untuk keperluan undo dan redo

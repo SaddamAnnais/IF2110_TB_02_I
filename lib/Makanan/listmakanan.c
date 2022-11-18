@@ -88,6 +88,12 @@ void BacaMakanan(ListMakanan *l, char *filename)
         ADVWORD();
         DURASI_AKSI(m) = wordToInt(currentWord);
 
+        ADVWORD();
+        PANJANG(m) = wordToInt(currentWord);
+
+        ADVWORD();
+        LEBAR(m) = wordToInt(currentWord);
+
         ElmtListMakanan(*l, ID(m)) = m;
         lenListMakanan(*l)++;
         ADVWORD();

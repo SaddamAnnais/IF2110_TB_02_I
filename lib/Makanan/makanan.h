@@ -18,6 +18,8 @@ typedef struct {
     Time waktu_kadaluarsa;  // durasi kadaluwarsa
     Time lama_pengiriman;   // durasi pengiriman
     int durasi_aksi;        // durasi aksi
+    int panjang;            // Dimenasi panjang makanan
+    int lebar;              // Dimensi lebar makanan
 } Makanan;
 
 /*SELEKTOR*/
@@ -27,12 +29,14 @@ typedef struct {
 #define AKSI_MAKANAN(x) (x).aksi_makanan
 #define LAMA_PENGIRIMAN(x) (x).lama_pengiriman
 #define DURASI_AKSI(x) (x).durasi_aksi
+#define PANJANG(x) (x).panjang
+#define LEBAR(x) (x).lebar
 
 //#define BUY_MAKANAN(x) (x).buy
 //#define FRY_MAKANAN(x) (x).fry
 
 /*KONSTRUKTOR*/
-Makanan CreateMakanan(int id, Word nama, Word aksi, Time kadaluarsa, Time pengiriman, int durasi_aksi);
+Makanan CreateMakanan(int id, Word nama, Word aksi, Time kadaluarsa, Time pengiriman, int durasi_aksi, int panjang, int lebar);
 /* Membentuk sebuah Makanan dari komponen-komponennya */
 
 void DisplayMakanan(Makanan M);
