@@ -13,10 +13,10 @@ void createKulkas(Kulkas* kulkas)
   int i, j;
 
   /* ALGORITMA */
-  createMatrix(7, 12, &((*kulkas).buffer));
-  for(i = 0; i < 7; i++) {
-    for(j = 0; j < 12; j++) {
-      if(i == 0 || i == 6 || j == 0 || j == 11 ) {
+  createMatrix(12, 22, &((*kulkas).buffer));
+  for(i = 0; i < 12; i++) {
+    for(j = 0; j < 22; j++) {
+      if(i == 0 || i == 11 || j == 0 || j == 21 ) {
         K_ELMT(*kulkas, i, j) = '*';
       } else {
         K_ELMT(*kulkas, i, j) = ' ';
@@ -51,7 +51,7 @@ boolean isKulkasIdxValid(Kulkas kulkas, int b, int k, int p, int l)
   /* ALGORITMA */
   for(i = b; i < b+p; i++) {
     for(j = k; j < k+l; j++) {
-      if(i < 1 || i > 5 || j < 1 || j > 10) {
+      if(i < 1 || i > 10 || j < 1 || j > 20) {
         return false;
       } else if(MATRIX_ELMT(kulkas.buffer, i, j) != ' ') {
         return false;
@@ -108,8 +108,8 @@ void removeFromKulkas(Kulkas* kulkas, Inventory* inventory, char x)
   Id(m) = K_MAKANAN(*kulkas, ((int) x) - ((int) 'A'));
   enqueue(inventory, m);
 
-  for(i = 1; i < 6; i++) {
-    for(j = 1; j < 11; j++) {
+  for(i = 1; i < 11; i++) {
+    for(j = 1; j < 21; j++) {
       if(K_ELMT(*kulkas, i, j) == x) {
         K_ELMT(*kulkas, i, j) = ' ';
       }

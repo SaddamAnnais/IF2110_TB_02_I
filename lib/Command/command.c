@@ -350,7 +350,7 @@ void OpenKulkas(ListMakanan listmakanan, Inventory* inventory, Kulkas* kulkas)
 
   /* ALGORITMA */
   isKosong = true;
-  printf("======== KULKAS =======\n");
+  printf("================== KULKAS =================\n");
   displayKulkas(*kulkas);
   for(i = 0; i < 100; i++) {
     if(K_MAKANAN(*kulkas, i) != -1) {
