@@ -18,12 +18,9 @@
 #include "./lib/Resep/resep.c"
 #include "./lib/Resep/tree.c"
 #include "./lib/ListDinamis/listdin.c"
-<<<<<<< HEAD
 #include "./lib/Kulkas/kulkas.c"
-=======
 #include "./lib/RekomendasiMakanan/rekomendasi.c"
 #include "./lib/RekomendasiMakanan/set.c"
->>>>>>> rekomendasi-makanan
 
 void idle(Simulator S, Peta P, Time T, int notif[2][100], ListMakanan lM,Inventory I,Delivery D, boolean alurMaju){
     printf("\n\n\n");
@@ -49,11 +46,7 @@ int main(){
     boolean start = isWordStrEq(currentWord, "START");
     if (start) // Memulai program
     {
-<<<<<<< HEAD
-        Simulator S; Time T; ListMakanan l; Peta P; Inventory I; Kulkas K;
-=======
-        Simulator S; Time T; ListMakanan l; Peta P; Inventory I; SetResep SR;
->>>>>>> rekomendasi-makanan
+        Simulator S; Time T; ListMakanan l; Peta P; Inventory I; SetResep SR; Kulkas K;
         Delivery D; Stack UndoSt, RedoSt; ElTypeStack ElmtUndoRedo; Resep R;
         int notif[2][100];
         boolean isValid, alurMaju=true;
