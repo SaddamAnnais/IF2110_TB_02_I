@@ -100,28 +100,22 @@ void removeFromKulkas(Kulkas* kulkas, Inventory* inventory, char x)
 // F.S. Makanan dihapus dari kulkas dan ditambahkan ke inventory
 {
   /* KAMUS LOKAL */
-  int i, j, idx;
+  int i, j;
   infotype m;
 
   /* ALGORITMA */
-  for(i = 0; i < 100; i++) {
-    if(K_MAKANAN(*kulkas, i) == ((int) x) - ((int) 'A')) {
-      idx = i;
-    }
-  }
-
-  Time(m) = K_KADALUARSA(*kulkas, idx);
-  Id(m) = K_MAKANAN(*kulkas, idx);
+  Time(m) = K_KADALUARSA(*kulkas, ((int) x) - ((int) 'A'));
+  Id(m) = K_MAKANAN(*kulkas, ((int) x) - ((int) 'A'));
   enqueue(inventory, m);
 
   for(i = 1; i < 6; i++) {
     for(j = 1; j < 11; j++) {
-      if(K_ELMT(*kulkas, i, j) == (char) 'A' + idx) {
+      if(K_ELMT(*kulkas, i, j) == x) {
         K_ELMT(*kulkas, i, j) = ' ';
       }
     }
   }
 
-  K_MAKANAN(*kulkas, idx) = -1;
-  K_KADALUARSA(*kulkas, idx) = -1;
+  K_MAKANAN(*kulkas, ((int) x) - ((int) 'A')) = -1;
+  K_KADALUARSA(*kulkas, ((int) x) - ((int) 'A')) = -1;
 }
