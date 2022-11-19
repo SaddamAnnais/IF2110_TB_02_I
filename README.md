@@ -102,16 +102,16 @@ Setelah konfigurasi telah selesai, ketik `./run` pada terminal lalu ketik `./mai
 ## Pembagian Tugas
 
 #### Tabitha Permalla / 13521111
-ADT Simulator, Buy, (display) Inventory, (display) Delivery, Splash screen, Laporan 
+* ADT Simulator, Buy, (display) Inventory, (display) Delivery, Splash screen, Laporan 
 
 #### Saddam Annais Shaquille / 13521121 
-Parser, Inventory, Delivery, Makanan, listMakanan, Undo/Redo, Main program 
+* Parser, Inventory, Delivery, Makanan, listMakanan, Undo/Redo, Main program 
 
 #### Althaaf Khasyi Atisomya / 13521130 
-ADT time, catalog, command move, command wait, catalog, notifikasi
+* ADT time, catalog, command move, command wait, catalog, notifikasi
 
 #### Rava Maulana Azzikri / 13521149 
-Matriks, point, tree, resep, peta, pengolahan makanan, kulkas, rekomendasi makanan 
+* Matriks, point, tree, resep, peta, pengolahan makanan, kulkas, rekomendasi makanan 
 
 #### Vanessa Rebecca Wiyono / 13521151 
-ADT makanan, list makanan, time, list dinamis, stack, testing, laporan 
+* ADT makanan, list makanan, time, list dinamis, stack, testing, laporan 
