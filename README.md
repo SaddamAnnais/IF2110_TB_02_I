@@ -40,15 +40,15 @@ S#########      // S : lokasi simulator
 #### Food
 Open file "makanan.txt"
 ```
-3               // Number of food that will be stored
-11              // ID of the first food
-Ayam Mentah     // Name of the first food
-1 0 0           // Days, Hours, Minutes until expired of the first food
-0 0 15          // Days, Hours, Minutes of delivery time of the first food
-Buy             // Action to obtained the food
-0               // Duration of action to obtained the food (not for buy action)
-21              // ID of the second food
-Ayam Potong     // and so on..
+3               // Jumlah makanan yang akan disimpan
+11              // ID dari makanan pertama
+Ayam Mentah     // Nama dari makanan pertama
+1 0 0           // Hari, jam, menit sampai kadaluwarsa
+0 0 15          // Hari, jam, menit sampai makanan dikirim
+Buy             // Aksi untuk mendapatkan makanan
+0               // Durasi aksi untuk mendapatkan makanan (tidak untuk aksi Buy)
+21              // ID dari makanan kedua
+Ayam Potong     // dan seterusnya ..
 0 2 0
 0 0 0
 Chop
@@ -59,24 +59,24 @@ Tepung
 0 0 30
 Buy
 10
-.               // . to end food config
+.               // . : mengakhiri konfigurasi makanan
 ```
 #### Recipe
 Open file "resep.txt"
 ```
-3               // Number of recipe
-21 1 11         // Food with the ID of 21 can be obtained from 1 other food, by doing an action from food with the ID of 11
-31 2 21 10      // Food with the ID of 31 can be obtained from 2 other foods, by doing an action from food with the ID of 21 and 10
-37 2 31 15      // Food with the ID of 37 can be obtained from 2 other foods, by doing an action from food with the ID of 31 and 15
-.               // . to end recipe config
+3               // Jumlah resep
+21 1 11         // Makanan dengan ID 21 dapat diperoleh dari 1 makanan lainnya,yaitu dengan cara melakukan aksi pada makanan dengan ID 11
+31 2 21 10      // Makanan dengan ID 31 dapat diperoleh dari 2 makanan lainnya,yaitu dengan cara melakukan aksi pada makanan dengan ID 21 dan 10
+37 2 31 15      // Makanan dengan ID 37 dapat diperoleh dari 2 makanan lainnya,yaitu dengan cara melakukan aksi pada makanan dengan ID 31 dan 15
+.               // . : mengakhiri konfigurasi makanan
 ```
 
 Setelah konfigurasi telah selesai, ketik `./run` pada terminal lalu ketik `./main` untuk menjalankan program
 
 ## Daftar Fitur
 1. Main Menu (Selesai)
-* START (Selesai)
-* EXIT (Selesai)
+* START
+* EXIT
 2. Mekanisme Waktu (Selesai)
 * WAIT
 * DELIVERY
@@ -101,17 +101,17 @@ Setelah konfigurasi telah selesai, ketik `./run` pada terminal lalu ketik `./mai
 
 ## Pembagian Tugas
 
-#### Tabitha Permalla / 13521111
+#### [Tabitha Permalla / 13521111](https://github.com/Bitha17)
 * ADT Simulator, Buy, (display) Inventory, (display) Delivery, Splash screen, Laporan 
 
-#### Saddam Annais Shaquille / 13521121 
+#### [Saddam Annais Shaquille / 13521121](https://github.com/SaddamAnnais)
 * Parser, Inventory, Delivery, Makanan, listMakanan, Undo/Redo, Main program 
 
-#### Althaaf Khasyi Atisomya / 13521130 
+#### [Althaaf Khasyi Atisomya / 13521130](https://github.com/althaafka)
 * ADT time, catalog, command move, command wait, catalog, notifikasi
 
-#### Rava Maulana Azzikri / 13521149 
+#### [Rava Maulana Azzikri / 13521149](https://github.com/RMA1403)
 * Matriks, point, tree, resep, peta, pengolahan makanan, kulkas, rekomendasi makanan 
 
-#### Vanessa Rebecca Wiyono / 13521151 
-* ADT makanan, list makanan, time, list dinamis, stack, testing, laporan 
+#### [Vanessa Rebecca Wiyono / 13521151](https://github.com/vanessrw)
+* ADT makanan, list makanan, time, list dinamis, stack, testing, laporan
