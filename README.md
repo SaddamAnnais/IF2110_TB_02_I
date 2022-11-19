@@ -1,23 +1,41 @@
 # IF2110_TB_02_I
-Tubes Alstrukdat
+Tugas Besar IF2110 Algoritma dan Struktur Data
 
-## How to Start?
-Open config folder to edit the maps, food, and recipe.
+## Daftar Isi
+* [Penjelasan Ringkas Program](#penjelasan-ringkas-program)
+* [Cara Kompilasi Program](#cara-kompilasi-program)
+* [Cara Menjalankan Program](#cara-menjalankan-program)
+* [Daftar Fitur](#daftar-fitur)
+* [Pembagian Tugas](#pembagian-tugas)
+
+## Penjelasan Ringkas Program
+Tugas Besar IF2110 ini merupakan program berbasis CLI dalam
+bahasa C yang mensimulasikan tentang aktivitas memasak. Pemain
+dapat membeli bahan makanan serta memproses bahan tersebut menjadi suatu hidangan sesuai dengan apa yang tertera pada buku resep. Program juga akan menampilkan berapa lama waktu kedaluwarsa suatu makanan dan berapa lama waktu pengantaran suatu makanan. Selain itu, terdapat juga fitur kulkas untuk menyimpan makanan sehingga waktu kedaluwarsanya tidak berkurang.
+
+## Cara Kompilasi Program
+1. Periksa bahwa gcc compiler versi terbaru telah terpasang (`gcc --version` pada terminal untuk mengecheck versi compiler).
+2. jalankan command `gcc .\main.c -o main` pada terminal untuk melakukan kompilasi program
+3. Jika kompilasi berhasil, maka akan terdapat `main.exe` pada directory program.
+
+## Cara Menjalankan Program
+Buka folder config untuk mengkonfigurasi maps, food, dan recipe.
+
 #### Maps
 Open file "peta.txt"
 ```
-10 10           // Maps with (N x M) size
-S#########      // S is the location of simulator
-####T##X##      // S is the location of telephone (to buy food)
-#M#####X##      // # is an empty space 
-#######X##      // X is an obscacle
+10 10           // Peta dengan ukuran (N x M)
+S#########      // S : lokasi simulator
+####T##X##      // T : lokasi telephone (buy food)
+#M#####X##      // # : ruang kosong
+#######X##      // X : obstacle
 ####XXXX##
 #X########
-#X######C#      // C is the location for CHOP action
-#XXX##F###      // F is the location for FRY action
+#X######C#      // C : lokasi aksi CHOP
+#XXX##F###      // F : lokasi aksi FRY
 ##########
-######B###      // F is the location for BOIL action
-.               // . to end map config
+######B###      // B : lokasi aksi BOIL
+.               // . : mengakhiri konfigurasi peta
 ```
 #### Food
 Open file "makanan.txt"
@@ -53,4 +71,47 @@ Open file "resep.txt"
 .               // . to end recipe config
 ```
 
-After all of the configuration is complete, type in ./run in terminal and then type in ./main
+Setelah konfigurasi telah selesai, ketik `./run` pada terminal lalu ketik `./main` untuk menjalankan program
+
+## Daftar Fitur
+1. Main Menu (Selesai)
+* START (Selesai)
+* EXIT (Selesai)
+2. Mekanisme Waktu (Selesai)
+* WAIT
+* DELIVERY
+3. Makanan (Selesai)
+* BUY
+* FRY
+* BOIL
+* CHOP
+* MIX
+* INVENTORY
+4. Resep (Selesai)
+* CATALOG
+* COOKBOOK
+5. Delivery (Selesai)
+6. Peta (Selesai)
+7. Lokasi dan Command (Selesai)
+* MOVE NORTH, SOUTH, EAST, WEST 
+* UNDO / REDO
+8. Waktu pengolahan makanan (Selesai)
+8. Kulkas (Selesai)
+9. Rekomendasi makanan (Selesai)
+
+## Pembagian Tugas
+
+#### Tabitha Permalla / 13521111
+ADT Simulator, Buy, (display) Inventory, (display) Delivery, Splash screen, Laporan 
+
+#### Saddam Annais Shaquille / 13521121 
+Parser, Inventory, Delivery, Makanan, listMakanan, Undo/Redo, Main program 
+
+#### Althaaf Khasyi Atisomya / 13521130 
+ADT time, catalog, command move, command wait, catalog, notifikasi
+
+#### Rava Maulana Azzikri / 13521149 
+Matriks, point, tree, resep, peta, pengolahan makanan, kulkas, rekomendasi makanan 
+
+#### Vanessa Rebecca Wiyono / 13521151 
+ADT makanan, list makanan, time, list dinamis, stack, testing, laporan 
