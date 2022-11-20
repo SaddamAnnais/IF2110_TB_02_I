@@ -71,7 +71,7 @@ Open file "resep.txt"
 .               // . : mengakhiri konfigurasi makanan
 ```
 
-Setelah konfigurasi telah selesai, ketik `./run` pada terminal lalu ketik `./main` untuk menjalankan program
+Setelah konfigurasi telah selesai, ketik `gcc .\main.c -o main` pada terminal lalu ketik `./main` untuk menjalankan program
 
 ## Daftar Fitur
 1. Main Menu (Selesai)
